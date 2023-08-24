@@ -12,9 +12,7 @@ export default function Reading() {
   )
 
   useEffect(() => {
-    if (selectedWords[0]?.origin) {
-      setSelected(selectedWords[0].origin)
-    }
+    if (selectedWords[0]?.origin) setSelected(selectedWords[0].origin)
   }, [selectedWords])
 
   const onSelectWord = async (word?: string) => {
@@ -36,7 +34,7 @@ export default function Reading() {
 
     setSelectedWords([result, ...selectedWords])
 
-    if (result.audioUrl && !isSentence) {
+    if (result?.audioUrl && !isSentence) {
       const audioPlayer = new Audio(result.audioUrl)
       audioPlayer.play()
     }
@@ -83,7 +81,9 @@ const ReadingText: React.FC<{
         <div className="w-full h-full relative pt-6">
           <div
             className="h-full w-full overflow-y-auto break-words p-8 whitespace-pre-wrap selection:bg-teal-200 pt-0"
-            onMouseUp={() => onSelectWord(window?.getSelection()?.toString())}>
+            onMouseUp={() => {
+              onSelectWord(window?.getSelection()?.toString())
+            }}>
             {textContent}
           </div>
           <button
