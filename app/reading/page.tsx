@@ -7,17 +7,20 @@ import { copyToClipboard } from '@/utils/copy'
 
 export default function Reading() {
   const [selectedWords, setSelectedWords] = useState<TranslationItem[]>([])
-  const [selected, setSelected] = useState<string | undefined>(
-    selectedWords[0]?.origin
+  const [selected, setSelected] = useState<TranslationItem | undefined>(
+    selectedWords[0]
   )
+  const [isVocVisible, setIsVocVisible] = useState(false)
 
   useEffect(() => {
-    if (selectedWords[0]?.origin) setSelected(selectedWords[0].origin)
+    if (selectedWords[0]?.origin) setSelected(selectedWords[0])
   }, [selectedWords])
 
   const onSelectWord = async (word?: string) => {
     const formattedWord = word?.trim()
     const storedWord = selectedWords.find((w) => w?.origin === formattedWord)
+
+    setIsVocVisible(false)
 
     const isSentence = (word?.split(' ').length || 0) >= 10
 
@@ -26,7 +29,7 @@ export default function Reading() {
       audioPlayer.play()
     }
 
-    setSelected(storedWord?.origin)
+    setSelected(storedWord)
 
     if (!formattedWord || !!storedWord) return
 
@@ -45,8 +48,11 @@ export default function Reading() {
         <ReadingText onSelectWord={onSelectWord} />
         <SelectedVocabularies
           selected={selected}
+          setSelected={setSelected}
           selectedWords={selectedWords}
           setSelectedWords={setSelectedWords}
+          isVocVisible={isVocVisible}
+          setIsVocVisible={setIsVocVisible}
         />
       </div>
     </div>
@@ -101,46 +107,80 @@ const ReadingText: React.FC<{
 }
 
 const SelectedVocabularies: React.FC<{
-  selected?: string
+  selected?: TranslationItem
+  setSelected: (v: TranslationItem) => void
   selectedWords: TranslationItem[]
   setSelectedWords: (words: TranslationItem[]) => void
-}> = ({ selectedWords, selected, setSelectedWords }) => {
+  isVocVisible: boolean
+  setIsVocVisible: (v: boolean) => void
+}> = ({
+  selectedWords,
+  selected,
+  setSelected,
+  setSelectedWords,
+  isVocVisible,
+  setIsVocVisible
+}) => {
   return (
     <div className="p-8 w-2/5 bg-slate-200">
       <div className="relative h-full pt-6">
-        <div className="flex flex-col gap-2 h-full overflow-y-auto py-8 px-3 pt-0">
-          {selectedWords.map((word) => (
-            <WordItem
-              key={word.origin}
-              word={word}
-              isSelected={word.origin === selected}
-              onDelete={() =>
-                setSelectedWords(selectedWords.filter((w) => w !== word))
-              }
+        {isVocVisible ? (
+          <>
+            <embed
+              src={selected?.mTerminalDictUtl}
+              className="w-full h-full rounded-2xl"
             />
-          ))}
-        </div>
-        <button
-          onClick={() => setSelectedWords([])}
-          className={cn(
-            'absolute left-2 -top-5',
-            'rounded-full py-1 px-8 bg-teal-200 hover:bg-teal-100'
-          )}>
-          clear
-        </button>
-        <button
-          onClick={async () => {
-            const content = selectedWords
-              .map((w) => `${w.origin}\t${w.translation}`)
-              .join('\r')
-            copyToClipboard(content, () => console.log('Copied: ', content))
-          }}
-          className={cn(
-            'absolute right-2 -top-5',
-            'rounded-full py-1 px-8 bg-teal-200 hover:bg-teal-100'
-          )}>
-          copy {selectedWords.length || ''}
-        </button>
+            <button
+              onClick={() => setIsVocVisible(false)}
+              className={cn(
+                'absolute left-2 -top-5',
+                'rounded-full py-1 px-8 bg-teal-200 hover:bg-teal-100'
+              )}>
+              go back
+            </button>
+          </>
+        ) : (
+          <>
+            <div className="flex flex-col gap-2 h-full overflow-y-auto py-8 px-3 pt-0">
+              {selectedWords.map((word) => (
+                <WordItem
+                  key={word.origin}
+                  word={word}
+                  onClick={() => {
+                    setSelected(word)
+                    setIsVocVisible(true)
+                  }}
+                  isSelected={word.origin === selected?.origin}
+                  onDelete={() =>
+                    setSelectedWords(selectedWords.filter((w) => w !== word))
+                  }
+                />
+              ))}
+            </div>
+            <button
+              onClick={() => setSelectedWords([])}
+              className={cn(
+                'absolute left-2 -top-5',
+                'rounded-full py-1 px-8 bg-teal-200 hover:bg-teal-100'
+              )}>
+              clear
+            </button>
+            <button
+              onClick={async () => {
+                const content = selectedWords
+                  .reverse()
+                  .map((w) => `${w.origin}\t${w.translation}`)
+                  .join('\r')
+                copyToClipboard(content, () => console.log('Copied: ', content))
+              }}
+              className={cn(
+                'absolute right-2 -top-5',
+                'rounded-full py-1 px-8 bg-teal-200 hover:bg-teal-100'
+              )}>
+              copy {selectedWords.length || ''}
+            </button>
+          </>
+        )}
       </div>
     </div>
   )
@@ -149,8 +189,9 @@ const SelectedVocabularies: React.FC<{
 const WordItem: React.FC<{
   word: TranslationItem
   isSelected: boolean
+  onClick: () => void
   onDelete: () => void
-}> = ({ word, isSelected, onDelete }) => {
+}> = ({ word, isSelected, onDelete, onClick }) => {
   const ref = useRef<HTMLDivElement | null>(null)
   useEffect(() => {
     if (isSelected) {
@@ -165,13 +206,7 @@ const WordItem: React.FC<{
   return (
     <div
       ref={ref}
-      onClick={() => {
-        if (!word.audioUrl) return
-        const isSentence = (word.origin.split(' ').length || 0) >= 10
-        if (isSentence) return
-        const audio = new Audio(word.audioUrl)
-        audio.play()
-      }}
+      onClick={onClick}
       className={cn(
         'flex flex-col justify-center py-1 px-4 bg-teal-50 rounded-2xl hover:bg-teal-200 cursor-pointer whitespace-pre-wrap relative group',
         isSelected && 'bg-teal-200'

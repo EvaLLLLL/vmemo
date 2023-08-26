@@ -5,6 +5,7 @@ export type TranslationItem = {
   origin: string
   translation: string
   audioUrl?: string
+  mTerminalDictUtl?: string | undefined
 }
 
 export const translate = async (word: string): Promise<TranslationItem> => {
@@ -42,7 +43,8 @@ export const translate = async (word: string): Promise<TranslationItem> => {
     audioUrl:
       result?.basic?.['us-speech'] ||
       result?.basic?.['uk-speech'] ||
-      result?.speakUrl
+      result?.speakUrl,
+    mTerminalDictUtl: result?.mTerminalDict?.url || result?.webdict?.url
   }
 }
 
