@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: vmemo
+      POSTGRES_PASSWORD: vmemo
+      POSTGRES_DB: vmemo
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:

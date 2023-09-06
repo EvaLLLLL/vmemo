@@ -1,14 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import cn from '@/utils/cn'
-import { redirect } from 'next/navigation'
 
 const mockExcelList = ['a.excel', 'b.excel', 'c.excel']
 const wordList = Array(20).fill('funny')
 
 export default function Home() {
-  redirect('/reading')
   const [selectedList, setSelectedList] = useState(mockExcelList[0])
 
   const onClickMenuItem = (i: string) => setSelectedList(i)

@@ -4,6 +4,7 @@ import cn from '@/utils/cn'
 import { useEffect, useRef, useState } from 'react'
 import { translate, TranslationItem } from '@/utils/translate'
 import { copyToClipboard } from '@/utils/copy'
+import { WordItem } from '@/components/WordItem'
 
 export default function Reading() {
   const [selectedWords, setSelectedWords] = useState<TranslationItem[]>([])
@@ -121,6 +122,15 @@ const SelectedVocabularies: React.FC<{
   isVocVisible,
   setIsVocVisible
 }) => {
+  const saveWords = async () => {
+    await fetch(process.env.NEXT_PUBLIC_API + '/api/vocabulary/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(selectedWords)
+    })
+  }
   return (
     <div className="p-8 w-2/5 bg-slate-200">
       <div className="relative h-full pt-6">
@@ -157,69 +167,33 @@ const SelectedVocabularies: React.FC<{
                 />
               ))}
             </div>
-            <button
-              onClick={() => setSelectedWords([])}
-              className={cn(
-                'absolute left-2 -top-5',
-                'rounded-full py-1 px-8 bg-teal-200 hover:bg-teal-100'
-              )}>
-              clear
-            </button>
-            <button
-              onClick={async () => {
-                const content = selectedWords
-                  .reverse()
-                  .map((w) => `${w.origin}\t${w.translation}`)
-                  .join('\r')
-                copyToClipboard(content, () => console.log('Copied: ', content))
-              }}
-              className={cn(
-                'absolute right-2 -top-5',
-                'rounded-full py-1 px-8 bg-teal-200 hover:bg-teal-100'
-              )}>
-              copy {selectedWords.length || ''}
-            </button>
+            <div className="w-full absolute -top-5 flex items-center justify-between">
+              <button
+                onClick={() => setSelectedWords([])}
+                className="rounded-full py-1 px-4 bg-teal-200 hover:bg-teal-100">
+                clear
+              </button>
+              <button
+                onClick={saveWords}
+                className="rounded-full py-1 px-4 bg-teal-200 hover:bg-teal-100">
+                save
+              </button>
+              <button
+                onClick={async () => {
+                  const content = selectedWords
+                    .reverse()
+                    .map((w) => `${w.origin}\t${w.translation}`)
+                    .join('\r')
+                  copyToClipboard(content, () =>
+                    console.log('Copied: ', content)
+                  )
+                }}
+                className="rounded-full py-1 px-4 bg-teal-200 hover:bg-teal-100">
+                copy {selectedWords.length || ''}
+              </button>
+            </div>
           </>
         )}
-      </div>
-    </div>
-  )
-}
-
-const WordItem: React.FC<{
-  word: TranslationItem
-  isSelected: boolean
-  onClick: () => void
-  onDelete: () => void
-}> = ({ word, isSelected, onDelete, onClick }) => {
-  const ref = useRef<HTMLDivElement | null>(null)
-  useEffect(() => {
-    if (isSelected) {
-      ref?.current?.scrollIntoView({
-        block: 'center',
-        inline: 'nearest',
-        behavior: 'smooth'
-      })
-    }
-  }, [isSelected])
-
-  return (
-    <div
-      ref={ref}
-      onClick={onClick}
-      className={cn(
-        'flex flex-col justify-center py-1 px-4 bg-teal-50 rounded-2xl hover:bg-teal-200 cursor-pointer whitespace-pre-wrap relative group',
-        isSelected && 'bg-teal-200'
-      )}>
-      <div className="font-semibold">{word.origin}</div>
-      <div>{word.translation}</div>
-      <div
-        className="absolute right-2 rounded-full p-1 bg-slate-200 h-6 w-6 invisible group-hover:visible hover:bg-slate-300 text-gray-400 flex items-center justify-center"
-        onClick={(e) => {
-          e?.stopPropagation()
-          onDelete()
-        }}>
-        x
       </div>
     </div>
   )
