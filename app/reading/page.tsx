@@ -7,6 +7,7 @@ import { copyToClipboard } from '@/utils/copy'
 import { WordItem } from '@/components/WordItem'
 
 export default function Reading() {
+  const [isAutoSpeak, setIsAutoSpeak] = useState(true)
   const [selectedWords, setSelectedWords] = useState<TranslationItem[]>([])
   const [selected, setSelected] = useState<TranslationItem | undefined>(
     selectedWords[0]
@@ -25,7 +26,7 @@ export default function Reading() {
 
     const isSentence = (word?.split(' ').length || 0) >= 10
 
-    if (storedWord?.audioUrl && !isSentence) {
+    if (storedWord?.audioUrl && !isSentence && isAutoSpeak) {
       const audioPlayer = new Audio(storedWord.audioUrl)
       audioPlayer.play()
     }
@@ -38,7 +39,7 @@ export default function Reading() {
 
     setSelectedWords([result, ...selectedWords])
 
-    if (result?.audioUrl && !isSentence) {
+    if (result?.audioUrl && !isSentence && isAutoSpeak) {
       const audioPlayer = new Audio(result.audioUrl)
       audioPlayer.play()
     }
@@ -46,7 +47,11 @@ export default function Reading() {
   return (
     <div className="flex justify-center align-center flex-1 py-8 px-16 overflow-hidden">
       <div className="h-full w-full flex overflow-hidden rounded-3xl">
-        <ReadingText onSelectWord={onSelectWord} />
+        <ReadingText
+          onSelectWord={onSelectWord}
+          isAutoSpeak={isAutoSpeak}
+          setIsAutoSpeak={setIsAutoSpeak}
+        />
         <SelectedVocabularies
           selected={selected}
           setSelected={setSelected}
@@ -61,8 +66,10 @@ export default function Reading() {
 }
 
 const ReadingText: React.FC<{
+  isAutoSpeak: boolean
+  setIsAutoSpeak: (v: boolean) => void
   onSelectWord: (word?: string) => void
-}> = ({ onSelectWord }) => {
+}> = ({ onSelectWord, isAutoSpeak, setIsAutoSpeak }) => {
   const [isEdit, setIsEdit] = useState(true)
   const [textContent, setTextContent] = useState('')
   return (
@@ -93,14 +100,21 @@ const ReadingText: React.FC<{
             }}>
             {textContent}
           </div>
-          <button
-            onClick={() => setIsEdit((pre) => !pre)}
-            className={cn(
-              'absolute left-2 -top-5',
-              'rounded-full py-1 px-8 bg-orange-200 hover:bg-orange-100'
-            )}>
-            edit
-          </button>
+          <div className="absolute w-full -top-5 flex items-center justify-between">
+            <button
+              onClick={() => setIsEdit((pre) => !pre)}
+              className="rounded-full py-1 px-8 bg-orange-200 hover:bg-orange-100">
+              edit
+            </button>
+            <button
+              onClick={() => setIsAutoSpeak(!isAutoSpeak)}
+              className={cn(
+                'rounded-full py-1 px-8 bg-orange-200 hover:bg-orange-100',
+                isAutoSpeak && 'bg-teal-200 hover:bg-teal-100'
+              )}>
+              auto speak
+            </button>
+          </div>
         </div>
       )}
     </div>
