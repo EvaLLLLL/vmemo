@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
     })
     return new NextResponse(JSON.stringify(ecDict))
   } catch (e) {
-    console.log(e)
+    console.error(e)
     return new NextResponse(JSON.stringify({ message: 'something went wrong' }))
   }
 }
