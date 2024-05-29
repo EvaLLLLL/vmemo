@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 import { translate, TranslationItem } from '@/utils/translate'
 import { copyToClipboard } from '@/utils/copy'
 import { WordItem } from '@/components/WordItem'
+import { suggest } from '@/utils/suggest'
 
 export default function Reading() {
   const [isAutoSpeak, setIsAutoSpeak] = useState(true)
@@ -17,6 +18,8 @@ export default function Reading() {
   useEffect(() => {
     if (selectedWords[0]?.origin) setSelected(selectedWords[0])
   }, [selectedWords])
+
+  suggest('amphibian')
 
   const onSelectWord = async (word?: string) => {
     const formattedWord = word?.trim()
