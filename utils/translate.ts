@@ -1,14 +1,14 @@
 import jquery from 'jquery'
 import CryptoJS from 'crypto-js'
 
-export type TranslationItem = {
+export type YdTranslationItem = {
   origin: string
   translation: string
   audioUrl?: string
   mTerminalDictUtl?: string | undefined
 }
 
-export const translate = async (word: string): Promise<TranslationItem> => {
+export const ydTranslate = async (word: string): Promise<YdTranslationItem> => {
   const appKey = process.env.NEXT_PUBLIC_YUDAO_APPKEY
   const key = process.env.NEXT_PUBLIC_YUDAO_KEY
   const salt = new Date().getTime()

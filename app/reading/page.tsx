@@ -1,16 +1,15 @@
 'use client'
 
 import cn from '@/utils/cn'
-import { useEffect, useRef, useState } from 'react'
-import { translate, TranslationItem } from '@/utils/translate'
+import { useEffect, useState } from 'react'
+import { ydTranslate, YdTranslationItem } from '@/utils/translate'
 import { copyToClipboard } from '@/utils/copy'
 import { WordItem } from '@/components/WordItem'
-import { suggest } from '@/utils/suggest'
 
 export default function Reading() {
   const [isAutoSpeak, setIsAutoSpeak] = useState(true)
-  const [selectedWords, setSelectedWords] = useState<TranslationItem[]>([])
-  const [selected, setSelected] = useState<TranslationItem | undefined>(
+  const [selectedWords, setSelectedWords] = useState<YdTranslationItem[]>([])
+  const [selected, setSelected] = useState<YdTranslationItem | undefined>(
     selectedWords[0]
   )
   const [isVocVisible, setIsVocVisible] = useState(false)
@@ -18,8 +17,6 @@ export default function Reading() {
   useEffect(() => {
     if (selectedWords[0]?.origin) setSelected(selectedWords[0])
   }, [selectedWords])
-
-  suggest('amphibian')
 
   const onSelectWord = async (word?: string) => {
     const formattedWord = word?.trim()
@@ -38,7 +35,7 @@ export default function Reading() {
 
     if (!formattedWord || !!storedWord) return
 
-    const result = await translate(formattedWord)
+    const result = await ydTranslate(formattedWord)
 
     setSelectedWords([result, ...selectedWords])
 
@@ -125,10 +122,10 @@ const ReadingText: React.FC<{
 }
 
 const SelectedVocabularies: React.FC<{
-  selected?: TranslationItem
-  setSelected: (v: TranslationItem) => void
-  selectedWords: TranslationItem[]
-  setSelectedWords: (words: TranslationItem[]) => void
+  selected?: YdTranslationItem
+  setSelected: (v: YdTranslationItem) => void
+  selectedWords: YdTranslationItem[]
+  setSelectedWords: (words: YdTranslationItem[]) => void
   isVocVisible: boolean
   setIsVocVisible: (v: boolean) => void
 }> = ({
