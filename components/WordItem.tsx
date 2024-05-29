@@ -27,7 +27,7 @@ export const WordItem: React.FC<{
       onClick={
         onClick ??
         function () {
-          const audioPlayer = new Audio(word.audioUrl)
+          const audioPlayer = new Audio(word.audio)
           audioPlayer.play()
         }
       }

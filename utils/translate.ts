@@ -1,14 +1,14 @@
 import jquery from 'jquery'
 import CryptoJS from 'crypto-js'
 
-export type YdTranslationItem = {
+export interface TranslationItem {
   origin: string
   translation: string
-  audioUrl?: string
-  mTerminalDictUtl?: string | undefined
+  audio?: string
+  isSentence?: boolean
 }
 
-export const ydTranslate = async (word: string): Promise<YdTranslationItem> => {
+export const ydTranslate = async (word: string): Promise<TranslationItem> => {
   const appKey = process.env.NEXT_PUBLIC_YUDAO_APPKEY
   const key = process.env.NEXT_PUBLIC_YUDAO_KEY
   const salt = new Date().getTime()
@@ -40,11 +40,10 @@ export const ydTranslate = async (word: string): Promise<YdTranslationItem> => {
     origin: word,
     translation:
       result?.basic?.explains?.join('; ') || result?.translation?.[0],
-    audioUrl:
+    audio:
       result?.basic?.['us-speech'] ||
       result?.basic?.['uk-speech'] ||
       result?.speakUrl,
-    mTerminalDictUtl: result?.mTerminalDict?.url || result?.webdict?.url
   }
 }
 
@@ -52,4 +51,23 @@ function truncate(q: string) {
   var len = q.length
   if (len <= 20) return q
   return q.substring(0, 10) + len + q.substring(len - 10, len)
+}
+
+export async function ecdictTranslate(word: string) {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_API + `/api/ecdict?word=${word}`,
+    {
+      method: 'GET',
+      cache: 'no-cache',
+      headers: { 'Content-Type': 'application/json' },
+      next: { revalidate: 0 }
+    }
+  )
+
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error('Failed to fetch data')
+  }
+
+  return res.json()
 }

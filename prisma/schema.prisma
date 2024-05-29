@@ -22,3 +22,19 @@ model Vocabulary {
   mTerminalDictUtl String?
   createdAt        DateTime @default(now()) @db.Timestamp(6)
 }
+
+model Ecdict {
+  word        String @unique @db.Text
+  phonetic    String? @db.Text
+  definition  String? @db.Text
+  translation String? @db.Text
+  pos         String? @db.Text
+  collins     String? @db.Text
+  oxford      String? @db.Text
+  tag         String? @db.Text
+  bnc         String? @db.Text
+  frq         String? @db.Text
+  exchange    String? @db.Text
+  detail      String? @db.Text
+  audio       String? @db.Text
+}
