@@ -44,7 +44,7 @@ export default function Reading() {
       origin: formattedWord,
       audio: ydRes.audio || ecdictRes.audio,
       translation:
-        ecdictRes.translation?.replaceAll(/\\n/g, '; ') || ydRes.translation
+        ecdictRes?.translation?.replaceAll(/\\n/g, '; ') || ydRes.translation
     }
 
     setSelectedWords([result, ...selectedWords])
@@ -89,6 +89,13 @@ const ReadingText: React.FC<{
             className="border-2 border-orange-200 rounded-3xl h-full w-full focus:outline-orange-300 bg-transparent break-words resize-none p-8 pb-20 caret-orange-300"
             value={textContent}
             onChange={(e) => setTextContent(e.target.value)}
+            onSelect={() => {
+              const words = window?.getSelection()?.toString() 
+              const isSentence = (words?.split(' ').length || 0) >= 10
+              if (!!words && !isSentence) {
+                onSelectWord(words)
+              }
+            }}
           />
           <button
             onClick={() => textContent && setIsEdit(false)}
