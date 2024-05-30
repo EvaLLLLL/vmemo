@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic'
-
 // import Navigations from '@/components/Navigations'
 import './globals.css'
 import type { Metadata } from 'next'

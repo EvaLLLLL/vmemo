@@ -4,7 +4,6 @@ import cn from '@/utils/cn'
 import { useEffect, useState } from 'react'
 import {
   ydTranslate,
-  ecdictTranslate,
   TranslationItem
 } from '@/utils/translate'
 import { copyToClipboard } from '@/utils/copy'
@@ -37,7 +36,7 @@ export default function Reading() {
     if (!formattedWord || !!storedWord) return
 
     const ydRes = await ydTranslate(formattedWord)
-    const ecdictRes = await ecdictTranslate(formattedWord)
+    const ecdictRes = await getData(formattedWord)
 
     const result = {
       isSentence,
@@ -200,4 +199,23 @@ const SelectedVocabularies: React.FC<{
       </div>
     </div>
   )
+}
+
+async function getData(word: string) {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_API + `/api/ecdict?word=${word}`,
+    {
+      method: 'GET',
+      cache: 'no-cache',
+      headers: { 'Content-Type': 'application/json' },
+      next: { revalidate: 0 }
+    }
+  )
+
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error('Failed to fetch data')
+  }
+
+  return res.json()
 }
