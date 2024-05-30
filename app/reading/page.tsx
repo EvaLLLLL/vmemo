@@ -2,10 +2,7 @@
 
 import cn from '@/utils/cn'
 import { useEffect, useState } from 'react'
-import {
-  ydTranslate,
-  TranslationItem
-} from '@/utils/translate'
+import { ydTranslate, TranslationItem } from '@/utils/translate'
 import { copyToClipboard } from '@/utils/copy'
 import { WordItem } from '@/components/WordItem'
 
@@ -81,57 +78,53 @@ const ReadingText: React.FC<{
   const [isEdit, setIsEdit] = useState(true)
   const [textContent, setTextContent] = useState('')
   return (
-    <div className="w-3/5 bg-slate-100 h-full p-8 break-words flex">
-      {isEdit ? (
-        <div className="h-full w-full relative">
-          <textarea
-            className="border-2 border-orange-200 rounded-3xl h-full w-full focus:outline-orange-300 bg-transparent break-words resize-none p-8 pb-20 caret-orange-300"
-            value={textContent}
-            onChange={(e) => setTextContent(e.target.value)}
-            onSelect={() => {
-              const words = window?.getSelection()?.toString() 
-              const isSentence = (words?.split(' ').length || 0) >= 10
-              if (!!words && !isSentence) {
-                onSelectWord(words)
-              }
-            }}
-          />
+    <div className="w-3/5 bg-slate-100 h-full p-8 break-words">
+      <div className="relative pt-6 h-full">
+        <div className="w-full absolute flex items-center justify-between -top-5">
           <button
-            onClick={() => textContent && setIsEdit(false)}
+            onClick={() => setIsEdit(true)}
             className={cn(
-              'absolute bottom-2 left-1/2 -translate-x-1/2 w-3/4',
-              'rounded-full bg-orange-200 hover:bg-orange-100 py-1 px-8',
-              !textContent && 'bg-orange-100 cursor-not-allowed text-gray-500'
+              'rounded-full py-1 px-8 bg-orange-200 hover:bg-orange-100',
+              isEdit && 'bg-teal-200 hover:bg-teal-100'
             )}>
-            start
+            edit
+          </button>
+          <button
+            onClick={() => setIsAutoSpeak(!isAutoSpeak)}
+            className={cn(
+              'rounded-full py-1 px-8 bg-orange-200 hover:bg-orange-100',
+              isAutoSpeak && 'bg-teal-200 hover:bg-teal-100'
+            )}>
+            auto speak
           </button>
         </div>
-      ) : (
-        <div className="w-full h-full relative pt-6">
+        {isEdit ? (
+          <div className="h-full w-full relative">
+            <textarea
+              className="outline-2 outline-orange-300 rounded-3xl h-full w-full focus:outline-orange-300 bg-transparent break-words resize-none p-8 pb-20 caret-orange-300"
+              value={textContent}
+              onChange={(e) => setTextContent(e.target.value)}
+            />
+            <button
+              onClick={() => textContent && setIsEdit(false)}
+              className={cn(
+                'absolute bottom-2 left-1/2 -translate-x-1/2 w-3/4',
+                'rounded-full bg-orange-200 hover:bg-orange-100 py-1 px-8',
+                !textContent && 'bg-orange-100 cursor-not-allowed text-gray-500'
+              )}>
+              start
+            </button>
+          </div>
+        ) : (
           <div
-            className="h-full w-full overflow-y-auto break-words p-8 whitespace-pre-wrap selection:bg-teal-200 pt-0"
+            className="h-full w-full overflow-y-auto break-words p-8 pb-20 whitespace-pre-wrap selection:bg-teal-200 outline-2 outline-transparent"
             onMouseUp={() => {
               onSelectWord(window?.getSelection()?.toString())
             }}>
             {textContent}
           </div>
-          <div className="absolute w-full -top-5 flex items-center justify-between">
-            <button
-              onClick={() => setIsEdit((pre) => !pre)}
-              className="rounded-full py-1 px-8 bg-orange-200 hover:bg-orange-100">
-              edit
-            </button>
-            <button
-              onClick={() => setIsAutoSpeak(!isAutoSpeak)}
-              className={cn(
-                'rounded-full py-1 px-8 bg-orange-200 hover:bg-orange-100',
-                isAutoSpeak && 'bg-teal-200 hover:bg-teal-100'
-              )}>
-              auto speak
-            </button>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }
