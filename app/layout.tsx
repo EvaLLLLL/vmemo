@@ -10,7 +10,7 @@ const openSans = Open_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'VMEMO',
+  title: 'Vmemo',
   description: 'Learn English efficiently.'
 }
 
