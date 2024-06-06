@@ -51,21 +51,85 @@ export default function Reading() {
     }
   }
 
+  const [tab, setTab] = useState<'reading' | 'dict'>('dict')
+
   return (
-    <div className="flex justify-center align-center flex-1 py-8 px-16 overflow-hidden">
-      <div className="h-full w-full flex overflow-hidden rounded-3xl">
-        <ReadingText
-          onSelectWord={onSelectWord}
-          isAutoSpeak={isAutoSpeak}
-          setIsAutoSpeak={setIsAutoSpeak}
-        />
+    <div className="flex flex-col justify-center align-center flex-1 py-8 px-16 overflow-hidden">
+      <div className="flex items-center gap-x-4 justify-center p-4">
+        <button
+          className={cn(
+            'py-2 px-4 bg-orange-100 rounded',
+            tab === 'reading' && 'bg-teal-200'
+          )}
+          onClick={() => setTab('reading')}>
+          reading
+        </button>
+        <button
+          className={cn(
+            'py-2 px-4 bg-orange-100 rounded',
+            tab === 'dict' && 'bg-teal-200'
+          )}
+          onClick={() => setTab('dict')}>
+          dict
+        </button>
+      </div>
+      <div
+        className={cn(
+          'h-full w-full flex overflow-hidden rounded-3xl',
+          tab === 'dict' && 'flex-col'
+        )}>
+        {tab === 'reading' ? (
+          <ReadingText
+            onSelectWord={onSelectWord}
+            isAutoSpeak={isAutoSpeak}
+            setIsAutoSpeak={setIsAutoSpeak}
+          />
+        ) : (
+          <SearchDict
+            onSelectWord={onSelectWord}
+            isAutoSpeak={isAutoSpeak}
+            setIsAutoSpeak={setIsAutoSpeak}
+          />
+        )}
         <SelectedVocabularies
+          isDict={tab === 'dict'}
           selected={selected}
           setSelected={setSelected}
           selectedWords={selectedWords}
           setSelectedWords={setSelectedWords}
         />
       </div>
+    </div>
+  )
+}
+
+const SearchDict: React.FC<{
+  isAutoSpeak: boolean
+  setIsAutoSpeak: (v: boolean) => void
+  onSelectWord: (word?: string) => void
+}> = ({ onSelectWord, isAutoSpeak, setIsAutoSpeak }) => {
+  const [value, setValue] = useState('')
+  const onEnter = () => {
+    onSelectWord(value)
+    setValue('')
+  }
+
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 px-10 max-h-28 gap-y-2 flex-shrink-0">
+      <button
+        onClick={() => setIsAutoSpeak(!isAutoSpeak)}
+        className={cn(
+          'rounded-full py-1 px-8 bg-orange-200 hover:bg-orange-100',
+          isAutoSpeak && 'bg-teal-200 hover:bg-teal-100'
+        )}>
+        auto speak
+      </button>
+      <input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={(e) => e.code === 'Enter' && onEnter()}
+        className="w-full bg-stale-100 px-2 py-1 border-2 outline-none border-orange-100 focus:border-teal-400 transition-all duration-200"
+      />
     </div>
   )
 }
@@ -130,11 +194,12 @@ const ReadingText: React.FC<{
 }
 
 const SelectedVocabularies: React.FC<{
+  isDict: boolean
   selected?: TranslationItem
   setSelected: (v: TranslationItem) => void
   selectedWords: TranslationItem[]
   setSelectedWords: (words: TranslationItem[]) => void
-}> = ({ selectedWords, selected, setSelected, setSelectedWords }) => {
+}> = ({ selectedWords, isDict, selected, setSelected, setSelectedWords }) => {
   // const saveWords = async () => {
   //   await fetch(process.env.NEXT_PUBLIC_API + '/api/vocabulary/save', {
   //     method: 'POST',
@@ -145,7 +210,11 @@ const SelectedVocabularies: React.FC<{
   //   })
   // }
   return (
-    <div className="p-8 w-2/5 bg-slate-200">
+    <div
+      className={cn(
+        'p-8 w-2/5 bg-slate-200',
+        isDict && 'w-full flex-1 overflow-hidden'
+      )}>
       <div className="relative h-full pt-6">
         <div className="flex flex-col gap-2 h-full overflow-y-auto py-8 px-3 pt-0">
           {selectedWords.map((word, index) => (
