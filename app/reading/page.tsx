@@ -7,7 +7,7 @@ import { copyToClipboard } from '@/utils/copy'
 import { WordItem } from '@/components/WordItem'
 
 export default function Reading() {
-  const [isAutoSpeak, setIsAutoSpeak] = useState(true)
+  const [isAutoSpeak, setIsAutoSpeak] = useState(false)
   const [selectedWords, setSelectedWords] = useState<TranslationItem[]>([])
   const [selected, setSelected] = useState<TranslationItem | undefined>(
     selectedWords[0]
@@ -54,28 +54,33 @@ export default function Reading() {
   const [tab, setTab] = useState<'reading' | 'dict'>('dict')
 
   return (
-    <div className="flex flex-col justify-center align-center flex-1 py-8 px-16 overflow-hidden">
-      <div className="flex items-center gap-x-4 justify-center p-4">
+    <div className="flex flex-col justify-center align-center flex-1 overflow-hidden">
+      <div className="grid grid-cols-2 mb-1">
         <button
           className={cn(
-            'py-2 px-4 bg-orange-100 rounded',
-            tab === 'reading' && 'bg-teal-200'
+            'py-2 px-4 bg-gray-200',
+            tab === 'reading' && 'bg-teal-200',
+            tab !== 'reading' && 'hover:bg-slate-300'
           )}
           onClick={() => setTab('reading')}>
           reading
         </button>
         <button
           className={cn(
-            'py-2 px-4 bg-orange-100 rounded',
-            tab === 'dict' && 'bg-teal-200'
+            'py-2 px-4 bg-gray-200',
+            tab === 'dict' && 'bg-teal-200',
+            tab !== 'dict' && 'hover:bg-slate-300'
           )}
-          onClick={() => setTab('dict')}>
+          onClick={() => {
+            setTab('dict')
+            setIsAutoSpeak(false)
+          }}>
           dict
         </button>
       </div>
       <div
         className={cn(
-          'h-full w-full flex overflow-hidden rounded-3xl',
+          'h-full w-full flex overflow-hidden',
           tab === 'dict' && 'flex-col'
         )}>
         {tab === 'reading' ? (
@@ -115,20 +120,20 @@ const SearchDict: React.FC<{
   }
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 px-10 max-h-28 gap-y-2 flex-shrink-0">
-      <button
+    <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 px-4 max-h-16 gap-y-2 flex-shrink-0">
+      {/* <button
         onClick={() => setIsAutoSpeak(!isAutoSpeak)}
         className={cn(
           'rounded-full py-1 px-8 bg-orange-200 hover:bg-orange-100',
           isAutoSpeak && 'bg-teal-200 hover:bg-teal-100'
         )}>
         auto speak
-      </button>
+      </button> */}
       <input
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => e.code === 'Enter' && onEnter()}
-        className="w-full bg-stale-100 px-2 py-1 border-2 outline-none border-orange-100 focus:border-teal-400 transition-all duration-200"
+        className="w-full bg-stale-100 px-2 py-1 border-2 outline-none border-orange-100 focus:border-teal-400 transition-colors duration-200 rounded"
       />
     </div>
   )
@@ -165,7 +170,7 @@ const ReadingText: React.FC<{
         {isEdit ? (
           <div className="h-full w-full relative">
             <textarea
-              className="outline-2 outline-orange-300 rounded-3xl h-full w-full focus:outline-orange-300 bg-transparent break-words resize-none p-8 pb-20 caret-orange-300"
+              className="outline-none border-2 border-orange-100 rounded h-full w-full focus:border-teal-400 bg-transparent break-words resize-none p-8 pb-20 transition-colors duration-200"
               value={textContent}
               onChange={(e) => setTextContent(e.target.value)}
             />
@@ -212,11 +217,11 @@ const SelectedVocabularies: React.FC<{
   return (
     <div
       className={cn(
-        'p-8 w-2/5 bg-slate-200',
+        'px-8 pt-8 pb-4 w-2/5 bg-slate-200',
         isDict && 'w-full flex-1 overflow-hidden'
       )}>
       <div className="relative h-full pt-6">
-        <div className="flex flex-col gap-2 h-full overflow-y-auto py-8 px-3 pt-0">
+        <div className="flex flex-col gap-2 h-full overflow-y-auto">
           {selectedWords.map((word, index) => (
             <WordItem
               key={`${word.origin}-${index}`}
