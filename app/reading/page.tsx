@@ -71,10 +71,7 @@ export default function Reading() {
             tab === 'dict' && 'bg-teal-200',
             tab !== 'dict' && 'hover:bg-slate-300'
           )}
-          onClick={() => {
-            setTab('dict')
-            setIsAutoSpeak(false)
-          }}>
+          onClick={() => setTab('dict')}>
           dict
         </button>
       </div>
@@ -90,11 +87,7 @@ export default function Reading() {
             setIsAutoSpeak={setIsAutoSpeak}
           />
         ) : (
-          <SearchDict
-            onSelectWord={onSelectWord}
-            isAutoSpeak={isAutoSpeak}
-            setIsAutoSpeak={setIsAutoSpeak}
-          />
+          <SearchDict onSelectWord={onSelectWord} />
         )}
         <SelectedVocabularies
           isDict={tab === 'dict'}
@@ -109,10 +102,8 @@ export default function Reading() {
 }
 
 const SearchDict: React.FC<{
-  isAutoSpeak: boolean
-  setIsAutoSpeak: (v: boolean) => void
   onSelectWord: (word?: string) => void
-}> = ({ onSelectWord, isAutoSpeak, setIsAutoSpeak }) => {
+}> = ({ onSelectWord }) => {
   const [value, setValue] = useState('')
   const onEnter = () => {
     onSelectWord(value)
@@ -121,15 +112,8 @@ const SearchDict: React.FC<{
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 px-4 max-h-16 gap-y-2 flex-shrink-0">
-      {/* <button
-        onClick={() => setIsAutoSpeak(!isAutoSpeak)}
-        className={cn(
-          'rounded-full py-1 px-8 bg-orange-200 hover:bg-orange-100',
-          isAutoSpeak && 'bg-teal-200 hover:bg-teal-100'
-        )}>
-        auto speak
-      </button> */}
       <input
+        tabIndex={0}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => e.code === 'Enter' && onEnter()}
