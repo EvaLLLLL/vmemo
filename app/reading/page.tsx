@@ -1,7 +1,7 @@
 'use client'
 
 import cn from '@/utils/cn'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ydTranslate, TranslationItem } from '@/utils/translate'
 import { copyToClipboard } from '@/utils/copy'
 import { WordItem } from '@/components/WordItem'
@@ -16,6 +16,28 @@ export default function Reading() {
   useEffect(() => {
     if (selectedWords[0]?.origin) setSelected(selectedWords[0])
   }, [selectedWords])
+
+  const copyContent = useMemo(() => {
+    return selectedWords
+      .reverse()
+      .map((w) => `${w.origin}\t${w.translation}`)
+      .join('\r')
+  }, [selectedWords])
+
+  useEffect(() => {
+    function handleKeydown(event: KeyboardEvent) {
+      if (event.key.toLowerCase() === 'c') {
+        copyToClipboard(copyContent, () => console.log('Copied: ', copyContent))
+      }
+      if (event.key.toLowerCase() === 'k') {
+        setSelectedWords([])
+      }
+    }
+
+    document.addEventListener('keydown', handleKeydown)
+
+    return document.removeEventListener('keydown', handleKeydown)
+  }, [copyContent])
 
   const onSelectWord = async (word?: string) => {
     const formattedWord = word?.trim()
@@ -113,6 +135,7 @@ const SearchDict: React.FC<{
   return (
     <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 px-4 max-h-16 gap-y-2 flex-shrink-0">
       <input
+        autoFocus
         tabIndex={0}
         value={value}
         onChange={(e) => setValue(e.target.value)}
@@ -154,6 +177,8 @@ const ReadingText: React.FC<{
         {isEdit ? (
           <div className="h-full w-full relative">
             <textarea
+              tabIndex={0}
+              autoFocus
               className="outline-none border-2 border-orange-100 rounded h-full w-full focus:border-teal-400 bg-transparent break-words resize-none p-8 pb-20 transition-colors duration-200"
               value={textContent}
               onChange={(e) => setTextContent(e.target.value)}
