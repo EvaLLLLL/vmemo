@@ -17,28 +17,6 @@ export default function Reading() {
     if (selectedWords[0]?.origin) setSelected(selectedWords[0])
   }, [selectedWords])
 
-  const copyContent = useMemo(() => {
-    return selectedWords
-      .reverse()
-      .map((w) => `${w.origin}\t${w.translation}`)
-      .join('\r')
-  }, [selectedWords])
-
-  useEffect(() => {
-    function handleKeydown(event: KeyboardEvent) {
-      if (event.key.toLowerCase() === 'c') {
-        copyToClipboard(copyContent, () => console.log('Copied: ', copyContent))
-      }
-      if (event.key.toLowerCase() === 'k') {
-        setSelectedWords([])
-      }
-    }
-
-    document.addEventListener('keydown', handleKeydown)
-
-    return document.removeEventListener('keydown', handleKeydown)
-  }, [copyContent])
-
   const onSelectWord = async (word?: string) => {
     const formattedWord = word?.trim()
     const storedWord = selectedWords.find((w) => w?.origin === formattedWord)
