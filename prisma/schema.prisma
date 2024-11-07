@@ -9,9 +9,10 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  name  String? @db.VarChar(255)
-  email String  @unique @db.VarChar(255)
+  id       Int    @id @default(autoincrement())
+  name     String @unique @db.VarChar(255)
+  password String @db.VarChar(255)
+  email    String @db.VarChar(255)
 }
 
 model Vocabulary {
@@ -24,7 +25,7 @@ model Vocabulary {
 }
 
 model Ecdict {
-  word        String @unique @db.Text
+  word        String  @unique @db.Text
   phonetic    String? @db.Text
   definition  String? @db.Text
   translation String? @db.Text

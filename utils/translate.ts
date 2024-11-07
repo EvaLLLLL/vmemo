@@ -52,6 +52,7 @@ export async function ecTranslate(word: string) {
     process.env.NEXT_PUBLIC_API + `/api/ecdict?word=${word}`,
     {
       method: 'GET',
+      credentials: 'include',
       cache: 'no-cache',
       headers: { 'Content-Type': 'application/json' },
       next: { revalidate: 0 }

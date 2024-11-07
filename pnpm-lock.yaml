@@ -23,6 +23,9 @@ importers:
       autoprefixer:
         specifier: 10.4.14
         version: https://registry.npmmirror.com/autoprefixer/-/autoprefixer-10.4.14.tgz(postcss@https://registry.npmmirror.com/postcss/-/postcss-8.4.27.tgz)
+      bcryptjs:
+        specifier: ^2.4.3
+        version: 2.4.3
       classnames:
         specifier: ^2.3.2
         version: https://registry.npmmirror.com/classnames/-/classnames-2.3.2.tgz
@@ -35,6 +38,9 @@ importers:
       eslint-config-next:
         specifier: 13.4.12
         version: https://registry.npmmirror.com/eslint-config-next/-/eslint-config-next-13.4.12.tgz(eslint@https://registry.npmmirror.com/eslint/-/eslint-8.46.0.tgz)(typescript@https://registry.npmmirror.com/typescript/-/typescript-5.1.6.tgz)
+      jose:
+        specifier: ^5.9.6
+        version: 5.9.6
       jquery:
         specifier: ^3.7.0
         version: https://registry.npmmirror.com/jquery/-/jquery-3.7.0.tgz
@@ -63,6 +69,9 @@ importers:
         specifier: ^5.0.1
         version: 5.0.1(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
     devDependencies:
+      '@types/bcryptjs':
+        specifier: ^2.4.6
+        version: 2.4.6
       '@types/crypto-js':
         specifier: ^4.1.1
         version: https://registry.npmmirror.com/@types/crypto-js/-/crypto-js-4.1.1.tgz
@@ -350,6 +359,9 @@ packages:
   '@swc/helpers@0.5.1':
     resolution: {integrity: sha512-sJ902EfIzn1Fa+qYmjdQqh8tPsoxyBz+8yBKC2HKUxyezKJFwPGOn7pv4WY6QuQW//ySQi5lJjA/ZT9sNWWNTg==}
 
+  '@types/bcryptjs@2.4.6':
+    resolution: {integrity: sha512-9xlo6R2qDs5uixm0bcIqCeMCE6HiQsIyel9KQySStiyqNl2tnj2mP3DX1Nf56MD6KMenNNlBBsy3LJ7gUEQPXQ==}
+
   '@types/crypto-js@https://registry.npmmirror.com/@types/crypto-js/-/crypto-js-4.1.1.tgz':
     resolution: {integrity: sha512-BG7fQKZ689HIoc5h+6D2Dgq1fABRa0RbBWKBd9SP/MVRVXROflpm5fhwyATX5duFmbStzyzyycPB8qUYKDH3NA==, tarball: https://registry.npmmirror.com/@types/crypto-js/-/crypto-js-4.1.1.tgz}
     version: 4.1.1
@@ -542,6 +554,9 @@ packages:
   balanced-match@https://registry.npmmirror.com/balanced-match/-/balanced-match-1.0.2.tgz:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==, tarball: https://registry.npmmirror.com/balanced-match/-/balanced-match-1.0.2.tgz}
     version: 1.0.2
+
+  bcryptjs@2.4.3:
+    resolution: {integrity: sha512-V/Hy/X9Vt7f3BbPJEi8BdVFMByHi+jNXrYkW3huaybV/kQ0KJg0Y6PkEMbn+zeT+i+SiKZ/HMqJGIIt4LZDqNQ==}
 
   big-integer@https://registry.npmmirror.com/big-integer/-/big-integer-1.6.51.tgz:
     resolution: {integrity: sha512-GPEid2Y9QU1Exl1rpO9B2IPJGHPSupF5GnVIP0blYvNOMer2bTvSWs1jGOUg04hTmu67nmLsQ9TBo1puaotBHg==, tarball: https://registry.npmmirror.com/big-integer/-/big-integer-1.6.51.tgz}
@@ -1292,6 +1307,9 @@ packages:
     resolution: {integrity: sha512-oVhqoRDaBXf7sjkll95LHVS6Myyyb1zaunVwk4Z0+WPSW4gjS0pl01zYKHScTuyEhQsFxV5L4DR5r+YqSyqyyg==, tarball: https://registry.npmmirror.com/jiti/-/jiti-1.19.1.tgz}
     version: 1.19.1
     hasBin: true
+
+  jose@5.9.6:
+    resolution: {integrity: sha512-AMlnetc9+CV9asI19zHmrgS/WYsWUwCn2R7RzlbJWD7F9eWYUTGyBmU9o6PxngtLGOiDGPRu+Uc4fhKzbpteZQ==}
 
   jquery@https://registry.npmmirror.com/jquery/-/jquery-3.7.0.tgz:
     resolution: {integrity: sha512-umpJ0/k8X0MvD1ds0P9SfowREz2LenHsQaxSohMZ5OMNEU2r0tf8pdeEFTHMFxWVxKNyU9rTtK3CWzUCTKJUeQ==, tarball: https://registry.npmmirror.com/jquery/-/jquery-3.7.0.tgz}
@@ -2294,6 +2312,8 @@ snapshots:
     dependencies:
       tslib: 2.6.1
 
+  '@types/bcryptjs@2.4.6': {}
+
   '@types/crypto-js@https://registry.npmmirror.com/@types/crypto-js/-/crypto-js-4.1.1.tgz': {}
 
   '@types/jquery@https://registry.npmmirror.com/@types/jquery/-/jquery-3.5.17.tgz':
@@ -2473,6 +2493,8 @@ snapshots:
       dequal: https://registry.npmmirror.com/dequal/-/dequal-2.0.3.tgz
 
   balanced-match@https://registry.npmmirror.com/balanced-match/-/balanced-match-1.0.2.tgz: {}
+
+  bcryptjs@2.4.3: {}
 
   big-integer@https://registry.npmmirror.com/big-integer/-/big-integer-1.6.51.tgz: {}
 
@@ -3216,6 +3238,8 @@ snapshots:
   isexe@https://registry.npmmirror.com/isexe/-/isexe-2.0.0.tgz: {}
 
   jiti@https://registry.npmmirror.com/jiti/-/jiti-1.19.1.tgz: {}
+
+  jose@5.9.6: {}
 
   jquery@https://registry.npmmirror.com/jquery/-/jquery-3.7.0.tgz: {}
 

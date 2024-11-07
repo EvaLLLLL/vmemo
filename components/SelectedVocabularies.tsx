@@ -10,6 +10,7 @@ export const SelectedVocabularies: React.FC<{
     // const saveWords = async () => {
     //   await fetch(process.env.NEXT_PUBLIC_API + '/api/vocabulary/save', {
     //     method: 'POST',
+    // credentials: 'include',
     //     headers: {
     //       'Content-Type': 'application/json'
     //     },
