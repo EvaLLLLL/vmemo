@@ -19,6 +19,7 @@ const parseCSV = async (filePath) => {
 
 async function seed() {
   const data = await parseCSV('prisma/ecdict.csv')
+  await prisma.ecdict.deleteMany()
   await prisma.ecdict.createMany({
     data: data,
     skipDuplicates: true
