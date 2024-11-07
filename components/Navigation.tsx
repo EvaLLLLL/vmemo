@@ -7,9 +7,11 @@ import { usePathname } from 'next/navigation'
 export default function Navigation() {
   return (
     <div className="h-16 gap-4 flex items-center justify-center shrink-0">
-      {/* <NavigateItem label="vocabulary" path="/" />
-      <div className="h-1/2 w-0.5 bg-slate-100 rounded-full" /> */}
-      <NavigateItem label="reading" path="/reading" />
+      <NavigateItem label="reading" path="/" />
+      <div className="h-1/2 w-0.5 bg-slate-100 rounded-full" />
+      <NavigateItem label="vocabulary" path="/vocabulary" />
+      <div className="h-1/2 w-0.5 bg-slate-100 rounded-full" />
+      <NavigateItem label="dictionary" path="/ecdict" />
     </div>
   )
 }

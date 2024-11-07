@@ -47,6 +47,25 @@ export const ydTranslate = async (word: string): Promise<TranslationItem> => {
   }
 }
 
+export async function ecTranslate(word: string) {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_API + `/api/ecdict?word=${word}`,
+    {
+      method: 'GET',
+      cache: 'no-cache',
+      headers: { 'Content-Type': 'application/json' },
+      next: { revalidate: 0 }
+    }
+  )
+
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error('Failed to fetch data')
+  }
+
+  return res.json()
+}
+
 function truncate(q: string) {
   var len = q.length
   if (len <= 20) return q

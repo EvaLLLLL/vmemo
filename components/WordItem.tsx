@@ -1,5 +1,3 @@
-'use client'
-
 import cn from '@/utils/cn'
 import { TranslationItem } from '@/utils/translate'
 import { useEffect, useRef } from 'react'

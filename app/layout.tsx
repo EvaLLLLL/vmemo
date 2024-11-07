@@ -1,7 +1,8 @@
-// import Navigations from '@/components/Navigations'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Open_Sans } from 'next/font/google'
+import Navigations from '@/components/Navigation'
+
 const openSans = Open_Sans({
   weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic'],
@@ -23,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={openSans.className}>
         <div className='h-screen flex flex-col'>
-          {/* <Navigations /> */}
+          <Navigations />
           {children}
         </div>
       </body>
