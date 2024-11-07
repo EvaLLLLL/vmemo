@@ -34,6 +34,7 @@
     "@types/jquery": "^3.5.17",
     "@types/papaparse": "^5.3.14",
     "prisma": "^5.2.0",
+    "sass": "^1.80.6",
     "typescript": "5.1.6"
   }
 }

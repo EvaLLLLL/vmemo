@@ -40,7 +40,7 @@ importers:
         version: https://registry.npmmirror.com/jquery/-/jquery-3.7.0.tgz
       next:
         specifier: 13.4.13
-        version: 13.4.13(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+        version: 13.4.13(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)(sass@1.80.6)
       papaparse:
         specifier: ^5.4.1
         version: 5.4.1
@@ -75,6 +75,9 @@ importers:
       prisma:
         specifier: ^5.2.0
         version: https://registry.npmmirror.com/prisma/-/prisma-5.2.0.tgz
+      sass:
+        specifier: ^1.80.6
+        version: 1.80.6
       typescript:
         specifier: 5.1.6
         version: https://registry.npmmirror.com/typescript/-/typescript-5.1.6.tgz
@@ -234,6 +237,88 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==, tarball: https://registry.npmmirror.com/@nodelib/fs.walk/-/fs.walk-1.2.8.tgz}
     version: 1.2.8
     engines: {node: '>= 8'}
+
+  '@parcel/watcher-android-arm64@2.5.0':
+    resolution: {integrity: sha512-qlX4eS28bUcQCdribHkg/herLe+0A9RyYC+mm2PXpncit8z5b3nSqGVzMNR3CmtAOgRutiZ02eIJJgP/b1iEFQ==}
+    engines: {node: '>= 10.0.0'}
+    cpu: [arm64]
+    os: [android]
+
+  '@parcel/watcher-darwin-arm64@2.5.0':
+    resolution: {integrity: sha512-hyZ3TANnzGfLpRA2s/4U1kbw2ZI4qGxaRJbBH2DCSREFfubMswheh8TeiC1sGZ3z2jUf3s37P0BBlrD3sjVTUw==}
+    engines: {node: '>= 10.0.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@parcel/watcher-darwin-x64@2.5.0':
+    resolution: {integrity: sha512-9rhlwd78saKf18fT869/poydQK8YqlU26TMiNg7AIu7eBp9adqbJZqmdFOsbZ5cnLp5XvRo9wcFmNHgHdWaGYA==}
+    engines: {node: '>= 10.0.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@parcel/watcher-freebsd-x64@2.5.0':
+    resolution: {integrity: sha512-syvfhZzyM8kErg3VF0xpV8dixJ+RzbUaaGaeb7uDuz0D3FK97/mZ5AJQ3XNnDsXX7KkFNtyQyFrXZzQIcN49Tw==}
+    engines: {node: '>= 10.0.0'}
+    cpu: [x64]
+    os: [freebsd]
+
+  '@parcel/watcher-linux-arm-glibc@2.5.0':
+    resolution: {integrity: sha512-0VQY1K35DQET3dVYWpOaPFecqOT9dbuCfzjxoQyif1Wc574t3kOSkKevULddcR9znz1TcklCE7Ht6NIxjvTqLA==}
+    engines: {node: '>= 10.0.0'}
+    cpu: [arm]
+    os: [linux]
+
+  '@parcel/watcher-linux-arm-musl@2.5.0':
+    resolution: {integrity: sha512-6uHywSIzz8+vi2lAzFeltnYbdHsDm3iIB57d4g5oaB9vKwjb6N6dRIgZMujw4nm5r6v9/BQH0noq6DzHrqr2pA==}
+    engines: {node: '>= 10.0.0'}
+    cpu: [arm]
+    os: [linux]
+
+  '@parcel/watcher-linux-arm64-glibc@2.5.0':
+    resolution: {integrity: sha512-BfNjXwZKxBy4WibDb/LDCriWSKLz+jJRL3cM/DllnHH5QUyoiUNEp3GmL80ZqxeumoADfCCP19+qiYiC8gUBjA==}
+    engines: {node: '>= 10.0.0'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@parcel/watcher-linux-arm64-musl@2.5.0':
+    resolution: {integrity: sha512-S1qARKOphxfiBEkwLUbHjCY9BWPdWnW9j7f7Hb2jPplu8UZ3nes7zpPOW9bkLbHRvWM0WDTsjdOTUgW0xLBN1Q==}
+    engines: {node: '>= 10.0.0'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@parcel/watcher-linux-x64-glibc@2.5.0':
+    resolution: {integrity: sha512-d9AOkusyXARkFD66S6zlGXyzx5RvY+chTP9Jp0ypSTC9d4lzyRs9ovGf/80VCxjKddcUvnsGwCHWuF2EoPgWjw==}
+    engines: {node: '>= 10.0.0'}
+    cpu: [x64]
+    os: [linux]
+
+  '@parcel/watcher-linux-x64-musl@2.5.0':
+    resolution: {integrity: sha512-iqOC+GoTDoFyk/VYSFHwjHhYrk8bljW6zOhPuhi5t9ulqiYq1togGJB5e3PwYVFFfeVgc6pbz3JdQyDoBszVaA==}
+    engines: {node: '>= 10.0.0'}
+    cpu: [x64]
+    os: [linux]
+
+  '@parcel/watcher-win32-arm64@2.5.0':
+    resolution: {integrity: sha512-twtft1d+JRNkM5YbmexfcH/N4znDtjgysFaV9zvZmmJezQsKpkfLYJ+JFV3uygugK6AtIM2oADPkB2AdhBrNig==}
+    engines: {node: '>= 10.0.0'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@parcel/watcher-win32-ia32@2.5.0':
+    resolution: {integrity: sha512-+rgpsNRKwo8A53elqbbHXdOMtY/tAtTzManTWShB5Kk54N8Q9mzNWV7tV+IbGueCbcj826MfWGU3mprWtuf1TA==}
+    engines: {node: '>= 10.0.0'}
+    cpu: [ia32]
+    os: [win32]
+
+  '@parcel/watcher-win32-x64@2.5.0':
+    resolution: {integrity: sha512-lPrxve92zEHdgeff3aiu4gDOIt4u7sJYha6wbdEZDCDUhtjTsOMiaJzG5lMY4GkWH8p0fMmO2Ppq5G5XXG+DQw==}
+    engines: {node: '>= 10.0.0'}
+    cpu: [x64]
+    os: [win32]
+
+  '@parcel/watcher@2.5.0':
+    resolution: {integrity: sha512-i0GV1yJnm2n3Yq1qw6QrUrd/LI9bE8WEBOTtOkpCXHHdyN3TAGgqAK/DAT05z4fq2x04cARXt2pDmjWjL92iTQ==}
+    engines: {node: '>= 10.0.0'}
 
   '@pkgr/utils@https://registry.npmmirror.com/@pkgr/utils/-/utils-2.4.2.tgz':
     resolution: {integrity: sha512-POgTXhjrTfbTV63DiFXav4lBHiICLKKwDeaKn9Nphwj7WH6m0hMMCaJkMyRWjgtPFyRKRVoMXXjczsTQRDEhYw==, tarball: https://registry.npmmirror.com/@pkgr/utils/-/utils-2.4.2.tgz}
@@ -477,6 +562,10 @@ packages:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==, tarball: https://registry.npmmirror.com/brace-expansion/-/brace-expansion-1.1.11.tgz}
     version: 1.1.11
 
+  braces@3.0.2:
+    resolution: {integrity: sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==}
+    engines: {node: '>=8'}
+
   braces@https://registry.npmmirror.com/braces/-/braces-3.0.2.tgz:
     resolution: {integrity: sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==, tarball: https://registry.npmmirror.com/braces/-/braces-3.0.2.tgz}
     version: 3.0.2
@@ -522,6 +611,10 @@ packages:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==, tarball: https://registry.npmmirror.com/chalk/-/chalk-4.1.2.tgz}
     version: 4.1.2
     engines: {node: '>=10'}
+
+  chokidar@4.0.1:
+    resolution: {integrity: sha512-n8enUVCED/KVRQlab1hr3MVpcVMvxtZjmEa956u+4YijlmQED223XMSYj2tLuKvr4jcCTzNNMpQDUer72MMmzA==}
+    engines: {node: '>= 14.16.0'}
 
   chokidar@https://registry.npmmirror.com/chokidar/-/chokidar-3.5.3.tgz:
     resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==, tarball: https://registry.npmmirror.com/chokidar/-/chokidar-3.5.3.tgz}
@@ -623,6 +716,11 @@ packages:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==, tarball: https://registry.npmmirror.com/dequal/-/dequal-2.0.3.tgz}
     version: 2.0.3
     engines: {node: '>=6'}
+
+  detect-libc@1.0.3:
+    resolution: {integrity: sha512-pGjwhsmsp4kL2RTz08wcOlGN83otlqHeD/Z5T8GXZB+/YcpQ/dgo+lbU8ZsGxV0HIvqqxo9l7mqYwyYMD9bKDg==}
+    engines: {node: '>=0.10'}
+    hasBin: true
 
   didyoumean@https://registry.npmmirror.com/didyoumean/-/didyoumean-1.2.2.tgz:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==, tarball: https://registry.npmmirror.com/didyoumean/-/didyoumean-1.2.2.tgz}
@@ -842,6 +940,10 @@ packages:
     version: 6.0.1
     engines: {node: ^10.12.0 || >=12.0.0}
 
+  fill-range@7.0.1:
+    resolution: {integrity: sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==}
+    engines: {node: '>=8'}
+
   fill-range@https://registry.npmmirror.com/fill-range/-/fill-range-7.0.1.tgz:
     resolution: {integrity: sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==, tarball: https://registry.npmmirror.com/fill-range/-/fill-range-7.0.1.tgz}
     version: 7.0.1
@@ -1017,6 +1119,9 @@ packages:
     version: 5.2.4
     engines: {node: '>= 4'}
 
+  immutable@4.3.7:
+    resolution: {integrity: sha512-1hqclzwYwjRDFLjcFxOM5AYkkG0rpFPpr1RLPMEuGczoS7YA8gLhy8SWXYRAA/XwfEHpfo3cw5JGioS32fnMRw==}
+
   import-fresh@https://registry.npmmirror.com/import-fresh/-/import-fresh-3.3.0.tgz:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==, tarball: https://registry.npmmirror.com/import-fresh/-/import-fresh-3.3.0.tgz}
     version: 3.3.0
@@ -1084,9 +1189,17 @@ packages:
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     hasBin: true
 
+  is-extglob@2.1.1:
+    resolution: {integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==}
+    engines: {node: '>=0.10.0'}
+
   is-extglob@https://registry.npmmirror.com/is-extglob/-/is-extglob-2.1.1.tgz:
     resolution: {integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==, tarball: https://registry.npmmirror.com/is-extglob/-/is-extglob-2.1.1.tgz}
     version: 2.1.1
+    engines: {node: '>=0.10.0'}
+
+  is-glob@4.0.3:
+    resolution: {integrity: sha512-xelSayHH36ZgE7ZWhli7pW34hNbNl8Ojv5KVmkJD4hBdD3th8Tfk9vYasLM+mXWOZhFkgZfxhLSnrwRr4elSSg==}
     engines: {node: '>=0.10.0'}
 
   is-glob@https://registry.npmmirror.com/is-glob/-/is-glob-4.0.3.tgz:
@@ -1109,6 +1222,10 @@ packages:
     resolution: {integrity: sha512-k1U0IRzLMo7ZlYIfzRu23Oh6MiIFasgpb9X76eqfFZAqwH44UI4KTBvBYIZ1dSL9ZzChTB9ShHfLkR4pdW5krQ==, tarball: https://registry.npmmirror.com/is-number-object/-/is-number-object-1.0.7.tgz}
     version: 1.0.7
     engines: {node: '>= 0.4'}
+
+  is-number@7.0.0:
+    resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==}
+    engines: {node: '>=0.12.0'}
 
   is-number@https://registry.npmmirror.com/is-number/-/is-number-7.0.0.tgz:
     resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==, tarball: https://registry.npmmirror.com/is-number/-/is-number-7.0.0.tgz}
@@ -1257,6 +1374,10 @@ packages:
     version: 1.4.1
     engines: {node: '>= 8'}
 
+  micromatch@4.0.5:
+    resolution: {integrity: sha512-DMy+ERcEW2q8Z2Po+WNXuw3c5YaUSFjAO5GsJqfEl7UjvtIuFKO6ZrKvcItdy98dwFI2N1tg3zNIdKaQT+aNdA==}
+    engines: {node: '>=8.6'}
+
   micromatch@https://registry.npmmirror.com/micromatch/-/micromatch-4.0.5.tgz:
     resolution: {integrity: sha512-DMy+ERcEW2q8Z2Po+WNXuw3c5YaUSFjAO5GsJqfEl7UjvtIuFKO6ZrKvcItdy98dwFI2N1tg3zNIdKaQT+aNdA==, tarball: https://registry.npmmirror.com/micromatch/-/micromatch-4.0.5.tgz}
     version: 4.0.5
@@ -1322,6 +1443,9 @@ packages:
         optional: true
       sass:
         optional: true
+
+  node-addon-api@7.1.1:
+    resolution: {integrity: sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==}
 
   node-releases@https://registry.npmmirror.com/node-releases/-/node-releases-2.0.13.tgz:
     resolution: {integrity: sha512-uYr7J37ae/ORWdZeQ1xxMJe3NtdmqMC/JZK+geofDrkLUApKRHPd18/TxtBOJ4A0/+uUIliorNrfYV6s1b02eQ==, tarball: https://registry.npmmirror.com/node-releases/-/node-releases-2.0.13.tgz}
@@ -1472,6 +1596,10 @@ packages:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==, tarball: https://registry.npmmirror.com/picocolors/-/picocolors-1.0.0.tgz}
     version: 1.0.0
 
+  picomatch@2.3.1:
+    resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
+    engines: {node: '>=8.6'}
+
   picomatch@https://registry.npmmirror.com/picomatch/-/picomatch-2.3.1.tgz:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==, tarball: https://registry.npmmirror.com/picomatch/-/picomatch-2.3.1.tgz}
     version: 2.3.1
@@ -1582,6 +1710,10 @@ packages:
     resolution: {integrity: sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==, tarball: https://registry.npmmirror.com/read-cache/-/read-cache-1.0.0.tgz}
     version: 1.0.0
 
+  readdirp@4.0.2:
+    resolution: {integrity: sha512-yDMz9g+VaZkqBYS/ozoBJwaBhTbZo3UNYQHNRw1D3UFQB8oHB4uS/tAODO+ZLjGWmUbKnIlOWO+aaIiAxrUWHA==}
+    engines: {node: '>= 14.16.0'}
+
   readdirp@https://registry.npmmirror.com/readdirp/-/readdirp-3.6.0.tgz:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==, tarball: https://registry.npmmirror.com/readdirp/-/readdirp-3.6.0.tgz}
     version: 3.6.0
@@ -1642,6 +1774,11 @@ packages:
   safe-regex-test@https://registry.npmmirror.com/safe-regex-test/-/safe-regex-test-1.0.0.tgz:
     resolution: {integrity: sha512-JBUUzyOgEwXQY1NuPtvcj/qcBDbDmEvWufhlnXZIm75DEHp+afM1r1ujJpJsV/gSM4t59tpDyPi1sd6ZaPFfsA==, tarball: https://registry.npmmirror.com/safe-regex-test/-/safe-regex-test-1.0.0.tgz}
     version: 1.0.0
+
+  sass@1.80.6:
+    resolution: {integrity: sha512-ccZgdHNiBF1NHBsWvacvT5rju3y1d/Eu+8Ex6c21nHp2lZGLBEtuwc415QfiI1PJa1TpCo3iXwwSRjRpn2Ckjg==}
+    engines: {node: '>=14.0.0'}
+    hasBin: true
 
   scheduler@https://registry.npmmirror.com/scheduler/-/scheduler-0.23.0.tgz:
     resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==, tarball: https://registry.npmmirror.com/scheduler/-/scheduler-0.23.0.tgz}
@@ -1808,6 +1945,10 @@ packages:
     resolution: {integrity: sha512-KxVu8EYHDPBdUYdKZdKtU2aj2XfEx9AfjXxE/Aj0vT06w2icA09Vus1rh6eSu1y01akYg6BjIK/hxyLJINoMLQ==, tarball: https://registry.npmmirror.com/titleize/-/titleize-3.0.0.tgz}
     version: 3.0.0
     engines: {node: '>=12'}
+
+  to-regex-range@5.0.1:
+    resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
+    engines: {node: '>=8.0'}
 
   to-regex-range@https://registry.npmmirror.com/to-regex-range/-/to-regex-range-5.0.1.tgz:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==, tarball: https://registry.npmmirror.com/to-regex-range/-/to-regex-range-5.0.1.tgz}
@@ -2067,6 +2208,67 @@ snapshots:
       '@nodelib/fs.scandir': https://registry.npmmirror.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz
       fastq: https://registry.npmmirror.com/fastq/-/fastq-1.15.0.tgz
 
+  '@parcel/watcher-android-arm64@2.5.0':
+    optional: true
+
+  '@parcel/watcher-darwin-arm64@2.5.0':
+    optional: true
+
+  '@parcel/watcher-darwin-x64@2.5.0':
+    optional: true
+
+  '@parcel/watcher-freebsd-x64@2.5.0':
+    optional: true
+
+  '@parcel/watcher-linux-arm-glibc@2.5.0':
+    optional: true
+
+  '@parcel/watcher-linux-arm-musl@2.5.0':
+    optional: true
+
+  '@parcel/watcher-linux-arm64-glibc@2.5.0':
+    optional: true
+
+  '@parcel/watcher-linux-arm64-musl@2.5.0':
+    optional: true
+
+  '@parcel/watcher-linux-x64-glibc@2.5.0':
+    optional: true
+
+  '@parcel/watcher-linux-x64-musl@2.5.0':
+    optional: true
+
+  '@parcel/watcher-win32-arm64@2.5.0':
+    optional: true
+
+  '@parcel/watcher-win32-ia32@2.5.0':
+    optional: true
+
+  '@parcel/watcher-win32-x64@2.5.0':
+    optional: true
+
+  '@parcel/watcher@2.5.0':
+    dependencies:
+      detect-libc: 1.0.3
+      is-glob: 4.0.3
+      micromatch: 4.0.5
+      node-addon-api: 7.1.1
+    optionalDependencies:
+      '@parcel/watcher-android-arm64': 2.5.0
+      '@parcel/watcher-darwin-arm64': 2.5.0
+      '@parcel/watcher-darwin-x64': 2.5.0
+      '@parcel/watcher-freebsd-x64': 2.5.0
+      '@parcel/watcher-linux-arm-glibc': 2.5.0
+      '@parcel/watcher-linux-arm-musl': 2.5.0
+      '@parcel/watcher-linux-arm64-glibc': 2.5.0
+      '@parcel/watcher-linux-arm64-musl': 2.5.0
+      '@parcel/watcher-linux-x64-glibc': 2.5.0
+      '@parcel/watcher-linux-x64-musl': 2.5.0
+      '@parcel/watcher-win32-arm64': 2.5.0
+      '@parcel/watcher-win32-ia32': 2.5.0
+      '@parcel/watcher-win32-x64': 2.5.0
+    optional: true
+
   '@pkgr/utils@https://registry.npmmirror.com/@pkgr/utils/-/utils-2.4.2.tgz':
     dependencies:
       cross-spawn: https://registry.npmmirror.com/cross-spawn/-/cross-spawn-7.0.3.tgz
@@ -2285,6 +2487,11 @@ snapshots:
       balanced-match: https://registry.npmmirror.com/balanced-match/-/balanced-match-1.0.2.tgz
       concat-map: https://registry.npmmirror.com/concat-map/-/concat-map-0.0.1.tgz
 
+  braces@3.0.2:
+    dependencies:
+      fill-range: 7.0.1
+    optional: true
+
   braces@https://registry.npmmirror.com/braces/-/braces-3.0.2.tgz:
     dependencies:
       fill-range: https://registry.npmmirror.com/fill-range/-/fill-range-7.0.1.tgz
@@ -2321,6 +2528,10 @@ snapshots:
     dependencies:
       ansi-styles: https://registry.npmmirror.com/ansi-styles/-/ansi-styles-4.3.0.tgz
       supports-color: https://registry.npmmirror.com/supports-color/-/supports-color-7.2.0.tgz
+
+  chokidar@4.0.1:
+    dependencies:
+      readdirp: 4.0.2
 
   chokidar@https://registry.npmmirror.com/chokidar/-/chokidar-3.5.3.tgz:
     dependencies:
@@ -2392,6 +2603,9 @@ snapshots:
       object-keys: https://registry.npmmirror.com/object-keys/-/object-keys-1.1.1.tgz
 
   dequal@https://registry.npmmirror.com/dequal/-/dequal-2.0.3.tgz: {}
+
+  detect-libc@1.0.3:
+    optional: true
 
   didyoumean@https://registry.npmmirror.com/didyoumean/-/didyoumean-1.2.2.tgz: {}
 
@@ -2719,6 +2933,11 @@ snapshots:
     dependencies:
       flat-cache: https://registry.npmmirror.com/flat-cache/-/flat-cache-3.0.4.tgz
 
+  fill-range@7.0.1:
+    dependencies:
+      to-regex-range: 5.0.1
+    optional: true
+
   fill-range@https://registry.npmmirror.com/fill-range/-/fill-range-7.0.1.tgz:
     dependencies:
       to-regex-range: https://registry.npmmirror.com/to-regex-range/-/to-regex-range-5.0.1.tgz
@@ -2873,6 +3092,8 @@ snapshots:
 
   ignore@https://registry.npmmirror.com/ignore/-/ignore-5.2.4.tgz: {}
 
+  immutable@4.3.7: {}
+
   import-fresh@https://registry.npmmirror.com/import-fresh/-/import-fresh-3.3.0.tgz:
     dependencies:
       parent-module: https://registry.npmmirror.com/parent-module/-/parent-module-1.0.1.tgz
@@ -2926,7 +3147,15 @@ snapshots:
 
   is-docker@https://registry.npmmirror.com/is-docker/-/is-docker-3.0.0.tgz: {}
 
+  is-extglob@2.1.1:
+    optional: true
+
   is-extglob@https://registry.npmmirror.com/is-extglob/-/is-extglob-2.1.1.tgz: {}
+
+  is-glob@4.0.3:
+    dependencies:
+      is-extglob: 2.1.1
+    optional: true
 
   is-glob@https://registry.npmmirror.com/is-glob/-/is-glob-4.0.3.tgz:
     dependencies:
@@ -2941,6 +3170,9 @@ snapshots:
   is-number-object@https://registry.npmmirror.com/is-number-object/-/is-number-object-1.0.7.tgz:
     dependencies:
       has-tostringtag: https://registry.npmmirror.com/has-tostringtag/-/has-tostringtag-1.0.0.tgz
+
+  is-number@7.0.0:
+    optional: true
 
   is-number@https://registry.npmmirror.com/is-number/-/is-number-7.0.0.tgz: {}
 
@@ -3041,6 +3273,12 @@ snapshots:
 
   merge2@https://registry.npmmirror.com/merge2/-/merge2-1.4.1.tgz: {}
 
+  micromatch@4.0.5:
+    dependencies:
+      braces: 3.0.2
+      picomatch: 2.3.1
+    optional: true
+
   micromatch@https://registry.npmmirror.com/micromatch/-/micromatch-4.0.5.tgz:
     dependencies:
       braces: https://registry.npmmirror.com/braces/-/braces-3.0.2.tgz
@@ -3072,7 +3310,7 @@ snapshots:
 
   natural-compare@https://registry.npmmirror.com/natural-compare/-/natural-compare-1.4.0.tgz: {}
 
-  next@13.4.13(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz):
+  next@13.4.13(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)(sass@1.80.6):
     dependencies:
       '@next/env': 13.4.13
       '@swc/helpers': 0.5.1
@@ -3094,9 +3332,13 @@ snapshots:
       '@next/swc-win32-arm64-msvc': 13.4.13
       '@next/swc-win32-ia32-msvc': 13.4.13
       '@next/swc-win32-x64-msvc': 13.4.13
+      sass: 1.80.6
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
+
+  node-addon-api@7.1.1:
+    optional: true
 
   node-releases@https://registry.npmmirror.com/node-releases/-/node-releases-2.0.13.tgz: {}
 
@@ -3215,6 +3457,9 @@ snapshots:
 
   picocolors@https://registry.npmmirror.com/picocolors/-/picocolors-1.0.0.tgz: {}
 
+  picomatch@2.3.1:
+    optional: true
+
   picomatch@https://registry.npmmirror.com/picomatch/-/picomatch-2.3.1.tgz: {}
 
   pify@https://registry.npmmirror.com/pify/-/pify-2.3.0.tgz: {}
@@ -3296,6 +3541,8 @@ snapshots:
     dependencies:
       pify: https://registry.npmmirror.com/pify/-/pify-2.3.0.tgz
 
+  readdirp@4.0.2: {}
+
   readdirp@https://registry.npmmirror.com/readdirp/-/readdirp-3.6.0.tgz:
     dependencies:
       picomatch: https://registry.npmmirror.com/picomatch/-/picomatch-2.3.1.tgz
@@ -3350,6 +3597,14 @@ snapshots:
       call-bind: https://registry.npmmirror.com/call-bind/-/call-bind-1.0.2.tgz
       get-intrinsic: https://registry.npmmirror.com/get-intrinsic/-/get-intrinsic-1.2.1.tgz
       is-regex: https://registry.npmmirror.com/is-regex/-/is-regex-1.1.4.tgz
+
+  sass@1.80.6:
+    dependencies:
+      chokidar: 4.0.1
+      immutable: 4.3.7
+      source-map-js: 1.0.2
+    optionalDependencies:
+      '@parcel/watcher': 2.5.0
 
   scheduler@https://registry.npmmirror.com/scheduler/-/scheduler-0.23.0.tgz:
     dependencies:
@@ -3494,6 +3749,11 @@ snapshots:
       any-promise: https://registry.npmmirror.com/any-promise/-/any-promise-1.3.0.tgz
 
   titleize@https://registry.npmmirror.com/titleize/-/titleize-3.0.0.tgz: {}
+
+  to-regex-range@5.0.1:
+    dependencies:
+      is-number: 7.0.0
+    optional: true
 
   to-regex-range@https://registry.npmmirror.com/to-regex-range/-/to-regex-range-5.0.1.tgz:
     dependencies:
