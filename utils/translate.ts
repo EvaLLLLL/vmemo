@@ -43,7 +43,7 @@ export const ydTranslate = async (word: string): Promise<TranslationItem> => {
     audio:
       result?.basic?.['us-speech'] ||
       result?.basic?.['uk-speech'] ||
-      result?.speakUrl,
+      result?.speakUrl
   }
 }
 

@@ -36,7 +36,7 @@ export const WordItem: React.FC<{
       <div className="font-semibold">{word.origin}</div>
       <div>{word.translation}</div>
       <div
-        className="absolute right-2 rounded-full p-1 bg-slate-200 h-6 w-6 invisible group-hover:visible hover:bg-slate-300 text-gray-400 flex items-center justify-center"
+        className="invisible absolute right-2 flex size-6 items-center justify-center rounded-full bg-slate-200 p-1 text-gray-400 hover:bg-slate-300 group-hover:visible"
         onClick={(e) => {
           e?.stopPropagation()
           onDelete?.()

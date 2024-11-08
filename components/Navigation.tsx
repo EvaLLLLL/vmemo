@@ -6,13 +6,13 @@ import { usePathname } from 'next/navigation'
 
 export default function Navigation() {
   return (
-    <div className="h-16 gap-4 flex items-center justify-center shrink-0">
+    <div className="flex h-16 shrink-0 items-center justify-center gap-4">
       <NavigateItem label="home" path="/" />
-      <div className="h-1/2 w-0.5 bg-slate-100 rounded-full" />
+      <div className="h-1/2 w-0.5 rounded-full bg-slate-100" />
       <NavigateItem label="reading" path="/reading" />
-      <div className="h-1/2 w-0.5 bg-slate-100 rounded-full" />
+      <div className="h-1/2 w-0.5 rounded-full bg-slate-100" />
       <NavigateItem label="vocabulary" path="/vocabulary" />
-      <div className="h-1/2 w-0.5 bg-slate-100 rounded-full" />
+      <div className="h-1/2 w-0.5 rounded-full bg-slate-100" />
       <NavigateItem label="dictionary" path="/ecdict" />
     </div>
   )

@@ -6,7 +6,10 @@ export async function POST(req: Request) {
     const data = await req.json()
     const vocabulary = await prisma.vocabulary.createMany({ data })
     return new NextResponse(JSON.stringify(vocabulary))
-  } catch (e) {
-    return new NextResponse(JSON.stringify({ message: "invalid word" }))
+  } catch (error) {
+    return new NextResponse(
+      JSON.stringify({ message: 'invalid word', error }),
+      { status: 500 }
+    )
   }
 }

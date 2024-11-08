@@ -8,7 +8,12 @@ export async function GET() {
       orderBy: { createdAt: 'desc' }
     })
     return new NextResponse(JSON.stringify(vocabularyList))
-  } catch (e) {
-    return new NextResponse(JSON.stringify({ message: 'something went wrong' }))
+  } catch (error) {
+    return new NextResponse(
+      JSON.stringify({ message: 'something went wrong', error }),
+      {
+        status: 500
+      }
+    )
   }
 }

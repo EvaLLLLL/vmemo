@@ -4,10 +4,10 @@ import prisma from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
-  const word = req.nextUrl.searchParams.get("word")
+  const word = req.nextUrl.searchParams.get('word')
 
   if (!word) {
-    return new NextResponse(JSON.stringify({message: 'no words provided'}))
+    return new NextResponse(JSON.stringify({ message: 'no words provided' }))
   }
 
   try {

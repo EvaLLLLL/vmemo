@@ -20,8 +20,8 @@ export default function Reading() {
   }
 
   return (
-    <div className="flex flex-col justify-center align-center flex-1 overflow-hidden">
-      <div className='h-full w-full flex overflow-hidden'>
+    <div className="flex flex-1 flex-col justify-center overflow-hidden align-middle">
+      <div className="flex size-full overflow-hidden">
         <ReadingText onSelectWord={onSelectWord} />
         <SelectedVocabularies isDict={false} />
       </div>
@@ -38,9 +38,9 @@ const ReadingText: React.FC<{
   const [textContent, setTextContent] = useState('')
 
   return (
-    <div className="w-3/5 bg-slate-100 h-full p-8 break-words">
-      <div className="relative pt-6 h-full">
-        <div className="w-full absolute flex items-center justify-between -top-5">
+    <div className="h-full w-3/5 break-words bg-slate-100 p-8">
+      <div className="relative h-full pt-6">
+        <div className="absolute -top-5 flex w-full items-center justify-between">
           <button
             onClick={() => setIsEdit(true)}
             className={cn(
@@ -59,11 +59,11 @@ const ReadingText: React.FC<{
           </button>
         </div>
         {isEdit ? (
-          <div className="h-full w-full relative">
+          <div className="relative size-full">
             <textarea
               tabIndex={0}
               autoFocus
-              className="outline-none border-2 border-orange-100 rounded h-full w-full focus:border-teal-400 bg-transparent break-words resize-none p-8 pb-20 transition-colors duration-200"
+              className="size-full resize-none break-words rounded border-2 border-orange-100 bg-transparent p-8 pb-20 outline-none transition-colors duration-200 focus:border-teal-400"
               value={textContent}
               onChange={(e) => setTextContent(e.target.value)}
             />
@@ -79,7 +79,7 @@ const ReadingText: React.FC<{
           </div>
         ) : (
           <div
-            className="h-full w-full overflow-y-auto break-words p-8 pb-20 whitespace-pre-wrap selection:bg-teal-200 outline-2 outline-transparent"
+            className="size-full overflow-y-auto whitespace-pre-wrap break-words p-8 pb-20 outline-2 outline-transparent selection:bg-teal-200"
             onMouseUp={() => {
               onSelectWord(window?.getSelection()?.toString())
             }}>
