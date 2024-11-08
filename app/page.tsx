@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useAuth } from '@/hooks/useAuth'
 
 export default function Home() {
-  const { user, signin, signup, signout } = useAuth()
+  const { user, signin, signup, logout } = useAuth()
 
   return (
     <div className="flex size-full flex-col items-center justify-center gap-8">
@@ -23,9 +23,22 @@ export default function Home() {
         <div>email: {user?.email}</div>
       </div>
 
-      <button onClick={() => signup()}>signup</button>
-      <button onClick={() => signin()}>signin</button>
-      <button onClick={() => signout()}>signout</button>
+      <button
+        onClick={() =>
+          signup({ name: '444', password: '444', email: '4444@444.com' })
+        }>
+        signup
+      </button>
+      <button
+        onClick={() =>
+          signin({
+            name: '333',
+            password: '333'
+          })
+        }>
+        signin
+      </button>
+      <button onClick={() => logout()}>logout</button>
     </div>
   )
 }

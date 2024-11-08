@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { SelectedVocabularies } from '@/components/SelectedVocabularies'
-import { useSelectedWordsStore } from '@/store/selectedWords'
+import { useSelectedWordsStore } from '@/hooks/useSelectedWordsStore'
 
 export default function Ecdict() {
   const { isAutoSpeak, addTranslatedWord } = useSelectedWordsStore()

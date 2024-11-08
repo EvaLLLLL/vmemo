@@ -11,6 +11,9 @@ importers:
       '@prisma/client':
         specifier: ^5.2.0
         version: https://registry.npmmirror.com/@prisma/client/-/client-5.2.0.tgz(prisma@https://registry.npmmirror.com/prisma/-/prisma-5.2.0.tgz)
+      '@tanstack/react-query':
+        specifier: ^5.59.20
+        version: 5.59.20(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
       '@types/node':
         specifier: 20.4.8
         version: https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz
@@ -23,6 +26,9 @@ importers:
       autoprefixer:
         specifier: 10.4.14
         version: https://registry.npmmirror.com/autoprefixer/-/autoprefixer-10.4.14.tgz(postcss@https://registry.npmmirror.com/postcss/-/postcss-8.4.27.tgz)
+      axios:
+        specifier: ^1.7.7
+        version: 1.7.7
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
@@ -66,6 +72,9 @@ importers:
         specifier: ^5.0.1
         version: 5.0.1(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
     devDependencies:
+      '@tanstack/eslint-plugin-query':
+        specifier: ^5.60.1
+        version: 5.60.1(eslint@8.57.1)(typescript@5.6.3)
       '@types/bcryptjs':
         specifier: ^2.4.6
         version: 2.4.6
@@ -383,6 +392,20 @@ packages:
   '@swc/helpers@0.5.1':
     resolution: {integrity: sha512-sJ902EfIzn1Fa+qYmjdQqh8tPsoxyBz+8yBKC2HKUxyezKJFwPGOn7pv4WY6QuQW//ySQi5lJjA/ZT9sNWWNTg==}
 
+  '@tanstack/eslint-plugin-query@5.60.1':
+    resolution: {integrity: sha512-oCaWtFKa6WwX14fm/Sp486eTFXXgadiDzEYxhM/tiAlM+xzvPwp6ZHgR6sndmvYK+s/jbksDCTLIPS0PCH8L2g==}
+    peerDependencies:
+      eslint: ^8.57.0 || ^9.0.0
+
+  '@tanstack/query-core@5.59.20':
+    resolution: {integrity: sha512-e8vw0lf7KwfGe1if4uPFhvZRWULqHjFcz3K8AebtieXvnMOz5FSzlZe3mTLlPuUBcydCnBRqYs2YJ5ys68wwLg==}
+
+  '@tanstack/react-query@5.59.20':
+    resolution: {integrity: sha512-Zly0egsK0tFdfSbh5/mapSa+Zfc3Et0Zkar7Wo5sQkFzWyB3p3uZWOHR2wrlAEEV2L953eLuDBtbgFvMYiLvUw==}
+    version: 5.59.20
+    peerDependencies:
+      react: ^18 || ^19
+
   '@types/bcryptjs@2.4.6':
     resolution: {integrity: sha512-9xlo6R2qDs5uixm0bcIqCeMCE6HiQsIyel9KQySStiyqNl2tnj2mP3DX1Nf56MD6KMenNNlBBsy3LJ7gUEQPXQ==}
 
@@ -603,6 +626,9 @@ packages:
     resolution: {integrity: sha512-eBvWn1lvIApYMhzQMsu9ciLfkBY499mFZlNqG+/9WR7PVlroQw0vG30cOQQbaKz3sCEc44TAOu2ykzqXSNnwag==, tarball: https://registry.npmmirror.com/ast-types-flow/-/ast-types-flow-0.0.7.tgz}
     version: 0.0.7
 
+  asynckit@0.4.0:
+    resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
+
   autoprefixer@https://registry.npmmirror.com/autoprefixer/-/autoprefixer-10.4.14.tgz:
     resolution: {integrity: sha512-FQzyfOsTlwVzjHxKEqRIAdJx9niO6VCBCoEwax/VLSoQF29ggECcPuBqUMZ+u8jCZOPSy8b8/8KnuFbp0SaFZQ==, tarball: https://registry.npmmirror.com/autoprefixer/-/autoprefixer-10.4.14.tgz}
     version: 10.4.14
@@ -620,6 +646,9 @@ packages:
     resolution: {integrity: sha512-zIURGIS1E1Q4pcrMjp+nnEh+16G56eG/MUllJH8yEvw7asDo7Ac9uhC9KIH5jzpITueEZolfYglnCGIuSBz39g==, tarball: https://registry.npmmirror.com/axe-core/-/axe-core-4.7.2.tgz}
     version: 4.7.2
     engines: {node: '>=4'}
+
+  axios@1.7.7:
+    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
 
   axobject-query@https://registry.npmmirror.com/axobject-query/-/axobject-query-3.2.1.tgz:
     resolution: {integrity: sha512-jsyHu61e6N4Vbz/v18DHwWYKK0bSWLqn47eeDSKPB7m8tqMHF9YJ+mhIk2lVteyZrY8tnSj/jHOv4YiTCuCJgg==, tarball: https://registry.npmmirror.com/axobject-query/-/axobject-query-3.2.1.tgz}
@@ -728,6 +757,10 @@ packages:
   color-name@1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
 
+  combined-stream@1.0.8:
+    resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
+    engines: {node: '>= 0.8'}
+
   commander@4.1.1:
     resolution: {integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==}
     engines: {node: '>= 6'}
@@ -815,6 +848,10 @@ packages:
     resolution: {integrity: sha512-xvqAVKGfT1+UAvPwKTVw/njhdQ8ZhXK4lI0bCIuCMrp2up9nPnaDftrLtmpTazqd1o+UY4zgzU+avtMbDP+ldA==, tarball: https://registry.npmmirror.com/define-properties/-/define-properties-1.2.0.tgz}
     version: 1.2.0
     engines: {node: '>= 0.4'}
+
+  delayed-stream@1.0.0:
+    resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
+    engines: {node: '>=0.4.0'}
 
   dequal@https://registry.npmmirror.com/dequal/-/dequal-2.0.3.tgz:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==, tarball: https://registry.npmmirror.com/dequal/-/dequal-2.0.3.tgz}
@@ -1104,9 +1141,22 @@ packages:
   flatted@3.3.1:
     resolution: {integrity: sha512-X8cqMLLie7KsNUDSdzeN8FYK9rEt4Dt67OsG/DNGnYTSDBG4uFAJFBnUeiV+zCVAvwFy56IjM9sH51jVaEhNxw==}
 
+  follow-redirects@1.15.9:
+    resolution: {integrity: sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+
   for-each@https://registry.npmmirror.com/for-each/-/for-each-0.3.3.tgz:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==, tarball: https://registry.npmmirror.com/for-each/-/for-each-0.3.3.tgz}
     version: 0.3.3
+
+  form-data@4.0.1:
+    resolution: {integrity: sha512-tzN8e4TX8+kkxGPK8D5u0FNmjPUjw3lwC9lSLxxoB/+GtsJG91CO8bSWy73APlgAZzZbXEYZJuxjkHH2w+Ezhw==}
+    engines: {node: '>= 6'}
 
   fraction.js@https://registry.npmmirror.com/fraction.js/-/fraction.js-4.2.0.tgz:
     resolution: {integrity: sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA==, tarball: https://registry.npmmirror.com/fraction.js/-/fraction.js-4.2.0.tgz}
@@ -1551,6 +1601,14 @@ packages:
     version: 4.0.5
     engines: {node: '>=8.6'}
 
+  mime-db@1.52.0:
+    resolution: {integrity: sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==}
+    engines: {node: '>= 0.6'}
+
+  mime-types@2.1.35:
+    resolution: {integrity: sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==}
+    engines: {node: '>= 0.6'}
+
   mimic-fn@https://registry.npmmirror.com/mimic-fn/-/mimic-fn-2.1.0.tgz:
     resolution: {integrity: sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==, tarball: https://registry.npmmirror.com/mimic-fn/-/mimic-fn-2.1.0.tgz}
     version: 2.1.0
@@ -1880,6 +1938,9 @@ packages:
   prop-types@https://registry.npmmirror.com/prop-types/-/prop-types-15.8.1.tgz:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==, tarball: https://registry.npmmirror.com/prop-types/-/prop-types-15.8.1.tgz}
     version: 15.8.1
+
+  proxy-from-env@1.1.0:
+    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
 
   punycode@2.3.0:
     resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==}
@@ -2543,6 +2604,21 @@ snapshots:
     dependencies:
       tslib: 2.6.1
 
+  '@tanstack/eslint-plugin-query@5.60.1(eslint@8.57.1)(typescript@5.6.3)':
+    dependencies:
+      '@typescript-eslint/utils': 8.13.0(eslint@8.57.1)(typescript@5.6.3)
+      eslint: 8.57.1
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
+  '@tanstack/query-core@5.59.20': {}
+
+  '@tanstack/react-query@5.59.20(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)':
+    dependencies:
+      '@tanstack/query-core': 5.59.20
+      react: https://registry.npmmirror.com/react/-/react-18.2.0.tgz
+
   '@types/bcryptjs@2.4.6': {}
 
   '@types/crypto-js@https://registry.npmmirror.com/@types/crypto-js/-/crypto-js-4.1.1.tgz': {}
@@ -2788,6 +2864,8 @@ snapshots:
 
   ast-types-flow@https://registry.npmmirror.com/ast-types-flow/-/ast-types-flow-0.0.7.tgz: {}
 
+  asynckit@0.4.0: {}
+
   autoprefixer@https://registry.npmmirror.com/autoprefixer/-/autoprefixer-10.4.14.tgz(postcss@https://registry.npmmirror.com/postcss/-/postcss-8.4.27.tgz):
     dependencies:
       browserslist: https://registry.npmmirror.com/browserslist/-/browserslist-4.21.10.tgz
@@ -2801,6 +2879,14 @@ snapshots:
   available-typed-arrays@https://registry.npmmirror.com/available-typed-arrays/-/available-typed-arrays-1.0.5.tgz: {}
 
   axe-core@https://registry.npmmirror.com/axe-core/-/axe-core-4.7.2.tgz: {}
+
+  axios@1.7.7:
+    dependencies:
+      follow-redirects: 1.15.9
+      form-data: 4.0.1
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
 
   axobject-query@https://registry.npmmirror.com/axobject-query/-/axobject-query-3.2.1.tgz:
     dependencies:
@@ -2901,6 +2987,10 @@ snapshots:
 
   color-name@1.1.4: {}
 
+  combined-stream@1.0.8:
+    dependencies:
+      delayed-stream: 1.0.0
+
   commander@4.1.1: {}
 
   concat-map@0.0.1: {}
@@ -2959,6 +3049,8 @@ snapshots:
     dependencies:
       has-property-descriptors: https://registry.npmmirror.com/has-property-descriptors/-/has-property-descriptors-1.0.0.tgz
       object-keys: https://registry.npmmirror.com/object-keys/-/object-keys-1.1.1.tgz
+
+  delayed-stream@1.0.0: {}
 
   dequal@https://registry.npmmirror.com/dequal/-/dequal-2.0.3.tgz: {}
 
@@ -3364,9 +3456,17 @@ snapshots:
 
   flatted@3.3.1: {}
 
+  follow-redirects@1.15.9: {}
+
   for-each@https://registry.npmmirror.com/for-each/-/for-each-0.3.3.tgz:
     dependencies:
       is-callable: https://registry.npmmirror.com/is-callable/-/is-callable-1.2.7.tgz
+
+  form-data@4.0.1:
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.35
 
   fraction.js@https://registry.npmmirror.com/fraction.js/-/fraction.js-4.2.0.tgz: {}
 
@@ -3727,6 +3827,12 @@ snapshots:
       braces: https://registry.npmmirror.com/braces/-/braces-3.0.2.tgz
       picomatch: https://registry.npmmirror.com/picomatch/-/picomatch-2.3.1.tgz
 
+  mime-db@1.52.0: {}
+
+  mime-types@2.1.35:
+    dependencies:
+      mime-db: 1.52.0
+
   mimic-fn@https://registry.npmmirror.com/mimic-fn/-/mimic-fn-2.1.0.tgz: {}
 
   mimic-fn@https://registry.npmmirror.com/mimic-fn/-/mimic-fn-4.0.0.tgz: {}
@@ -3998,6 +4104,8 @@ snapshots:
       loose-envify: https://registry.npmmirror.com/loose-envify/-/loose-envify-1.4.0.tgz
       object-assign: https://registry.npmmirror.com/object-assign/-/object-assign-4.1.1.tgz
       react-is: https://registry.npmmirror.com/react-is/-/react-is-16.13.1.tgz
+
+  proxy-from-env@1.1.0: {}
 
   punycode@2.3.0: {}
 

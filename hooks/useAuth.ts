@@ -1,123 +1,53 @@
-import { useCallback, useEffect } from 'react'
-import { useUserStore } from '@/store/user'
+import { useMemo } from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { AuthServices } from '@/lib/services'
 
 export function useAuth() {
+  const queryClient = useQueryClient()
+
   const {
-    user,
-    setUser,
-    isAuthenticated,
-    setIsAuthenticated,
-    isLoading,
-    setIsLoading
-  } = useUserStore()
+    data: user,
+    isLoading: isLoaidngUser,
+    refetch: refetchUser
+  } = useQuery({
+    queryKey: [AuthServices.getUser.key],
+    queryFn: AuthServices.getUser.fn,
+    retry: false
+  })
 
-  const checkAuthStatus = useCallback(async () => {
-    try {
-      const response = await fetch('/api/auth/check', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+  const { mutate: signup, isPending: isSigningUp } = useMutation({
+    mutationKey: [AuthServices.signUp.key],
+    mutationFn: AuthServices.signUp.fn,
+    onSuccess: () => refetchUser()
+  })
 
-      if (response.ok) {
-        const data = await response.json()
-        setUser(data)
-        setIsAuthenticated(true)
-      } else {
-        setUser(undefined)
-        setIsAuthenticated(false)
-      }
-    } catch (e) {
-      setUser(undefined)
-      setIsAuthenticated(false)
-      throw e
-    } finally {
-      setIsLoading(false)
+  const { mutate: signin, isPending: isSigningIn } = useMutation({
+    mutationKey: [AuthServices.signIn.key],
+    mutationFn: AuthServices.signIn.fn,
+    onSuccess: () => refetchUser()
+  })
+
+  const { mutate: logout, isPending: isLogingOut } = useMutation({
+    mutationKey: [AuthServices.logOut.key],
+    mutationFn: AuthServices.logOut.fn,
+    onSuccess: () => {
+      queryClient.clear()
+      queryClient.setQueryData([AuthServices.getUser.key], null)
     }
-  }, [setIsAuthenticated, setIsLoading, setUser])
+  })
 
-  useEffect(() => {
-    checkAuthStatus()
-  }, [checkAuthStatus])
-
-  const signup = async () => {
-    try {
-      const response = await fetch(
-        process.env.NEXT_PUBLIC_API + '/api/auth/signup',
-        {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            name: '321',
-            password: '321',
-            email: '123@321.com'
-          })
-        }
-      )
-
-      if (response.ok) {
-        signin()
-      }
-    } catch (error) {
-      console.error('Signup failed:', error)
-    }
-  }
-  const signin = async () => {
-    try {
-      const response = await fetch(
-        process.env.NEXT_PUBLIC_API + '/api/auth/signin',
-        {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            name: '321',
-            password: '321'
-            // email: "123@321.com"
-          })
-        }
-      )
-
-      if (response.ok) {
-        checkAuthStatus()
-      }
-    } catch (error) {
-      console.error('Signin failed:', error)
-    }
-  }
-  const signout = async () => {
-    try {
-      const response = await fetch('/api/auth/signout', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-
-      if (response.ok) {
-        setUser(undefined)
-        setIsAuthenticated(false)
-      }
-    } catch (error) {
-      console.error('Logout failed:', error)
-    }
-  }
+  const isAuthenticated = useMemo(() => !!user?.name, [user?.name])
+  const isLoading = useMemo(
+    () => isLoaidngUser || isSigningIn || isSigningUp || isLogingOut,
+    [isLoaidngUser, isSigningIn, isLogingOut, isSigningUp]
+  )
 
   return {
     isAuthenticated,
     isLoading,
     user,
-    checkAuthStatus,
     signup,
     signin,
-    signout
+    logout
   }
 }

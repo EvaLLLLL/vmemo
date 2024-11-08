@@ -3,7 +3,7 @@
 import cn from '@/utils/cn'
 import { useState } from 'react'
 import { SelectedVocabularies } from '@/components/SelectedVocabularies'
-import { useSelectedWordsStore } from '@/store/selectedWords'
+import { useSelectedWordsStore } from '@/hooks/useSelectedWordsStore'
 
 export default function Reading() {
   const { addTranslatedWord, isAutoSpeak } = useSelectedWordsStore()

@@ -20,5 +20,10 @@ export async function GET(req: NextRequest) {
     )
   }
 
-  return new NextResponse(JSON.stringify(payload), { status: 200 })
+  const user = {
+    name: payload.name,
+    email: payload.email
+  }
+
+  return new NextResponse(JSON.stringify(user), { status: 200 })
 }

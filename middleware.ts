@@ -19,13 +19,10 @@ export async function middleware(request: NextRequest) {
     try {
       await verifyAuth(token)
       return NextResponse.next()
-    } catch (error) {
-      return new NextResponse(
-        JSON.stringify({ message: 'invalid token', error }),
-        {
-          status: 401
-        }
-      )
+    } catch (_) {
+      return new NextResponse(JSON.stringify({ message: 'invalid token' }), {
+        status: 401
+      })
     }
   }
 

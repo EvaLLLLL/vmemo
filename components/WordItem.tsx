@@ -1,9 +1,9 @@
+import { ITranslationItem } from '@/types/vocabulary'
 import cn from '@/utils/cn'
-import { TranslationItem } from '@/utils/translate'
 import { useEffect, useRef } from 'react'
 
 export const WordItem: React.FC<{
-  word: TranslationItem
+  word: ITranslationItem
   isSelected?: boolean
   onClick?: () => void
   onDelete?: () => void

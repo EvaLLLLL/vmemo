@@ -11,9 +11,8 @@ export async function verifyAuth(token: string) {
       algorithms: ['HS256']
     })
     return payload
-  } catch (error) {
+  } catch (_) {
     console.log('Failed to verify session')
-    throw error
   }
 }
 

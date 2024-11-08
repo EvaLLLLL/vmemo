@@ -1,22 +1,11 @@
 import cn from '@/utils/cn'
 import { copyToClipboard } from '@/utils/copy'
 import { WordItem } from '@/components/WordItem'
-import { useSelectedWordsStore } from '@/store/selectedWords'
+import { useSelectedWordsStore } from '@/hooks/useSelectedWordsStore'
 
 export const SelectedVocabularies: React.FC<{
   isDict: boolean
 }> = ({ isDict }) => {
-  // const saveWords = async () => {
-  //   await fetch(process.env.NEXT_PUBLIC_API + '/api/vocabulary/save', {
-  //     method: 'POST',
-  // credentials: 'include',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify(selectedWords)
-  //   })
-  // }
-
   const {
     translatedWords,
     removeTranslatedWord,

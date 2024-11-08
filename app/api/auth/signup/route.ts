@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import prisma from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
-import { hashPassword } from '@/lib/auth'
+import { createJWTToken, hashPassword } from '@/lib/auth'
 
 export async function POST(req: NextRequest) {
   try {
@@ -32,10 +32,17 @@ export async function POST(req: NextRequest) {
         email: data.email
       }
     })
+
+    const jwt = await createJWTToken(data)
+
     return new NextResponse(
-      JSON.stringify({
-        message: JSON.stringify({ message: 'successfully register' })
-      })
+      JSON.stringify({ message: 'successfully register' }),
+      {
+        status: 200,
+        headers: {
+          'Set-Cookie': `token=${jwt}; Path=/; HttpOnly; Secure; SameSite=Strict`
+        }
+      }
     )
   } catch (e) {
     return new NextResponse(JSON.stringify({ message: JSON.stringify(e) }))
