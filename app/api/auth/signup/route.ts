@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
       return new NextResponse(JSON.stringify({ message: 'invalid fields' }))
     }
 
-    const user = await prisma.user.findFirst({
+    let user = await prisma.user.findFirst({
       where: { name: data?.name }
     })
 
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
 
     const hashedPassword = await hashPassword(data.password)
 
-    await prisma.user.create({
+    user = await prisma.user.create({
       data: {
         name: data.name,
         password: hashedPassword,
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
       }
     })
 
-    const jwt = await createJWTToken(data)
+    const jwt = await createJWTToken(user)
 
     return new NextResponse(
       JSON.stringify({ message: 'successfully register' }),

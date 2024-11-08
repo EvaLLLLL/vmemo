@@ -102,5 +102,9 @@ export const VocabularyServices = {
     key: 'VocabularyServices.saveVocabularies',
     fn: (data: ITranslationItem[]) =>
       axiosInstance.post('/api/vocabulary/save', data)
+  },
+  deleteWord: {
+    key: 'VocabularyServices.deleteWord',
+    fn: (data: string) => axiosInstance.post('/api/vocabulary/delete', data)
   }
 }

@@ -1,5 +1,4 @@
 import cn from '@/utils/cn'
-import { copyToClipboard } from '@/utils/copy'
 import { WordItem } from '@/components/WordItem'
 import { useSelectedWordsStore } from '@/hooks/useSelectedWordsStore'
 import { useVocabularies } from '@/hooks/useVocabularies'
@@ -14,22 +13,11 @@ export const SelectedVocabularies: React.FC<{
     setSelectedWord,
     purgeTranslatedWords
   } = useSelectedWordsStore()
-  const { save } = useVocabularies()
-
-  const onCopy = async () => {
-    const content = translatedWords
-      ?.reverse()
-      .map((w) => `${w.origin}\t${w.translation}`)
-      .join('\r')
-
-    if (!content) return
-
-    copyToClipboard(content, () => console.log('Copied: ', content))
-  }
+  const { saveWords } = useVocabularies()
 
   const onSave = () => {
     if (!translatedWords?.length) return
-    save(translatedWords)
+    saveWords(translatedWords)
   }
 
   return (
@@ -58,7 +46,7 @@ export const SelectedVocabularies: React.FC<{
         </div>
         <div className="absolute -top-5 flex w-full items-center justify-between">
           <button
-            onClick={() => purgeTranslatedWords()}
+            onClick={purgeTranslatedWords}
             className="rounded-full bg-teal-200 px-4 py-1 hover:bg-teal-100">
             clear
           </button>
@@ -66,11 +54,6 @@ export const SelectedVocabularies: React.FC<{
             onClick={onSave}
             className="rounded-full bg-teal-200 px-4 py-1 hover:bg-teal-100">
             save
-          </button>
-          <button
-            onClick={onCopy}
-            className="rounded-full bg-teal-200 px-4 py-1 hover:bg-teal-100">
-            copy {translatedWords?.length || ''}
           </button>
         </div>
       </div>

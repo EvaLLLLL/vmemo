@@ -25,7 +25,7 @@ export default function Home() {
 
       <button
         onClick={() =>
-          signup({ name: '444', password: '444', email: '4444@444.com' })
+          signup({ name: '333', password: '333', email: '4444@444.com' })
         }>
         signup
       </button>

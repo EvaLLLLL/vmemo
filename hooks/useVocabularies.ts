@@ -7,11 +7,17 @@ export const useVocabularies = () => {
     queryFn: VocabularyServices.getVocabularies.fn
   })
 
-  const { mutate: save } = useMutation({
+  const { mutate: saveWords } = useMutation({
     mutationKey: [VocabularyServices.saveVocabularies.key],
     mutationFn: VocabularyServices.saveVocabularies.fn,
     onSuccess: () => refetchVocabularies()
   })
 
-  return { save, vocabularies }
+  const { mutate: deleteWord } = useMutation({
+    mutationKey: [VocabularyServices.deleteWord.key],
+    mutationFn: VocabularyServices.deleteWord.fn,
+    onSuccess: () => refetchVocabularies()
+  })
+
+  return { saveWords, deleteWord, vocabularies }
 }

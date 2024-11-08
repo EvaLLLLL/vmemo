@@ -1,14 +1,17 @@
 'use client'
 
 import { WordItem } from '@/components/WordItem'
+import { useVocabularies } from '@/hooks/useVocabularies'
 import cn from '@/utils/cn'
 import { useState } from 'react'
 
-const wordList = Array(20).fill('funny')
-const mockExcelList = ['a.excel', 'b.excel', 'c.excel']
+const mockExcelList = ['saved', '3000-random', 'jijing']
 
 export default function Vocabulary() {
+  const { vocabularies, deleteWord } = useVocabularies()
+
   const [selectedList, setSelectedList] = useState(mockExcelList[0])
+
   const onClickMenuItem = (i: string) => setSelectedList(i)
 
   return (
@@ -26,8 +29,12 @@ export default function Vocabulary() {
         </div>
         <div className="flex-1 border p-4">
           <div className="grid grid-cols-4 gap-8">
-            {wordList.map((word, idx) => (
-              <WordItem key={idx} word={word} />
+            {vocabularies?.map((word, idx) => (
+              <WordItem
+                key={idx}
+                word={word}
+                onDelete={() => deleteWord(word?.origin)}
+              />
             ))}
           </div>
         </div>

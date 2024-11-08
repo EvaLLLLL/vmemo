@@ -13,17 +13,16 @@ model User {
   name         String       @unique @db.VarChar(255)
   password     String       @db.VarChar(255)
   email        String       @db.VarChar(255)
-  vocabularies Vocabulary[] @relation("UserVocabularies")
+  vocabularies Vocabulary[]
 }
 
 model Vocabulary {
   id          Int      @id @default(autoincrement())
   origin      String   @unique(map: "constraint_name") @db.VarChar(255)
   translation String?
-  audio    String?
+  audio       String?
   createdAt   DateTime @default(now()) @db.Timestamp(6)
-  user        User?    @relation("UserVocabularies", fields: [userId], references: [id])
-  userId      Int?
+  users       User[]
 }
 
 model Ecdict {

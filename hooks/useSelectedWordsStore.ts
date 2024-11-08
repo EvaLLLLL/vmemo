@@ -53,7 +53,7 @@ export const useSelectedWordsStore = create<SelectedWordsStore>()((set) => {
     removeTranslatedWord: (plain) =>
       set((state) => ({
         translatedWords: state.translatedWords?.filter(
-          (w) => w.origin === plain
+          (w) => w.origin !== plain
         )
       })),
     purgeTranslatedWords: () =>
