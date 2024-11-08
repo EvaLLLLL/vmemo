@@ -9,19 +9,21 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  name     String @unique @db.VarChar(255)
-  password String @db.VarChar(255)
-  email    String @db.VarChar(255)
+  id           Int          @id @default(autoincrement())
+  name         String       @unique @db.VarChar(255)
+  password     String       @db.VarChar(255)
+  email        String       @db.VarChar(255)
+  vocabularies Vocabulary[] @relation("UserVocabularies")
 }
 
 model Vocabulary {
-  id               Int      @id @default(autoincrement())
-  origin           String   @unique(map: "constraint_name") @db.VarChar(255)
-  translation      String?
-  audioUrl         String?
-  mTerminalDictUtl String?
-  createdAt        DateTime @default(now()) @db.Timestamp(6)
+  id          Int      @id @default(autoincrement())
+  origin      String   @unique(map: "constraint_name") @db.VarChar(255)
+  translation String?
+  audio    String?
+  createdAt   DateTime @default(now()) @db.Timestamp(6)
+  user        User?    @relation("UserVocabularies", fields: [userId], references: [id])
+  userId      Int?
 }
 
 model Ecdict {

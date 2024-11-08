@@ -90,4 +90,17 @@ export const EcdictServices = {
   }
 }
 
-export const VocabularyServices = {}
+export const VocabularyServices = {
+  getVocabularies: {
+    key: 'VocabularyServices.getVocabularies',
+    fn: () =>
+      axiosInstance
+        .get<ITranslationItem[]>('/api/vocabulary/list')
+        .then((res) => res.data)
+  },
+  saveVocabularies: {
+    key: 'VocabularyServices.saveVocabularies',
+    fn: (data: ITranslationItem[]) =>
+      axiosInstance.post('/api/vocabulary/save', data)
+  }
+}
