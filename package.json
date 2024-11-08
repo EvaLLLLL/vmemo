@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "postinstall": "simple-git-hooks && npx prisma migrate deploy && npx prisma generate",
+    "postinstall": "simple-git-hooks",
     "dev": "next dev",
-    "build": "prisma generate && prisma migrate deploy && next build",
+    "build": "npx prisma generate && npx prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint",
     "seed": "node prisma/seed.js"
