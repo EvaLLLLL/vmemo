@@ -24,7 +24,7 @@ model Vocabulary {
   audio       String?
   createdAt   DateTime @default(now()) @db.Timestamp(6)
   users       User[]
-  Memory      Memory[]
+  memories    Memory[]
 }
 
 model Memory {
