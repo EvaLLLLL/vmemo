@@ -1,7 +1,7 @@
 import cn from '@/utils/cn'
 import { WordItem } from '@/components/WordItem'
 import { useSelectedWordsStore } from '@/hooks/useSelectedWordsStore'
-import { useVocabularies } from '@/hooks/useVocabularies'
+import { useVocabularyActions } from '@/hooks/useVocabularyActions'
 
 export const SelectedVocabularies: React.FC<{
   isDict: boolean
@@ -13,7 +13,7 @@ export const SelectedVocabularies: React.FC<{
     setSelectedWord,
     purgeTranslatedWords
   } = useSelectedWordsStore()
-  const { saveWords } = useVocabularies()
+  const { saveWords } = useVocabularyActions()
 
   const onSave = () => {
     if (!translatedWords?.length) return

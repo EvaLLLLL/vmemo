@@ -7,4 +7,4 @@ export interface ITranslationItem {
   isSentence?: boolean
 }
 
-export type TVocabulary = Vocabulary & { level: number }
+export type TVocabulary = Vocabulary & { level: number; isSentence?: boolean }

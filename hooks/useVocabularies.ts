@@ -1,35 +1,54 @@
-import { MemoryServices, VocabularyServices } from '@/lib/services'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { VocabularyServices } from '@/lib/services'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 
 export const useVocabularies = () => {
-  const { data: vocabularies, refetch: refetchVocabularies } = useQuery({
-    queryKey: [VocabularyServices.getVocabularies.key],
-    queryFn: VocabularyServices.getVocabularies.fn
+  // const queryClient = useQueryClient()
+  const [currentPageNum, setCurrentPageNum] = useState(1)
+
+  const {
+    data,
+    refetch: refetchVocabularies
+    // isPlaceholderData
+  } = useQuery({
+    queryKey: [currentPageNum],
+    queryFn: () =>
+      VocabularyServices.getVocabularies.fn({
+        page: currentPageNum,
+        size: 10
+      }),
+    placeholderData: keepPreviousData
   })
 
-  const { mutate: saveWords } = useMutation({
-    mutationKey: [VocabularyServices.saveVocabularies.key],
-    mutationFn: VocabularyServices.saveVocabularies.fn,
-    onSuccess: () => refetchVocabularies()
-  })
+  // prefetch the next page
+  // useEffect(() => {
+  //   if (!isPlaceholderData && !data?.isLastPage) {
+  //     queryClient.prefetchQuery({
+  //       queryKey: [currentPageNum + 1],
+  //       queryFn: () =>
+  //         VocabularyServices.getVocabularies.fn({
+  //           page: currentPageNum + 1,
+  //           size: 10
+  //         })
+  //     })
+  //   }
+  // }, [queryClient, currentPageNum, isPlaceholderData, data?.isLastPage])
 
-  const { mutate: deleteWord } = useMutation({
-    mutationKey: [VocabularyServices.deleteWord.key],
-    mutationFn: VocabularyServices.deleteWord.fn,
-    onSuccess: () => refetchVocabularies()
-  })
+  const hasPreviousPage = currentPageNum > 1
+  const hasNextPage = !!data?.totalPages && currentPageNum < data?.totalPages
+  const counts = data?.counts
 
-  const { mutate: addMemory } = useMutation({
-    mutationKey: [MemoryServices.addMemory.key],
-    mutationFn: MemoryServices.addMemory.fn,
-    onSuccess: () => refetchVocabularies()
-  })
+  const fetchNextPage = () => hasNextPage && setCurrentPageNum((v) => v + 1)
+  const fetchPreviousPage = () =>
+    hasPreviousPage && setCurrentPageNum((v) => v - 1)
 
-  const { mutate: reduceMemory } = useMutation({
-    mutationKey: [MemoryServices.reduceMemory.key],
-    mutationFn: MemoryServices.reduceMemory.fn,
-    onSuccess: () => refetchVocabularies()
-  })
-
-  return { saveWords, deleteWord, vocabularies, addMemory, reduceMemory }
+  return {
+    vocabularies: data?.vocabularies,
+    counts,
+    refetchVocabularies,
+    fetchNextPage,
+    fetchPreviousPage,
+    hasNextPage,
+    hasPreviousPage
+  }
 }

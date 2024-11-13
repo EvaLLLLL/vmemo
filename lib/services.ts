@@ -4,7 +4,7 @@ import CryptoJS from 'crypto-js'
 import { Memory, User } from '@prisma/client'
 import { axiosInstance } from '@/lib/axios'
 import { truncate } from '@/utils/string'
-import { ITranslationItem, TVocabulary } from '@/types/vocabulary'
+import { TVocabulary } from '@/types/vocabulary'
 
 interface ISignupForm {
   name: string
@@ -42,7 +42,7 @@ export const EcdictServices = {
     key: 'EcdictServices.ecTranslate',
     fn: (word: string) =>
       axiosInstance
-        .get<ITranslationItem>(`/api/ecdict?word=${word}`)
+        .get<TVocabulary>(`/api/ecdict?word=${word}`)
         .then((res) => res.data)
   },
   ydTranslate: {
@@ -85,7 +85,7 @@ export const EcdictServices = {
           result?.basic?.['us-speech'] ||
           result?.basic?.['uk-speech'] ||
           result?.speakUrl
-      } as ITranslationItem
+      } as TVocabulary
     }
   }
 }
@@ -93,14 +93,31 @@ export const EcdictServices = {
 export const VocabularyServices = {
   getVocabularies: {
     key: 'VocabularyServices.getVocabularies',
-    fn: () =>
+    fn: ({ page }: { page: number; size: number }) =>
       axiosInstance
-        .get<TVocabulary[]>('/api/vocabulary/list')
+        .get<{
+          isLastPage: boolean
+          totalPages: number
+          vocabularies: TVocabulary[]
+          counts: {
+            totalCount: number
+            level0Count: number
+            level1Count: number
+            level2Count: number
+            level3Count: number
+            levelLCount: number
+          }
+        }>('/api/vocabulary/list', {
+          params: {
+            size: 10,
+            page
+          }
+        })
         .then((res) => res.data)
   },
   saveVocabularies: {
     key: 'VocabularyServices.saveVocabularies',
-    fn: (data: ITranslationItem[]) =>
+    fn: (data: TVocabulary[]) =>
       axiosInstance.post('/api/vocabulary/save', data)
   },
   deleteWord: {

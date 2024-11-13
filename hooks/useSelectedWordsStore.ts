@@ -1,17 +1,17 @@
 import { create } from 'zustand'
 import { EcdictServices } from '@/lib/services'
-import { ITranslationItem } from '@/types/vocabulary'
+import { TVocabulary } from '@/types/vocabulary'
 
 interface SelectedWordsStore {
   isAutoSpeak: boolean
   setIsAutoSpeak: (v: boolean) => void
 
-  translatedWords?: ITranslationItem[]
-  addTranslatedWord: (plain: string) => Promise<ITranslationItem | undefined>
+  translatedWords?: TVocabulary[]
+  addTranslatedWord: (plain: string) => Promise<TVocabulary | undefined>
   removeTranslatedWord: (plain: string) => void
   purgeTranslatedWords: () => void
 
-  selectedWord?: ITranslationItem
+  selectedWord?: TVocabulary
   setSelectedWord: (plain: string) => void
 }
 
@@ -30,10 +30,11 @@ export const useSelectedWordsStore = create<SelectedWordsStore>()((set) => {
       const ecdictRes = await EcdictServices.ecTranslate.fn(formattedWord)
       const isSentence = (plain?.split(' ').length || 0) >= 10
 
-      const result: ITranslationItem = {
+      const result: TVocabulary = {
+        ...ecdictRes,
         isSentence,
         origin: formattedWord,
-        audio: ydRes.audio || ecdictRes.audio,
+        audio: ydRes.audio || ecdictRes.audio || null,
         translation:
           ecdictRes?.translation?.replaceAll(/\\n/g, '; ') || ydRes.translation
       }
