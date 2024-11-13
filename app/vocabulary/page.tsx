@@ -22,7 +22,7 @@ export default function Vocabulary() {
         <span>levelL: {counts?.levelLCount}</span>
       </div>
 
-      <div className="mx-auto my-4 flex h-full w-3/5 flex-1 flex-col justify-between border-2">
+      <div className="mx-auto my-4 flex h-full w-3/5 flex-1 flex-col justify-between rounded-sm border-2">
         {isSummary ? (
           <div className="flex h-full flex-col justify-between">
             <div className="flex flex-col gap-y-4">
