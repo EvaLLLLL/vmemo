@@ -47,6 +47,9 @@ importers:
       jquery:
         specifier: ^3.7.0
         version: https://registry.npmmirror.com/jquery/-/jquery-3.7.0.tgz
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       next:
         specifier: 13.4.13
         version: 13.4.13(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)(sass@1.80.6)
@@ -87,6 +90,9 @@ importers:
       '@types/jquery':
         specifier: ^3.5.17
         version: https://registry.npmmirror.com/@types/jquery/-/jquery-3.5.17.tgz
+      '@types/lodash':
+        specifier: ^4.17.13
+        version: 4.17.13
       '@types/papaparse':
         specifier: ^5.3.14
         version: 5.3.14
@@ -420,6 +426,9 @@ packages:
   '@types/json5@https://registry.npmmirror.com/@types/json5/-/json5-0.0.29.tgz':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==, tarball: https://registry.npmmirror.com/@types/json5/-/json5-0.0.29.tgz}
     version: 0.0.29
+
+  '@types/lodash@4.17.13':
+    resolution: {integrity: sha512-lfx+dftrEZcdBPczf9d0Qv0x+j/rfNCMuC6OcfXmO8gkfeNAY88PgKUbvG56whcN23gc27yenwF6oJZXGFpYxg==}
 
   '@types/node@20.4.8':
     resolution: {integrity: sha512-0mHckf6D2DiIAzh8fM8f3HQCvMKDpK94YQ0DSVkfWTG9BZleYIWudw9cJxX8oCk9bM+vAkDyujDV6dmKHbvQpg==}
@@ -1569,6 +1578,9 @@ packages:
   lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
 
+  lodash@4.17.21:
+    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+
   loose-envify@https://registry.npmmirror.com/loose-envify/-/loose-envify-1.4.0.tgz:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==, tarball: https://registry.npmmirror.com/loose-envify/-/loose-envify-1.4.0.tgz}
     version: 1.4.0
@@ -2628,6 +2640,8 @@ snapshots:
       '@types/sizzle': https://registry.npmmirror.com/@types/sizzle/-/sizzle-2.3.3.tgz
 
   '@types/json5@https://registry.npmmirror.com/@types/json5/-/json5-0.0.29.tgz': {}
+
+  '@types/lodash@4.17.13': {}
 
   '@types/node@20.4.8': {}
 
@@ -3802,6 +3816,8 @@ snapshots:
       p-locate: 5.0.0
 
   lodash.merge@4.6.2: {}
+
+  lodash@4.17.21: {}
 
   loose-envify@https://registry.npmmirror.com/loose-envify/-/loose-envify-1.4.0.tgz:
     dependencies:

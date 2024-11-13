@@ -1,6 +1,5 @@
-import omit from 'lodash/omit'
-import prisma from '@/lib/prisma'
 import { verifyAuth } from '@/lib/auth'
+import prisma from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const fetchCache = 'force-no-store'
@@ -24,24 +23,14 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const vocabularies = await prisma.vocabulary.findMany({
-      where: { users: { some: { id: userJwt.id } } },
-      include: {
-        memories: {
-          where: { userId: userJwt.id },
-          select: { level: true, vocabularyId: true }
-        }
+    const userMemory = await prisma.memory.findMany({
+      where: {
+        userId: userJwt?.id
       }
     })
 
-    const modifiedVocabularies = vocabularies.map((vocabulary) => ({
-      ...omit(vocabulary, 'memories'),
-      level: vocabulary.memories[0]?.level ?? 0
-    }))
-
-    return new NextResponse(JSON.stringify(modifiedVocabularies))
-  } catch (e) {
-    console.log(e)
+    return new NextResponse(JSON.stringify(userMemory))
+  } catch (_) {
     return new NextResponse(
       JSON.stringify({ message: 'something went wrong' }),
       {

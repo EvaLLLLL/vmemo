@@ -1,9 +1,9 @@
-import { ITranslationItem } from '@/types/vocabulary'
+import { TVocabulary } from '@/types/vocabulary'
 import cn from '@/utils/cn'
 import { useEffect, useRef } from 'react'
 
 export const WordItem: React.FC<{
-  word: ITranslationItem
+  word: TVocabulary
   isSelected?: boolean
   onClick?: () => void
   onDelete?: () => void
@@ -25,6 +25,7 @@ export const WordItem: React.FC<{
       onClick={
         onClick ??
         function () {
+          if (!word.audio) return
           const audioPlayer = new Audio(word.audio)
           audioPlayer.play()
         }
@@ -33,7 +34,9 @@ export const WordItem: React.FC<{
         'flex flex-col justify-center py-1 px-4 bg-teal-50 rounded-2xl hover:bg-teal-200 cursor-pointer whitespace-pre-wrap relative group',
         isSelected && 'bg-teal-200'
       )}>
-      <div className="font-semibold">{word.origin}</div>
+      <div className="font-semibold">
+        ({word.level}){word.origin}
+      </div>
       <div>{word.translation}</div>
       <div
         className="invisible absolute right-2 flex size-6 items-center justify-center rounded-full bg-slate-200 p-1 text-gray-400 hover:bg-slate-300 group-hover:visible"

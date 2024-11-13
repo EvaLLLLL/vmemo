@@ -1,10 +1,10 @@
 import jquery from 'jquery'
 import CryptoJS from 'crypto-js'
 
-import { User } from '@prisma/client'
+import { Memory, User } from '@prisma/client'
 import { axiosInstance } from '@/lib/axios'
 import { truncate } from '@/utils/string'
-import { ITranslationItem } from '@/types/vocabulary'
+import { ITranslationItem, TVocabulary } from '@/types/vocabulary'
 
 interface ISignupForm {
   name: string
@@ -95,7 +95,7 @@ export const VocabularyServices = {
     key: 'VocabularyServices.getVocabularies',
     fn: () =>
       axiosInstance
-        .get<ITranslationItem[]>('/api/vocabulary/list')
+        .get<TVocabulary[]>('/api/vocabulary/list')
         .then((res) => res.data)
   },
   saveVocabularies: {
@@ -106,5 +106,26 @@ export const VocabularyServices = {
   deleteWord: {
     key: 'VocabularyServices.deleteWord',
     fn: (data: string) => axiosInstance.post('/api/vocabulary/delete', data)
+  }
+}
+
+export const MemoryServices = {
+  getMemoryList: {
+    key: 'MemoryServices.getMemoryList',
+    fn: () =>
+      axiosInstance.get<Memory[]>('/api/memory/list').then((res) => res.data)
+  },
+  addMemory: {
+    key: 'MemoryServices.addMemory',
+    fn: (vocabularyIds: number[]) =>
+      axiosInstance.post('/api/memory/update', { vocabularyIds, action: 'add' })
+  },
+  reduceMemory: {
+    key: 'MemoryServices.reduceMemory',
+    fn: (vocabularyIds: number[]) =>
+      axiosInstance.post('/api/memory/update', {
+        vocabularyIds,
+        action: 'reduce'
+      })
   }
 }

@@ -14,6 +14,7 @@ model User {
   password     String       @db.VarChar(255)
   email        String       @db.VarChar(255)
   vocabularies Vocabulary[]
+  memories     Memory[]
 }
 
 model Vocabulary {
@@ -23,6 +24,18 @@ model Vocabulary {
   audio       String?
   createdAt   DateTime @default(now()) @db.Timestamp(6)
   users       User[]
+  Memory      Memory[]
+}
+
+model Memory {
+  id           Int         @id @default(autoincrement())
+  userId       Int
+  vocabularyId Int
+  level        Int
+  createdAt    DateTime    @default(now()) @db.Timestamp(6)
+  updatedAt    DateTime    @updatedAt
+  user         User?       @relation(fields: [userId], references: [id])
+  vocabulary   Vocabulary? @relation(fields: [vocabularyId], references: [id])
 }
 
 model Ecdict {

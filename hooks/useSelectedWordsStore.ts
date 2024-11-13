@@ -1,6 +1,6 @@
+import { create } from 'zustand'
 import { EcdictServices } from '@/lib/services'
 import { ITranslationItem } from '@/types/vocabulary'
-import { create } from 'zustand'
 
 interface SelectedWordsStore {
   isAutoSpeak: boolean

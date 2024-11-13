@@ -1,4 +1,4 @@
-import { VocabularyServices } from '@/lib/services'
+import { MemoryServices, VocabularyServices } from '@/lib/services'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 export const useVocabularies = () => {
@@ -19,5 +19,17 @@ export const useVocabularies = () => {
     onSuccess: () => refetchVocabularies()
   })
 
-  return { saveWords, deleteWord, vocabularies }
+  const { mutate: addMemory } = useMutation({
+    mutationKey: [MemoryServices.addMemory.key],
+    mutationFn: MemoryServices.addMemory.fn,
+    onSuccess: () => refetchVocabularies()
+  })
+
+  const { mutate: reduceMemory } = useMutation({
+    mutationKey: [MemoryServices.reduceMemory.key],
+    mutationFn: MemoryServices.reduceMemory.fn,
+    onSuccess: () => refetchVocabularies()
+  })
+
+  return { saveWords, deleteWord, vocabularies, addMemory, reduceMemory }
 }
