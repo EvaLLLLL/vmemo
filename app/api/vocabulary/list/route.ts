@@ -2,6 +2,7 @@ import omit from 'lodash/omit'
 import prisma from '@/lib/prisma'
 import { verifyAuth } from '@/lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
+import { Memory, Vocabulary } from '@prisma/client'
 
 export const fetchCache = 'force-no-store'
 export async function GET(req: NextRequest) {
@@ -26,22 +27,53 @@ export async function GET(req: NextRequest) {
   const url = new URL(req.url)
   const page = parseInt(url.searchParams.get('page') || '1', 10)
   const size = parseInt(url.searchParams.get('size') || '10', 10)
+  const level = parseInt(url.searchParams.get('level') || '-1', 10)
 
   const offset = (page - 1) * size
 
   try {
-    const vocabularies = await prisma.vocabulary.findMany({
-      where: {
-        users: { some: { id: userJwt.id } },
-        OR: [
-          { memories: { none: {} } },
-          { memories: { some: { userId: userJwt.id, level: { lt: 3 } } } }
-        ]
-      },
-      include: { memories: true },
-      take: size,
-      skip: offset
-    })
+    let vocabularies: (Vocabulary & { memories: Memory[] })[] = []
+
+    // get all memories
+    if (level === -2) {
+      vocabularies = await prisma.vocabulary.findMany({
+        where: {
+          users: { some: { id: userJwt.id } },
+          memories: { some: { userId: userJwt.id } }
+        },
+        include: { memories: true },
+        take: size,
+        skip: offset
+      })
+    }
+
+    // get memories less than 3
+    if (level === -1) {
+      vocabularies = await prisma.vocabulary.findMany({
+        where: {
+          users: { some: { id: userJwt.id } },
+          OR: [
+            { memories: { none: {} } },
+            { memories: { some: { userId: userJwt.id, level: { lt: 3 } } } }
+          ]
+        },
+        include: { memories: true },
+        take: size,
+        skip: offset
+      })
+    }
+
+    if ([0, 1, 2, 3].includes(level)) {
+      vocabularies = await prisma.vocabulary.findMany({
+        where: {
+          users: { some: { id: userJwt.id } },
+          memories: { some: { userId: userJwt.id, level: level } }
+        },
+        include: { memories: true },
+        take: size,
+        skip: offset
+      })
+    }
 
     const modifiedVocabularies = vocabularies.map((v) => ({
       ...omit(v, 'memories'),
@@ -107,6 +139,7 @@ export async function GET(req: NextRequest) {
         level3Count,
         levelLCount
       },
+      level,
       totalPages: totalPages,
       isLastPage: isLastPage,
       vocabularies: modifiedVocabularies

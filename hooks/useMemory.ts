@@ -39,8 +39,6 @@ export const useMemory = () => {
 
   const isSummary = useMemo(() => currentIndex === -1, [currentIndex])
 
-  console.log(vocabularies)
-
   const remember = useCallback(async () => {
     if (!currrentVocabulary || !vocabularies?.length) return
 
