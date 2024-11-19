@@ -43,7 +43,8 @@ export async function POST(req: NextRequest) {
       await prisma.memory.updateMany({
         where: {
           userId: userJwt.id,
-          id: { in: existVocabularies.map((e) => e.id) }
+          id: { in: existVocabularies.map((e) => e.id) },
+          level: data.action === 'add' ? { lt: 3 } : { gt: 0 }
         },
         data: {
           level: data.action === 'add' ? { increment: 1 } : { decrement: 1 }

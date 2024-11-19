@@ -1,9 +1,9 @@
+import { useState } from 'react'
 import { VocabularyServices } from '@/lib/services'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
 
+const SIZE = 10
 export const useVocabularies = () => {
-  // const queryClient = useQueryClient()
   const [currentPageNum, setCurrentPageNum] = useState(1)
 
   const {
@@ -15,7 +15,7 @@ export const useVocabularies = () => {
     queryFn: () =>
       VocabularyServices.getVocabularies.fn({
         page: currentPageNum,
-        size: 10
+        size: SIZE
       }),
     placeholderData: keepPreviousData
   })

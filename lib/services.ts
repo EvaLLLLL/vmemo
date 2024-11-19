@@ -18,6 +18,26 @@ interface ISigninForm {
   password: string
 }
 
+interface IGetVocabulariesParams {
+  page: number
+  size: number
+  level?: number
+}
+
+interface IVocabulariesResponse {
+  isLastPage: boolean
+  totalPages: number
+  vocabularies: TVocabulary[]
+  counts: {
+    totalCount: number
+    level0Count: number
+    level1Count: number
+    level2Count: number
+    level3Count: number
+    levelLCount: number
+  }
+}
+
 export const AuthServices = {
   getUser: {
     key: 'AuthServices.check',
@@ -93,26 +113,9 @@ export const EcdictServices = {
 export const VocabularyServices = {
   getVocabularies: {
     key: 'VocabularyServices.getVocabularies',
-    fn: ({ page }: { page: number; size: number }) =>
+    fn: (params: IGetVocabulariesParams) =>
       axiosInstance
-        .get<{
-          isLastPage: boolean
-          totalPages: number
-          vocabularies: TVocabulary[]
-          counts: {
-            totalCount: number
-            level0Count: number
-            level1Count: number
-            level2Count: number
-            level3Count: number
-            levelLCount: number
-          }
-        }>('/api/vocabulary/list', {
-          params: {
-            size: 10,
-            page
-          }
-        })
+        .get<IVocabulariesResponse>('/api/vocabulary/list', { params })
         .then((res) => res.data)
   },
   saveVocabularies: {

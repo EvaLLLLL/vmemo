@@ -7,9 +7,9 @@ import { TVocabulary } from '@/types/vocabulary'
 import { useState } from 'react'
 
 export default function Vocabulary() {
+  const { vocabularies, counts } = useVocabularies()
   const { submit, currrentVocabulary, isSummary, remember, forget } =
     useMemory()
-  const { vocabularies, counts } = useVocabularies()
 
   return (
     <div className="flex h-full flex-col">
@@ -33,8 +33,8 @@ export default function Vocabulary() {
         ) : (
           !!currrentVocabulary && (
             <VocabularyItem
-              vocabulary={currrentVocabulary}
               onForget={forget}
+              vocabulary={currrentVocabulary}
               onRemember={remember}
             />
           )
