@@ -1,15 +1,16 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useVocabularies } from './useVocabularies'
 import { useVocabularyActions } from './useVocabularyActions'
 
 export const useMemory = () => {
-  const { vocabularies, refetchVocabularies } = useVocabularies()
+  const { vocabularies } = useVocabularies()
   const { addMemory, reduceMemory } = useVocabularyActions()
 
   const [addIds, setAddIds] = useState<number[]>([])
   const [reduceIds, setReduceIds] = useState<number[]>([])
 
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [isSubmiting, setIsSubmiting] = useState(false)
 
   useEffect(() => {
     if (vocabularies?.length) {
@@ -38,8 +39,11 @@ export const useMemory = () => {
 
   const isSummary = useMemo(() => currentIndex === -1, [currentIndex])
 
-  const remember = async () => {
+  console.log(vocabularies)
+
+  const remember = useCallback(async () => {
     if (!currrentVocabulary || !vocabularies?.length) return
+
     setAddIds([...addIds, currrentVocabulary.id])
 
     const isLast =
@@ -50,9 +54,9 @@ export const useMemory = () => {
     } else {
       setCurrentIndex(currentIndex + 1)
     }
-  }
+  }, [addIds, currentIndex, currrentVocabulary, vocabularies?.length])
 
-  const forget = async () => {
+  const forget = useCallback(async () => {
     if (!currrentVocabulary || !vocabularies?.length) return
     setReduceIds([...reduceIds, currrentVocabulary.id])
 
@@ -64,23 +68,29 @@ export const useMemory = () => {
     } else {
       setCurrentIndex(currentIndex + 1)
     }
-  }
+  }, [currentIndex, currrentVocabulary, reduceIds, vocabularies?.length])
 
   const submit = async () => {
     if (!addIds.length && !reduceIds.length) {
       return
     }
 
-    if (addIds.length) {
-      await addMemory(addIds)
-    }
+    setIsSubmiting(true)
+    try {
+      if (addIds.length) {
+        await addMemory(addIds)
+      }
 
-    if (reduceIds.length) {
-      await reduceMemory(reduceIds)
-    }
+      if (reduceIds.length) {
+        await reduceMemory(reduceIds)
+      }
 
-    await refetchVocabularies()
-    setCurrentIndex(0)
+      setCurrentIndex(0)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setIsSubmiting(false)
+    }
   }
 
   return {
@@ -91,6 +101,7 @@ export const useMemory = () => {
     remember,
     forget,
     submit,
+    isSubmiting,
     isSummary
   }
 }

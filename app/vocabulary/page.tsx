@@ -4,12 +4,45 @@ import { WordItem } from '@/components/WordItem'
 import { useMemory } from '@/hooks/useMemory'
 import { useVocabularies } from '@/hooks/useVocabularies'
 import { TVocabulary } from '@/types/vocabulary'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Vocabulary() {
   const { vocabularies, counts } = useVocabularies()
-  const { submit, currrentVocabulary, isSummary, remember, forget } =
-    useMemory()
+  const {
+    submit,
+    currrentVocabulary,
+    isSummary,
+    remember,
+    forget,
+    isSubmiting
+  } = useMemory()
+
+  const onRemember = () => !isSubmiting && remember()
+  const onForget = () => !isSubmiting && forget()
+
+  useEffect(() => {
+    const keyDownHandler = (e: KeyboardEvent) => {
+      if (isSubmiting) return
+
+      if (e.code === 'KeyQ') {
+        remember()
+      }
+
+      if (e.code === 'KeyE') {
+        forget()
+      }
+
+      if (e.code === 'Space') {
+        submit()
+      }
+    }
+
+    window.addEventListener('keydown', keyDownHandler)
+
+    return () => {
+      window.removeEventListener('keydown', keyDownHandler)
+    }
+  }, [currrentVocabulary, forget, isSubmiting, remember, submit])
 
   return (
     <div className="flex h-full flex-col">
@@ -33,9 +66,10 @@ export default function Vocabulary() {
         ) : (
           !!currrentVocabulary && (
             <VocabularyItem
-              onForget={forget}
+              key={currrentVocabulary.id}
+              onForget={onForget}
+              onRemember={onRemember}
               vocabulary={currrentVocabulary}
-              onRemember={remember}
             />
           )
         )}
@@ -50,6 +84,22 @@ const VocabularyItem: React.FC<{
   onRemember: () => void
 }> = ({ vocabulary, onForget, onRemember }) => {
   const [revealed, setRevealed] = useState(false)
+
+  useEffect(() => {
+    const keyDownHandler = (e: KeyboardEvent) => {
+      if (revealed) return
+
+      if (e.code === 'KeyW') {
+        setRevealed(true)
+      }
+    }
+
+    window.addEventListener('keydown', keyDownHandler)
+
+    return () => {
+      window.removeEventListener('keydown', keyDownHandler)
+    }
+  }, [revealed])
 
   return (
     <div>

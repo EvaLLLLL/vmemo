@@ -47,6 +47,7 @@ export async function GET(req: NextRequest) {
       ...omit(v, 'memories'),
       level: v.memories?.[0]?.level ?? 0
     }))
+
     const vocabulariesCount = await prisma.vocabulary.count({
       where: {
         users: { some: { id: userJwt.id } },
@@ -60,12 +61,14 @@ export async function GET(req: NextRequest) {
     const totalCount = await prisma.vocabulary.count({
       where: { users: { some: { id: userJwt.id } } }
     })
+
     const level0Count = await prisma.vocabulary.count({
       where: {
         users: { some: { id: userJwt.id } },
         OR: [{ memories: { none: {} } }, { memories: { some: { level: 0 } } }]
       }
     })
+
     const level1Count = await prisma.vocabulary.count({
       where: {
         users: { some: { id: userJwt.id } },
@@ -110,8 +113,7 @@ export async function GET(req: NextRequest) {
     }
 
     return new NextResponse(JSON.stringify(result))
-  } catch (e) {
-    console.log(e)
+  } catch (_) {
     return new NextResponse(
       JSON.stringify({ message: 'something went wrong' }),
       {
