@@ -63,7 +63,19 @@ export async function GET(req: NextRequest) {
       })
     }
 
-    if ([0, 1, 2, 3].includes(level)) {
+    if (level === 0) {
+      vocabularies = await prisma.vocabulary.findMany({
+        where: {
+          users: { some: { id: userJwt.id } },
+          OR: [{ memories: { none: {} } }, { memories: { some: { level: 0 } } }]
+        },
+        include: { memories: true },
+        take: size,
+        skip: offset
+      })
+    }
+
+    if ([1, 2, 3].includes(level)) {
       vocabularies = await prisma.vocabulary.findMany({
         where: {
           users: { some: { id: userJwt.id } },
@@ -127,8 +139,43 @@ export async function GET(req: NextRequest) {
       }
     })
 
-    const isLastPage = offset + vocabularies.length >= vocabulariesCount
-    const totalPages = Math.ceil(totalCount / size)
+    const getCount = () => {
+      switch (level) {
+        case -2:
+          return totalCount
+        case -1:
+          return vocabulariesCount
+        case 0:
+          return level0Count
+        case 1:
+          return level1Count
+        case 2:
+          return level2Count
+        case 3:
+          return level3Count
+        default:
+          return totalCount
+      }
+    }
+    const isLastPage = offset + vocabularies.length >= getCount()
+    const getPageCount = () => {
+      switch (level) {
+        case -2:
+          return Math.ceil(totalCount / size)
+        case -1:
+          return Math.ceil(vocabulariesCount / size)
+        case 0:
+          return Math.ceil(level0Count / size)
+        case 1:
+          return Math.ceil(level1Count / size)
+        case 2:
+          return Math.ceil(level2Count / size)
+        case 3:
+          return Math.ceil(level3Count / size)
+        default:
+          return Math.ceil(totalCount / size)
+      }
+    }
 
     const result = {
       counts: {
@@ -140,7 +187,7 @@ export async function GET(req: NextRequest) {
         levelLCount
       },
       level,
-      totalPages: totalPages,
+      pageCount: getPageCount(),
       isLastPage: isLastPage,
       vocabularies: modifiedVocabularies
     }

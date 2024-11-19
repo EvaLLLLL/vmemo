@@ -6,7 +6,7 @@ import { useVocabularies } from '@/hooks/useVocabularies'
 import { TVocabulary } from '@/types/vocabulary'
 import { useEffect, useState } from 'react'
 
-export default function Vocabulary() {
+export default function Memorizing() {
   const { vocabularies, counts } = useVocabularies()
   const {
     submit,

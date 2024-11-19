@@ -14,6 +14,9 @@ importers:
       '@radix-ui/react-avatar':
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz)(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+      '@radix-ui/react-checkbox':
+        specifier: ^1.1.2
+        version: 1.1.2(@types/react-dom@https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz)(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
       '@radix-ui/react-collapsible':
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz)(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
@@ -35,12 +38,18 @@ importers:
       '@radix-ui/react-switch':
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz)(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+      '@radix-ui/react-tabs':
+        specifier: ^1.1.1
+        version: 1.1.1(@types/react-dom@https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz)(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
       '@radix-ui/react-tooltip':
         specifier: ^1.1.4
         version: 1.1.4(@types/react-dom@https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz)(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
       '@tanstack/react-query':
         specifier: ^5.59.20
         version: 5.59.20(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.20.5(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
       '@types/node':
         specifier: 20.4.8
         version: https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz
@@ -477,6 +486,20 @@ packages:
       '@types/react-dom':
         optional: true
 
+  '@radix-ui/react-checkbox@1.1.2':
+    resolution: {integrity: sha512-/i0fl686zaJbDQLNKrkCbMyDm6FQMt4jg323k7HuqitoANm9sE23Ql8yOK3Wusk34HSLKDChhMux05FnP6KUkw==}
+    version: 1.1.2
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
   '@radix-ui/react-collapsible@1.1.1':
     resolution: {integrity: sha512-1///SnrfQHJEofLokyczERxQbWfCGQlQ2XsCZMucVs6it+lq9iw4vXy+uDn1edlb58cOZOWSldnfPAYcT4O/Yg==}
     version: 1.1.1
@@ -757,6 +780,20 @@ packages:
       '@types/react-dom':
         optional: true
 
+  '@radix-ui/react-tabs@1.1.1':
+    resolution: {integrity: sha512-3GBUDmP2DvzmtYLMsHmpA1GtR46ZDZ+OreXM/N+kkQJOPIgytFWWTfDQmBQKBvaFS0Vno0FktdbVzN28KGrMdw==}
+    version: 1.1.1
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
   '@radix-ui/react-tooltip@1.1.4':
     resolution: {integrity: sha512-QpObUH/ZlpaO4YgHSaYzrLO2VuO+ZBFFgGzjMUPwtiYnAzzNNDPJeEGRrT7qNOrWm/Jr08M1vlp+vTHtnSQ0Uw==}
     version: 1.1.4
@@ -878,6 +915,18 @@ packages:
     version: 5.59.20
     peerDependencies:
       react: ^18 || ^19
+
+  '@tanstack/react-table@8.20.5':
+    resolution: {integrity: sha512-WEHopKw3znbUZ61s9i0+i9g8drmDo6asTWbrQh8Us63DAk/M0FkmIqERew6P71HI75ksZ2Pxyuf4vvKh9rAkiA==}
+    version: 8.20.5
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+
+  '@tanstack/table-core@8.20.5':
+    resolution: {integrity: sha512-P9dF7XbibHph2PFRz8gfBKEXEY/HJPOhym8CHmjF8y3q5mWpKx9xtZapXQUWCgkqvsK0R46Azuz+VaxD4Xl+Tg==}
+    engines: {node: '>=12'}
 
   '@types/bcryptjs@2.4.6':
     resolution: {integrity: sha512-9xlo6R2qDs5uixm0bcIqCeMCE6HiQsIyel9KQySStiyqNl2tnj2mP3DX1Nf56MD6KMenNNlBBsy3LJ7gUEQPXQ==}
@@ -3215,6 +3264,22 @@ snapshots:
       '@types/react': https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz
       '@types/react-dom': https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz
 
+  '@radix-ui/react-checkbox@1.1.2(@types/react-dom@https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz)(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)':
+    dependencies:
+      '@radix-ui/primitive': 1.1.0
+      '@radix-ui/react-compose-refs': 1.1.0(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+      '@radix-ui/react-context': 1.1.1(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+      '@radix-ui/react-presence': 1.1.1(@types/react-dom@https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz)(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz)(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+      '@radix-ui/react-use-previous': 1.1.0(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+      '@radix-ui/react-use-size': 1.1.0(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+      react: https://registry.npmmirror.com/react/-/react-18.2.0.tgz
+      react-dom: https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+    optionalDependencies:
+      '@types/react': https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz
+      '@types/react-dom': https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz
+
   '@radix-ui/react-collapsible@1.1.1(@types/react-dom@https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz)(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)':
     dependencies:
       '@radix-ui/primitive': 1.1.0
@@ -3471,6 +3536,22 @@ snapshots:
       '@types/react': https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz
       '@types/react-dom': https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz
 
+  '@radix-ui/react-tabs@1.1.1(@types/react-dom@https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz)(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)':
+    dependencies:
+      '@radix-ui/primitive': 1.1.0
+      '@radix-ui/react-context': 1.1.1(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+      '@radix-ui/react-direction': 1.1.0(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+      '@radix-ui/react-id': 1.1.0(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+      '@radix-ui/react-presence': 1.1.1(@types/react-dom@https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz)(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz)(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+      '@radix-ui/react-roving-focus': 1.1.0(@types/react-dom@https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz)(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+      react: https://registry.npmmirror.com/react/-/react-18.2.0.tgz
+      react-dom: https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+    optionalDependencies:
+      '@types/react': https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz
+      '@types/react-dom': https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz
+
   '@radix-ui/react-tooltip@1.1.4(@types/react-dom@https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.2.7.tgz)(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)':
     dependencies:
       '@radix-ui/primitive': 1.1.0
@@ -3568,6 +3649,14 @@ snapshots:
     dependencies:
       '@tanstack/query-core': 5.59.20
       react: https://registry.npmmirror.com/react/-/react-18.2.0.tgz
+
+  '@tanstack/react-table@8.20.5(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)':
+    dependencies:
+      '@tanstack/table-core': 8.20.5
+      react: https://registry.npmmirror.com/react/-/react-18.2.0.tgz
+      react-dom: https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
+
+  '@tanstack/table-core@8.20.5': {}
 
   '@types/bcryptjs@2.4.6': {}
 

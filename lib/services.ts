@@ -26,7 +26,7 @@ interface IGetVocabulariesParams {
 
 interface IVocabulariesResponse {
   isLastPage: boolean
-  totalPages: number
+  pageCount: number
   vocabularies: TVocabulary[]
   counts: {
     totalCount: number
