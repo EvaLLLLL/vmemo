@@ -32,9 +32,15 @@ importers:
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
+      class-variance-authority:
+        specifier: ^0.7.0
+        version: 0.7.0
       classnames:
         specifier: ^2.3.2
         version: https://registry.npmmirror.com/classnames/-/classnames-2.3.2.tgz
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       crypto-js:
         specifier: ^4.1.1
         version: https://registry.npmmirror.com/crypto-js/-/crypto-js-4.1.1.tgz
@@ -50,6 +56,9 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      lucide-react:
+        specifier: ^0.460.0
+        version: 0.460.0(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
       next:
         specifier: 13.4.13
         version: 13.4.13(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)(sass@1.80.6)
@@ -74,6 +83,9 @@ importers:
       tailwindcss:
         specifier: ^3.4.3
         version: 3.4.14
+      tailwindcss-animate:
+        specifier: ^1.0.7
+        version: 1.0.7(tailwindcss@3.4.14)
       zustand:
         specifier: ^5.0.1
         version: 5.0.1(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.2.18.tgz)(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
@@ -752,12 +764,23 @@ packages:
     resolution: {integrity: sha512-n8enUVCED/KVRQlab1hr3MVpcVMvxtZjmEa956u+4YijlmQED223XMSYj2tLuKvr4jcCTzNNMpQDUer72MMmzA==}
     engines: {node: '>= 14.16.0'}
 
+  class-variance-authority@0.7.0:
+    resolution: {integrity: sha512-jFI8IQw4hczaL4ALINxqLEXQbWcNjoSkloa4IaufXCJr6QawJyw7tuRysRsrE8w2p/4gGaxKIt/hX3qz/IbD1A==}
+
   classnames@https://registry.npmmirror.com/classnames/-/classnames-2.3.2.tgz:
     resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==, tarball: https://registry.npmmirror.com/classnames/-/classnames-2.3.2.tgz}
     version: 2.3.2
 
   client-only@0.0.1:
     resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
+
+  clsx@2.0.0:
+    resolution: {integrity: sha512-rQ1+kcj+ttHG0MKVGBUXwayCCF1oh39BF5COIpRzuCEv8Mwjv0XucrI2ExNTOn9IlLifGClWQcU9BrZORvtw6Q==}
+    engines: {node: '>=6'}
+
+  clsx@2.1.1:
+    resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
+    engines: {node: '>=6'}
 
   color-convert@2.0.1:
     resolution: {integrity: sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==}
@@ -1591,6 +1614,12 @@ packages:
     version: 6.0.0
     engines: {node: '>=10'}
 
+  lucide-react@0.460.0:
+    resolution: {integrity: sha512-BVtq/DykVeIvRTJvRAgCsOwaGL8Un3Bxh8MbDxMhEWlZay3T4IpEKDEpwt5KZ0KJMHzgm6jrltxlT5eXOWXDHg==}
+    version: 0.460.0
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
+
   merge-stream@https://registry.npmmirror.com/merge-stream/-/merge-stream-2.0.0.tgz:
     resolution: {integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==, tarball: https://registry.npmmirror.com/merge-stream/-/merge-stream-2.0.0.tgz}
     version: 2.0.0
@@ -2219,6 +2248,11 @@ packages:
   tailwind-merge@https://registry.npmmirror.com/tailwind-merge/-/tailwind-merge-1.14.0.tgz:
     resolution: {integrity: sha512-3mFKyCo/MBcgyOTlrY8T7odzZFx+w+qKSMAmdFzRvqBfLlSigU6TZnlFHK0lkMwj9Bj8OYU+9yW9lmGuS0QEnQ==, tarball: https://registry.npmmirror.com/tailwind-merge/-/tailwind-merge-1.14.0.tgz}
     version: 1.14.0
+
+  tailwindcss-animate@1.0.7:
+    resolution: {integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || insiders'
 
   tailwindcss@3.4.14:
     resolution: {integrity: sha512-IcSvOcTRcUtQQ7ILQL5quRDg7Xs93PdJEk1ZLbhhvJc7uj/OAhYOnruEiwnGgBvUtaUAJ8/mhSw1o8L2jCiENA==}
@@ -2991,9 +3025,17 @@ snapshots:
     dependencies:
       readdirp: 4.0.2
 
+  class-variance-authority@0.7.0:
+    dependencies:
+      clsx: 2.0.0
+
   classnames@https://registry.npmmirror.com/classnames/-/classnames-2.3.2.tgz: {}
 
   client-only@0.0.1: {}
+
+  clsx@2.0.0: {}
+
+  clsx@2.1.1: {}
 
   color-convert@2.0.1:
     dependencies:
@@ -3827,6 +3869,10 @@ snapshots:
     dependencies:
       yallist: https://registry.npmmirror.com/yallist/-/yallist-4.0.0.tgz
 
+  lucide-react@0.460.0(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz):
+    dependencies:
+      react: https://registry.npmmirror.com/react/-/react-18.2.0.tgz
+
   merge-stream@https://registry.npmmirror.com/merge-stream/-/merge-stream-2.0.0.tgz: {}
 
   merge2@1.4.1: {}
@@ -4341,6 +4387,10 @@ snapshots:
       tslib: https://registry.npmmirror.com/tslib/-/tslib-2.6.1.tgz
 
   tailwind-merge@https://registry.npmmirror.com/tailwind-merge/-/tailwind-merge-1.14.0.tgz: {}
+
+  tailwindcss-animate@1.0.7(tailwindcss@3.4.14):
+    dependencies:
+      tailwindcss: 3.4.14
 
   tailwindcss@3.4.14:
     dependencies:
