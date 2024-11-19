@@ -5,7 +5,7 @@ import { useVocabularies } from './useVocabularies'
 export const useVocabularyActions = () => {
   const { refetchVocabularies } = useVocabularies()
 
-  const { mutate: saveWords } = useMutation({
+  const { mutate: saveWords, isPending: isSaving } = useMutation({
     mutationKey: [VocabularyServices.saveVocabularies.key],
     mutationFn: VocabularyServices.saveVocabularies.fn,
     onSuccess: () => refetchVocabularies()
@@ -29,5 +29,5 @@ export const useVocabularyActions = () => {
     onSuccess: () => refetchVocabularies()
   })
 
-  return { saveWords, deleteWord, addMemory, reduceMemory }
+  return { saveWords, deleteWord, addMemory, reduceMemory, isSaving }
 }

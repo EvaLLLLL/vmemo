@@ -3,8 +3,9 @@
 import { useState } from 'react'
 import { SelectedVocabularies } from '@/components/SelectedVocabularies'
 import { useSelectedWordsStore } from '@/hooks/useSelectedWordsStore'
+import { Input } from '@/components/ui/input'
 
-export default function Ecdict() {
+export default function Dictionary() {
   const { isAutoSpeak, addTranslatedWord } = useSelectedWordsStore()
 
   const onSelectWord = async (word?: string) => {
@@ -18,9 +19,9 @@ export default function Ecdict() {
   }
 
   return (
-    <div>
+    <div className="flex h-full flex-1 flex-col gap-y-4">
       <SearchDict onSelectWord={onSelectWord} />
-      <SelectedVocabularies isDict />
+      <SelectedVocabularies />
     </div>
   )
 }
@@ -35,14 +36,14 @@ const SearchDict: React.FC<{
   }
 
   return (
-    <div className="flex size-full max-h-16 shrink-0 flex-col items-center justify-center gap-y-2 bg-stone-100 px-4">
-      <input
+    <div className="px-4">
+      <Input
         autoFocus
+        placeholder="type here, press Enter to get translation"
         tabIndex={0}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => e.code === 'Enter' && onEnter()}
-        className="w-full rounded border-2 border-orange-100 bg-slate-100 px-2 py-1 outline-none transition-colors duration-200 focus:border-teal-400"
       />
     </div>
   )

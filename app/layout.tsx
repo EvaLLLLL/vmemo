@@ -1,8 +1,9 @@
 import './globals.scss'
-import type { Metadata } from 'next'
+import { Metadata } from 'next'
 import { Open_Sans } from 'next/font/google'
-import Navigations from '@/components/Navigation'
 import ReactQueryProvider from '@/components/ReactQueryProvider'
+import { SidebarProvider } from '@/components/SidebarProvider'
+import { cn } from '@/lib/utils'
 
 const openSans = Open_Sans({
   weight: ['400', '500', '600', '700'],
@@ -23,12 +24,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={openSans.className}>
+      <body className={cn(openSans.className, 'h-screen')}>
         <ReactQueryProvider>
-          <main className="flex h-screen flex-col">
-            <Navigations />
-            {children}
-          </main>
+          <SidebarProvider>{children}</SidebarProvider>
         </ReactQueryProvider>
       </body>
     </html>

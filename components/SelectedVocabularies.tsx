@@ -1,12 +1,13 @@
-import cn from '@/utils/cn'
 import { WordItem } from '@/components/WordItem'
 import { useSelectedWordsStore } from '@/hooks/useSelectedWordsStore'
 import { useVocabularyActions } from '@/hooks/useVocabularyActions'
 import { useMemo } from 'react'
+import { Button } from './ui/button'
+import { Loader2 } from 'lucide-react'
+import { Switch } from './ui/switch'
+import { Label } from './ui/label'
 
-export const SelectedVocabularies: React.FC<{
-  isDict: boolean
-}> = ({ isDict }) => {
+export const SelectedVocabularies = () => {
   const {
     translatedWords,
     removeTranslatedWord,
@@ -14,7 +15,8 @@ export const SelectedVocabularies: React.FC<{
     setSelectedWord,
     purgeTranslatedWords
   } = useSelectedWordsStore()
-  const { saveWords } = useVocabularyActions()
+  const { saveWords, isSaving } = useVocabularyActions()
+  const { isAutoSpeak, setIsAutoSpeak } = useSelectedWordsStore()
 
   const wordsCount = useMemo(
     () => translatedWords?.length ?? 0,
@@ -26,14 +28,41 @@ export const SelectedVocabularies: React.FC<{
     saveWords(translatedWords)
   }
 
+  if (!translatedWords?.length) return null
+
   return (
-    <div
-      className={cn(
-        'px-8 pt-8 pb-4 w-2/5 bg-slate-200',
-        isDict && 'w-full flex-1 overflow-hidden'
-      )}>
-      <div className="relative h-full pt-6">
-        <div className="flex h-full flex-col gap-2 overflow-y-auto">
+    <div className="size-full overflow-hidden bg-slate-100 p-4">
+      <div className="flex h-full flex-col gap-y-4">
+        <div className="flex w-full items-center justify-between">
+          <Button variant="outline" onClick={purgeTranslatedWords}>
+            clear
+          </Button>
+          <div className="flex items-center gap-x-2">
+            <Switch
+              id="auto-speak"
+              checked={isAutoSpeak}
+              onCheckedChange={(e) => {
+                setIsAutoSpeak(e)
+              }}
+            />
+            <Label
+              htmlFor="airplane-mode"
+              className={isAutoSpeak ? 'text-slate-500' : 'text-slate-400'}>
+              Auto speak
+            </Label>
+          </div>
+          {isSaving ? (
+            <Button variant="outline" disabled>
+              <Loader2 className="animate-spin" />
+              Please wait
+            </Button>
+          ) : (
+            <Button variant="outline" onClick={onSave}>
+              save({wordsCount})
+            </Button>
+          )}
+        </div>
+        <div className="flex h-full flex-1 flex-col gap-2 overflow-y-auto pb-16">
           {translatedWords?.map((word, index) => (
             <WordItem
               key={`${word.origin}-${index}`}
@@ -49,18 +78,6 @@ export const SelectedVocabularies: React.FC<{
               onDelete={() => removeTranslatedWord(word?.origin)}
             />
           ))}
-        </div>
-        <div className="absolute -top-5 flex w-full items-center justify-between">
-          <button
-            onClick={purgeTranslatedWords}
-            className="rounded-full bg-teal-200 px-4 py-1 hover:bg-teal-100">
-            clear
-          </button>
-          <button
-            onClick={onSave}
-            className="rounded-full bg-teal-200 px-4 py-1 hover:bg-teal-100">
-            save({wordsCount})
-          </button>
         </div>
       </div>
     </div>

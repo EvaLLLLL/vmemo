@@ -1,6 +1,8 @@
 import { TVocabulary } from '@/types/vocabulary'
-import cn from '@/utils/cn'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, MouseEvent } from 'react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { HeadphonesIcon, XIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 export const WordItem: React.FC<{
   word: TVocabulary
@@ -9,6 +11,23 @@ export const WordItem: React.FC<{
   onDelete?: () => void
 }> = ({ word, isSelected, onDelete, onClick }) => {
   const ref = useRef<HTMLDivElement | null>(null)
+
+  const onClickSound = () => {
+    if (onClick) {
+      onClick()
+      return
+    }
+
+    if (!word.audio) return
+    const audioPlayer = new Audio(word.audio)
+    audioPlayer.play()
+  }
+
+  const onClickDelete = (e: MouseEvent<HTMLButtonElement>) => {
+    e?.stopPropagation()
+    onDelete?.()
+  }
+
   useEffect(() => {
     if (isSelected) {
       ref?.current?.scrollIntoView({
@@ -20,30 +39,18 @@ export const WordItem: React.FC<{
   }, [isSelected])
 
   return (
-    <div
-      ref={ref}
-      onClick={
-        onClick ??
-        function () {
-          if (!word.audio) return
-          const audioPlayer = new Audio(word.audio)
-          audioPlayer.play()
-        }
-      }
-      className={cn(
-        'flex flex-col justify-center py-1 px-4 bg-teal-50 rounded-2xl hover:bg-teal-200 cursor-pointer whitespace-pre-wrap relative group',
-        isSelected && 'bg-teal-200'
-      )}>
-      <div className="font-semibold">{word.origin}</div>
-      <div>{word.translation}</div>
-      <div
-        className="invisible absolute right-2 flex size-6 items-center justify-center rounded-full bg-slate-200 p-1 text-gray-400 hover:bg-slate-300 group-hover:visible"
-        onClick={(e) => {
-          e?.stopPropagation()
-          onDelete?.()
-        }}>
-        x
+    <Alert ref={ref}>
+      <AlertTitle>{word.origin}</AlertTitle>
+      <AlertDescription>{word.translation}</AlertDescription>
+
+      <div className="absolute right-4 top-4">
+        <Button variant="ghost" size="icon" onClick={onClickSound}>
+          <HeadphonesIcon />
+        </Button>
+        <Button variant="ghost" size="icon" onClick={onClickDelete}>
+          <XIcon />
+        </Button>
       </div>
-    </div>
+    </Alert>
   )
 }

@@ -1,9 +1,12 @@
 'use client'
 
-import cn from '@/utils/cn'
 import { useState } from 'react'
 import { SelectedVocabularies } from '@/components/SelectedVocabularies'
 import { useSelectedWordsStore } from '@/hooks/useSelectedWordsStore'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
 
 export default function Reading() {
   const { addTranslatedWord, isAutoSpeak } = useSelectedWordsStore()
@@ -23,7 +26,7 @@ export default function Reading() {
     <div className="flex flex-1 flex-col justify-center overflow-hidden align-middle">
       <div className="flex size-full overflow-hidden">
         <ReadingText onSelectWord={onSelectWord} />
-        <SelectedVocabularies isDict={false} />
+        <SelectedVocabularies />
       </div>
     </div>
   )
@@ -32,50 +35,44 @@ export default function Reading() {
 const ReadingText: React.FC<{
   onSelectWord: (word?: string) => void
 }> = ({ onSelectWord }) => {
-  const { isAutoSpeak, setIsAutoSpeak } = useSelectedWordsStore()
-
   const [isEdit, setIsEdit] = useState(true)
   const [textContent, setTextContent] = useState('')
 
   return (
-    <div className="h-full w-3/5 break-words bg-slate-100 p-8">
+    <div className="size-full break-words bg-slate-100 p-8">
       <div className="relative h-full pt-6">
         <div className="absolute -top-5 flex w-full items-center justify-between">
-          <button
-            onClick={() => setIsEdit(true)}
-            className={cn(
-              'rounded-full py-1 px-8 bg-orange-200 hover:bg-orange-100',
-              isEdit && 'bg-teal-200 hover:bg-teal-100'
-            )}>
-            edit
-          </button>
-          <button
-            onClick={() => setIsAutoSpeak(!isAutoSpeak)}
-            className={cn(
-              'rounded-full py-1 px-8 bg-orange-200 hover:bg-orange-100',
-              isAutoSpeak && 'bg-teal-200 hover:bg-teal-100'
-            )}>
-            auto speak
-          </button>
+          <div className="flex items-center gap-x-2">
+            <Switch
+              id="auto-speak"
+              checked={isEdit}
+              onCheckedChange={(e) => {
+                setIsEdit(e)
+              }}
+            />
+            <Label
+              htmlFor="airplane-mode"
+              className={isEdit ? 'text-slate-500' : 'text-slate-400'}>
+              {isEdit ? 'Editing' : 'Reading'}
+            </Label>
+          </div>
         </div>
         {isEdit ? (
-          <div className="relative size-full">
-            <textarea
+          <div className="flex size-full flex-col gap-y-2">
+            <Textarea
               tabIndex={0}
               autoFocus
-              className="size-full resize-none break-words rounded border-2 border-orange-100 bg-transparent p-8 pb-20 outline-none transition-colors duration-200 focus:border-teal-400"
+              placeholder="Type your passage here"
+              className="h-full flex-1 resize-none"
               value={textContent}
               onChange={(e) => setTextContent(e.target.value)}
             />
-            <button
+            <Button
+              disabled={!textContent}
               onClick={() => textContent && setIsEdit(false)}
-              className={cn(
-                'absolute bottom-2 left-1/2 -translate-x-1/2 w-3/4',
-                'rounded-full bg-orange-200 hover:bg-orange-100 py-1 px-8',
-                !textContent && 'bg-orange-100 cursor-not-allowed text-gray-500'
-              )}>
-              start
-            </button>
+              className="w-full">
+              Start Reading
+            </Button>
           </div>
         ) : (
           <div
