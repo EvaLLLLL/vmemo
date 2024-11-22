@@ -14,9 +14,11 @@ import { TVocabulary } from '@/types/vocabulary'
 import { useCallback, useEffect, useState } from 'react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { LevelStar } from '@/components/LevelStar'
+import { ProgressLine } from '@/components/ui/progress'
+import { getLevelColor } from '@/lib/utils'
 
-export default function Memorizing() {
-  const { vocabularies } = useVocabularies()
+export default function Flashcard() {
+  const { vocabularies, counts } = useVocabularies()
   const {
     submit,
     currrentVocabulary,
@@ -56,7 +58,58 @@ export default function Memorizing() {
   }, [isSubmiting, onSubmit])
 
   return (
-    <div className="flex h-full items-center justify-center gap-x-10">
+    <div className="flex h-full flex-col items-center gap-y-8 bg-slate-200 pt-4 md:pt-20">
+      <div className="w-full px-24">
+        <ProgressLine
+          label={`Word Memorization Progress (total: ${counts?.totalCount})`}
+          visualParts={[
+            {
+              label: counts?.level3Count || 0,
+              percentage: `${counts?.level3Count || 0 / (counts?.totalCount || 0)}%`,
+              color: getLevelColor(3),
+              tooltip: (
+                <div className="flex items-center justify-center gap-x-2 text-gray-500">
+                  {counts?.level3Count}
+                  <LevelStar level={3} />
+                </div>
+              )
+            },
+            {
+              label: counts?.level2Count || 0,
+              percentage: `${counts?.level2Count || 0 / (counts?.totalCount || 0)}%`,
+              color: getLevelColor(2),
+              tooltip: (
+                <div className="flex items-center justify-center gap-x-2 text-gray-500">
+                  {counts?.level2Count}
+                  <LevelStar level={2} />
+                </div>
+              )
+            },
+            {
+              label: counts?.level1Count || 0,
+              percentage: `${counts?.level1Count || 0 / (counts?.totalCount || 0)}%`,
+              color: getLevelColor(1),
+              tooltip: (
+                <div className="flex items-center justify-center gap-x-2 text-gray-500">
+                  {counts?.level1Count}
+                  <LevelStar level={1} />
+                </div>
+              )
+            },
+            {
+              label: counts?.level0Count || 0,
+              percentage: `${counts?.level0Count || 0 / (counts?.totalCount || 0)}%`,
+              color: getLevelColor(0),
+              tooltip: (
+                <div className="flex items-center justify-center gap-x-2 text-gray-500">
+                  {counts?.level0Count}
+                  <LevelStar level={0} />
+                </div>
+              )
+            }
+          ]}
+        />
+      </div>
       <Carousel className="flex items-center justify-center gap-x-10">
         {!isSummary && (
           <div className="max-w-xs">
@@ -78,10 +131,16 @@ export default function Memorizing() {
           </div>
         )}
         <div className="flex flex-col gap-y-4">
-          <div className="grid grid-cols-2 gap-2">
-            {vocabularies?.map((v) => (
-              <ListItem key={v.id} vocabulary={v} showTranslation={isSummary} />
-            ))}
+          <div className="hidden md:block">
+            <div className="grid grid-cols-2 gap-2">
+              {vocabularies?.map((v) => (
+                <ListItem
+                  key={v.id}
+                  vocabulary={v}
+                  showTranslation={isSummary}
+                />
+              ))}
+            </div>
           </div>
           {isSummary && (
             <Button

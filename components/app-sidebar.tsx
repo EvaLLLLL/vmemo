@@ -7,7 +7,8 @@ import {
   Github,
   SunMoon,
   LayoutDashboard,
-  BookMarkedIcon
+  BookMarkedIcon,
+  WalletCards
 } from 'lucide-react'
 
 import { NavMain } from '@/components/nav-main'
@@ -22,34 +23,41 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from '@/components/ui/sidebar'
+import { usePathname } from 'next/navigation'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname()
+
   const navMainData = [
     {
       title: 'Dashboard',
       url: '/',
       icon: LayoutDashboard,
-      isActive: true
+      isActive: pathname === '/'
     },
     {
       title: 'Dictionary',
       url: '/dictionary',
-      icon: BookMarkedIcon
+      icon: BookMarkedIcon,
+      isActive: pathname === '/dictionary'
     },
     {
       title: 'Reading',
       url: '/reading',
-      icon: BookOpen
+      icon: BookOpen,
+      isActive: pathname === '/reading'
     },
     {
-      title: 'Memorizing',
-      url: '/memorizing',
-      icon: Database
+      title: 'Flashcard',
+      url: '/flashcard',
+      icon: WalletCards,
+      isActive: pathname === '/flashcard'
     },
     {
-      title: 'My Vocabulary',
+      title: 'View Vocabulary List',
       url: '/vocabulary',
-      icon: Database
+      icon: Database,
+      isActive: pathname === '/vocabulary'
     }
   ]
 
