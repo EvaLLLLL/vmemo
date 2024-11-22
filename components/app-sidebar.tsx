@@ -23,8 +23,8 @@ import {
   SidebarMenuItem
 } from '@/components/ui/sidebar'
 
-const data = {
-  navMain: [
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const navMainData = [
     {
       title: 'Dashboard',
       url: '/',
@@ -51,8 +51,9 @@ const data = {
       url: '/vocabulary',
       icon: Database
     }
-  ],
-  navSecondary: [
+  ]
+
+  const navSecondaryData = [
     {
       title: 'Github',
       url: '#',
@@ -64,9 +65,7 @@ const data = {
       icon: SunMoon
     }
   ]
-}
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -87,8 +86,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <NavMain items={navMainData} />
+        <NavSecondary items={navSecondaryData} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />

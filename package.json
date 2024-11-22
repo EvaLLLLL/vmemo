@@ -39,6 +39,7 @@
     "classnames": "^2.3.2",
     "clsx": "^2.1.1",
     "crypto-js": "^4.1.1",
+    "embla-carousel-react": "^8.4.0",
     "eslint-config-next": "13.4.12",
     "jose": "^5.9.6",
     "jquery": "^3.7.0",
@@ -56,6 +57,7 @@
     "zustand": "^5.0.1"
   },
   "devDependencies": {
+    "@tailwindcss/line-clamp": "^0.4.4",
     "@tanstack/eslint-plugin-query": "^5.60.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/crypto-js": "^4.1.1",

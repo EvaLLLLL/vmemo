@@ -19,6 +19,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useVocabularies } from '@/hooks/useVocabularies'
 import { TVocabulary } from '@/types/vocabulary'
+import { LevelStar } from '@/components/LevelStar'
 
 export const columns: ColumnDef<TVocabulary>[] = [
   //   {
@@ -104,16 +105,16 @@ export default function Vocabulary() {
             All({counts?.totalCount})
           </TabsTrigger>
           <TabsTrigger value="level0" onClick={() => handleTabTrigger(0)}>
-            Level0({counts?.level0Count})
+            <LevelStar level={0} /> ({counts?.level0Count})
           </TabsTrigger>
           <TabsTrigger value="level1" onClick={() => handleTabTrigger(1)}>
-            Level1({counts?.level1Count})
+            <LevelStar level={1} /> ({counts?.level1Count})
           </TabsTrigger>
           <TabsTrigger value="level2" onClick={() => handleTabTrigger(2)}>
-            Level2({counts?.level2Count})
+            <LevelStar level={2} /> ({counts?.level2Count})
           </TabsTrigger>
           <TabsTrigger value="level3" onClick={() => handleTabTrigger(3)}>
-            Level3({counts?.level3Count})
+            <LevelStar level={3} /> ({counts?.level3Count})
           </TabsTrigger>
         </TabsList>
         <div className="mt-2 rounded-md border shadow">
@@ -165,10 +166,10 @@ export default function Vocabulary() {
           </Table>
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="flex-1 text-sm text-muted-foreground">
+          {/* <div className="flex-1 text-sm text-muted-foreground">
             {table.getFilteredSelectedRowModel().rows.length} of{' '}
             {table.getFilteredRowModel().rows.length} row(s) selected.
-          </div>
+          </div> */}
           <div className="space-x-2">
             <Button
               variant="outline"
