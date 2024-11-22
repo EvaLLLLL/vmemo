@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Overview } from '@/components/Overview'
+import { Overview } from '@/components/OverviewV2'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 export default function Dashboard() {
@@ -33,7 +33,7 @@ export default function Dashboard() {
   ]
 
   return (
-    <div className="flex flex-col items-center justify-center gap-y-8 overflow-y-auto bg-slate-200 p-12">
+    <div className="flex size-full flex-col items-center justify-center gap-y-8 overflow-y-auto bg-slate-200 px-16">
       <Overview />
 
       <div className="flex flex-col gap-y-4">
