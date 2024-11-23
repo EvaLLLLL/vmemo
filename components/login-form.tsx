@@ -1,4 +1,4 @@
-import Link from 'next/link'
+'use client'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -10,8 +10,28 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useAuth } from '@/hooks/useAuth'
+import { redirect } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 export function LoginForm() {
+  const { signin, isAuthenticated } = useAuth()
+
+  const [data, setData] = useState({
+    name: '',
+    password: ''
+  })
+
+  const onSignin = async () => {
+    await signin(data)
+  }
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      redirect('/')
+    }
+  }, [isAuthenticated])
+
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
@@ -28,6 +48,7 @@ export function LoginForm() {
               id="email"
               type="email"
               placeholder="m@example.com"
+              onChange={(e) => setData({ ...data, name: e.target.value })}
               required
             />
           </div>
@@ -38,21 +59,26 @@ export function LoginForm() {
                 Forgot your password?
               </Link> */}
             </div>
-            <Input id="password" type="password" required />
+            <Input
+              id="password"
+              type="password"
+              required
+              onChange={(e) => setData({ ...data, password: e.target.value })}
+            />
           </div>
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" onClick={onSignin}>
             Login
           </Button>
-          <Button variant="outline" className="w-full">
+          {/* <Button variant="outline" className="w-full">
             Login with Google
-          </Button>
+          </Button> */}
         </div>
-        <div className="mt-4 text-center text-sm">
+        {/* <div className="mt-4 text-center text-sm">
           Don&apos;t have an account?{' '}
           <Link href="#" className="underline">
             Sign up
           </Link>
-        </div>
+        </div> */}
       </CardContent>
     </Card>
   )

@@ -24,8 +24,11 @@ import {
   SidebarMenuItem
 } from '@/components/ui/sidebar'
 import { usePathname } from 'next/navigation'
+import { useAuth } from '@/hooks/useAuth'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { isAuthenticated } = useAuth()
+
   const pathname = usePathname()
 
   const navMainData = [
@@ -33,7 +36,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       title: 'Dashboard',
       url: '/',
       icon: LayoutDashboard,
-      isActive: pathname === '/'
+      isActive: pathname === '/',
+      disabled: isAuthenticated
     },
     {
       title: 'Dictionary',
@@ -51,13 +55,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       title: 'Flashcard',
       url: '/flashcard',
       icon: WalletCards,
-      isActive: pathname === '/flashcard'
+      isActive: pathname === '/flashcard',
+      disabled: isAuthenticated
     },
     {
       title: 'View Vocabulary List',
       url: '/vocabulary',
       icon: Database,
-      isActive: pathname === '/vocabulary'
+      isActive: pathname === '/vocabulary',
+      disabled: isAuthenticated
     }
   ]
 

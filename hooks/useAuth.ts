@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AuthServices } from '@/lib/services'
+import { redirect } from 'next/navigation'
 
 export function useAuth() {
   const queryClient = useQueryClient()
-
   const {
     data: user,
     isLoading: isLoaidngUser,
@@ -12,27 +12,28 @@ export function useAuth() {
   } = useQuery({
     queryKey: [AuthServices.getUser.key],
     queryFn: AuthServices.getUser.fn,
-    retry: false
+    retry: false,
+    throwOnError: false
   })
 
-  const { mutate: signup, isPending: isSigningUp } = useMutation({
+  const { mutateAsync: signup, isPending: isSigningUp } = useMutation({
     mutationKey: [AuthServices.signUp.key],
     mutationFn: AuthServices.signUp.fn,
     onSuccess: () => refetchUser()
   })
 
-  const { mutate: signin, isPending: isSigningIn } = useMutation({
+  const { mutateAsync: signin, isPending: isSigningIn } = useMutation({
     mutationKey: [AuthServices.signIn.key],
     mutationFn: AuthServices.signIn.fn,
     onSuccess: () => refetchUser()
   })
 
-  const { mutate: logout, isPending: isLogingOut } = useMutation({
+  const { mutateAsync: logout, isPending: isLogingOut } = useMutation({
     mutationKey: [AuthServices.logOut.key],
     mutationFn: AuthServices.logOut.fn,
     onSuccess: () => {
       queryClient.clear()
-      queryClient.setQueryData([AuthServices.getUser.key], null)
+      window.location.replace('/login')
     }
   })
 

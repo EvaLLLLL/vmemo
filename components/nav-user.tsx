@@ -20,10 +20,10 @@ import {
 import { useAuth } from '@/hooks/useAuth'
 
 export function NavUser() {
-  const { user, logout } = useAuth()
+  const { user, logout, isAuthenticated } = useAuth()
   const { isMobile } = useSidebar()
 
-  if (!user) return null
+  if (!isAuthenticated) return null
 
   return (
     <SidebarMenu>

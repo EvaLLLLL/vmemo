@@ -1,8 +1,18 @@
 import { NextResponse, NextRequest } from 'next/server'
 import { verifyAuth } from '@/lib/auth'
 
+const clientSideProtectedPath = ['/', '/flashcard', '/vocabulary']
+
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value
+
+  const isProtectedRoute = clientSideProtectedPath.includes(
+    request.nextUrl.pathname
+  )
+
+  if (isProtectedRoute && !token) {
+    return NextResponse.redirect(new URL('/login', request.nextUrl))
+  }
 
   if (request.nextUrl.pathname.startsWith('/api/auth')) {
     return NextResponse.next()
@@ -43,5 +53,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: '/api/:path*'
+  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)']
 }
