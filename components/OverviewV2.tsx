@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import dayjs from 'dayjs'
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 
 import {
   Card,
@@ -20,15 +20,9 @@ import {
 import { useMemoryList } from '@/hooks/useMemoryList'
 import { useMemo } from 'react'
 import groupBy from 'lodash/groupBy'
-import { useVocabularies } from '@/hooks/useVocabularies'
 
 export const Overview: React.FC = () => {
-  return (
-    <div className="grid grid-cols-2 gap-x-4">
-      <ActivityCart />
-      <LevelChart />
-    </div>
-  )
+  return <ActivityCart />
 }
 
 const chartConfig = {
@@ -126,100 +120,100 @@ export function ActivityCart() {
   )
 }
 
-const LevelChart: React.FC = () => {
-  const { counts } = useVocabularies()
+// const LevelChart: React.FC = () => {
+//   const { counts } = useVocabularies()
 
-  const chartData = useMemo(
-    () => [
-      {
-        level: 'level0',
-        count: counts?.level0Count,
-        fill: 'var(--color-level0)'
-      },
-      {
-        level: 'level1',
-        count: counts?.level1Count,
-        fill: 'var(--color-level1)'
-      },
-      {
-        level: 'level2',
-        count: counts?.level2Count,
-        fill: 'var(--color-level2)'
-      },
-      {
-        level: 'level3',
-        count: counts?.level3Count,
-        fill: 'var(--color-level3)'
-      },
-      {
-        level: 'levelL',
-        count: counts?.levelLCount,
-        fill: 'var(--color-levelL)'
-      }
-    ],
-    [counts]
-  )
+//   const chartData = useMemo(
+//     () => [
+//       {
+//         level: 'level0',
+//         count: counts?.level0Count,
+//         fill: 'var(--color-level0)'
+//       },
+//       {
+//         level: 'level1',
+//         count: counts?.level1Count,
+//         fill: 'var(--color-level1)'
+//       },
+//       {
+//         level: 'level2',
+//         count: counts?.level2Count,
+//         fill: 'var(--color-level2)'
+//       },
+//       {
+//         level: 'level3',
+//         count: counts?.level3Count,
+//         fill: 'var(--color-level3)'
+//       },
+//       {
+//         level: 'levelL',
+//         count: counts?.levelLCount,
+//         fill: 'var(--color-levelL)'
+//       }
+//     ],
+//     [counts]
+//   )
 
-  const chartConfig = {
-    count: {
-      label: 'count'
-    },
-    level0: {
-      label: 'level0',
-      color: 'hsl(var(--chart-1))'
-    },
-    level1: {
-      label: 'level1',
-      color: 'hsl(var(--chart-2))'
-    },
-    level2: {
-      label: 'level2',
-      color: 'hsl(var(--chart-3))'
-    },
-    level3: {
-      label: 'level3',
-      color: 'hsl(var(--chart-4))'
-    },
-    levelL: {
-      label: 'Other',
-      color: 'hsl(var(--chart-other))'
-    }
-  } satisfies ChartConfig
+//   const chartConfig = {
+//     count: {
+//       label: 'count'
+//     },
+//     level0: {
+//       label: 'level0',
+//       color: 'hsl(var(--chart-1))'
+//     },
+//     level1: {
+//       label: 'level1',
+//       color: 'hsl(var(--chart-2))'
+//     },
+//     level2: {
+//       label: 'level2',
+//       color: 'hsl(var(--chart-3))'
+//     },
+//     level3: {
+//       label: 'level3',
+//       color: 'hsl(var(--chart-4))'
+//     },
+//     levelL: {
+//       label: 'Other',
+//       color: 'hsl(var(--chart-other))'
+//     }
+//   } satisfies ChartConfig
 
-  return (
-    <Card className="overflow-hidden">
-      <CardHeader>
-        <CardTitle>Word Level Count</CardTitle>
-        <CardDescription>Level Distribution of All Saved Words</CardDescription>
-      </CardHeader>
-      <CardContent className="pt-10">
-        <ChartContainer config={chartConfig}>
-          <BarChart
-            accessibilityLayer
-            data={chartData}
-            layout="vertical"
-            margin={{
-              left: 0
-            }}>
-            <YAxis
-              dataKey="level"
-              type="category"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) =>
-                chartConfig[value as keyof typeof chartConfig]?.label
-              }
-            />
-            <XAxis dataKey="count" type="number" hide />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Bar dataKey="count" layout="vertical" radius={5} />
-          </BarChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
-  )
-}
+//   return (
+//     <Card className="overflow-hidden">
+//       <CardHeader>
+//         <CardTitle>Word Level Count</CardTitle>
+//         <CardDescription>Level Distribution of All Saved Words</CardDescription>
+//       </CardHeader>
+//       <CardContent className="pt-10">
+//         <ChartContainer config={chartConfig}>
+//           <BarChart
+//             accessibilityLayer
+//             data={chartData}
+//             layout="vertical"
+//             margin={{
+//               left: 0
+//             }}>
+//             <YAxis
+//               dataKey="level"
+//               type="category"
+//               tickLine={false}
+//               tickMargin={10}
+//               axisLine={false}
+//               tickFormatter={(value) =>
+//                 chartConfig[value as keyof typeof chartConfig]?.label
+//               }
+//             />
+//             <XAxis dataKey="count" type="number" hide />
+//             <ChartTooltip
+//               cursor={false}
+//               content={<ChartTooltipContent hideLabel />}
+//             />
+//             <Bar dataKey="count" layout="vertical" radius={5} />
+//           </BarChart>
+//         </ChartContainer>
+//       </CardContent>
+//     </Card>
+//   )
+// }
