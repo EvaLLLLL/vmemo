@@ -30,7 +30,10 @@ export function NavUser() {
     <SidebarMenu>
       <SidebarMenuItem>
         {!isAuthenticated ? (
-          <Button className="w-full" onClick={() => router.push('/login')}>
+          <Button
+            className="w-full"
+            variant="outline"
+            onClick={() => router.push('/login')}>
             Login
           </Button>
         ) : (

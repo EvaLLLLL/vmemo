@@ -12,9 +12,11 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/hooks/useAuth'
 import { useState } from 'react'
+import { Loader2 } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export function LoginForm() {
-  const { signin } = useAuth()
+  const { signin, isLoading } = useAuth()
 
   const [data, setData] = useState({
     name: '',
@@ -44,9 +46,6 @@ export function LoginForm() {
           <div className="grid gap-2">
             <div className="flex items-center">
               <Label htmlFor="password">Password</Label>
-              {/* <Link href="#" className="ml-auto inline-block text-sm underline">
-                Forgot your password?
-              </Link> */}
             </div>
             <Input
               id="password"
@@ -55,19 +54,15 @@ export function LoginForm() {
               onChange={(e) => setData({ ...data, password: e.target.value })}
             />
           </div>
-          <Button type="submit" className="w-full" onClick={() => signin(data)}>
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="w-full"
+            onClick={() => signin(data)}>
+            <Loader2 className={cn(isLoading ? 'animate-spin' : 'hidden')} />
             Login
           </Button>
-          {/* <Button variant="outline" className="w-full">
-            Login with Google
-          </Button> */}
         </div>
-        {/* <div className="mt-4 text-center text-sm">
-          Don&apos;t have an account?{' '}
-          <Link href="#" className="underline">
-            Sign up
-          </Link>
-        </div> */}
       </CardContent>
     </Card>
   )
