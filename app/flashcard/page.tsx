@@ -58,7 +58,7 @@ export default function Flashcard() {
   }, [isSubmiting, onSubmit])
 
   return (
-    <div className="flex h-full flex-col items-center gap-y-8 pt-4 md:pt-20">
+    <div className="flex h-full flex-col items-center gap-y-8 overflow-y-auto py-4 md:py-20">
       <div className="w-full px-24">
         <ProgressLine
           label={`Word Memorization Progress (total: ${counts?.totalCount})`}

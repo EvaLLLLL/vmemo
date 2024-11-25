@@ -36,7 +36,7 @@ const SearchDict: React.FC<{
   }
 
   return (
-    <div className="px-4">
+    <div className="px-8 pt-4">
       <Input
         autoFocus
         placeholder="type here, press Enter to get translation"

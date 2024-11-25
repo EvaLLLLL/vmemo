@@ -52,7 +52,7 @@ const ReadingText: React.FC<{
             />
             <Label
               htmlFor="airplane-mode"
-              className={isEdit ? 'text-slate-500' : 'text-slate-400'}>
+              className={isEdit ? 'text-primary' : 'text-muted-foreground'}>
               {isEdit ? 'Editing' : 'Reading'}
             </Label>
           </div>

@@ -31,11 +31,11 @@ export const SelectedVocabularies = () => {
   }
 
   return (
-    <div className="size-full overflow-hidden p-4">
+    <div className="size-full overflow-hidden px-8 pb-8 pt-2">
       <div className="flex h-full flex-col gap-y-4">
         <div className="flex w-full items-center justify-between">
           <Button variant="outline" onClick={purgeTranslatedWords}>
-            clear
+            Clear
           </Button>
           <div className="flex items-center gap-x-2">
             <Switch
@@ -47,7 +47,9 @@ export const SelectedVocabularies = () => {
             />
             <Label
               htmlFor="airplane-mode"
-              className={isAutoSpeak ? 'text-slate-500' : 'text-slate-400'}>
+              className={
+                isAutoSpeak ? 'text-primary' : 'text-muted-foreground'
+              }>
               Auto speak
             </Label>
           </div>
@@ -58,11 +60,11 @@ export const SelectedVocabularies = () => {
             </Button>
           ) : (
             <Button variant="outline" onClick={onSave}>
-              save({wordsCount})
+              Save({wordsCount})
             </Button>
           )}
         </div>
-        <div className="flex h-full flex-1 flex-col gap-2 overflow-y-auto pb-16">
+        <div className="flex h-full flex-1 flex-col gap-2 overflow-y-auto rounded-md border border-accent p-4">
           {translatedWords?.map((word, index) => (
             <WordItem
               key={`${word.origin}-${index}`}
