@@ -44,7 +44,7 @@ export const ProgressLine: React.FC<{
   return (
     <TooltipProvider>
       <div className="font-bold">{label}</div>
-      <div className="my-5 flex h-6 overflow-hidden rounded-xl bg-accent border border-primary">
+      <div className="my-5 flex h-6 overflow-hidden rounded-xl border border-primary bg-accent">
         {visualParts.map((item, index) => {
           return (
             <Tooltip key={index} delayDuration={0}>
@@ -55,7 +55,7 @@ export const ProgressLine: React.FC<{
                     height: 24,
                     backgroundColor: item.color
                   }}
-                  className="text-center transition-[width] duration-600 last:rounded-r-xl">
+                  className="text-center transition-[width] duration-700 last:rounded-r-xl">
                   {!!item.label && (
                     <span className="text-xs text-foreground">
                       {item.label}

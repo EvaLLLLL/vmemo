@@ -29,20 +29,7 @@ import {
   ChevronsRight
 } from 'lucide-react'
 
-export const columns: ColumnDef<TVocabulary>[] = [
-  //   {
-  //     id: 'select',
-  //     header: '',
-  //     cell: ({ row }) => (
-  //       <Checkbox
-  //         checked={row.getIsSelected()}
-  //         onCheckedChange={(value) => row.toggleSelected(!!value)}
-  //         aria-label="Select row"
-  //       />
-  //     ),
-  //     enableSorting: false,
-  //     enableHiding: false
-  //   },
+const columns: ColumnDef<TVocabulary>[] = [
   {
     accessorKey: 'id',
     header: 'id',
@@ -84,8 +71,6 @@ export const columns: ColumnDef<TVocabulary>[] = [
 ]
 
 export default function Vocabulary() {
-  //   const [rowSelection, setRowSelection] = useState({})
-
   const {
     vocabularies,
     pageCount,
@@ -105,10 +90,6 @@ export default function Vocabulary() {
     manualPagination: true,
     enableRowSelection: true,
     getCoreRowModel: getCoreRowModel()
-    // onRowSelectionChange: setRowSelection,
-    // state: {
-    //   rowSelection
-    // }
   })
 
   const handleTabTrigger = (level: number) => {
