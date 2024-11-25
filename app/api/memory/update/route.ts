@@ -52,13 +52,16 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    await prisma.memory.createMany({
-      data: newVocabularies.map((id) => ({
-        vocabularyId: id,
-        userId: userJwt.id as number,
-        level: 1
-      }))
-    })
+    if (newVocabularies.length) {
+      await prisma.memory.createMany({
+        data: newVocabularies.map((id) => ({
+          updatedAt: new Date(),
+          vocabularyId: id,
+          userId: userJwt.id as number,
+          level: 0
+        }))
+      })
+    }
 
     return new NextResponse(JSON.stringify({ message: 'add successfully' }), {
       status: 200

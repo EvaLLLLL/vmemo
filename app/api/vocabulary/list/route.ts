@@ -39,7 +39,10 @@ export async function GET(req: NextRequest) {
       vocabularies = await prisma.vocabulary.findMany({
         where: {
           users: { some: { id: userJwt.id } },
-          memories: { some: { userId: userJwt.id } }
+          OR: [
+            { memories: { none: {} } },
+            { memories: { some: { userId: userJwt.id } } }
+          ]
         },
         include: { memories: true },
         take: size,

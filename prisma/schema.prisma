@@ -33,7 +33,7 @@ model Memory {
   vocabularyId Int
   level        Int
   createdAt    DateTime    @default(now()) @db.Timestamp(6)
-  updatedAt    DateTime    @updatedAt
+  updatedAt    DateTime
   user         User?       @relation(fields: [userId], references: [id])
   vocabulary   Vocabulary? @relation(fields: [vocabularyId], references: [id])
 }

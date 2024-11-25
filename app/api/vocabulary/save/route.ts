@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
     )
     const ids = records.map((r) => ({ id: r.id }))
 
-    if (filterVocabularies.length) {
+    if (ids.length) {
       await prisma.user.update({
         where: { id: userJwt.id as number },
         data: {
