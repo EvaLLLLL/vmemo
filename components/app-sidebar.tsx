@@ -5,10 +5,11 @@ import {
   Command,
   Database,
   Github,
-  SunMoon,
   LayoutDashboard,
   BookMarkedIcon,
-  WalletCards
+  WalletCards,
+  SunIcon,
+  MoonIcon
 } from 'lucide-react'
 
 import { NavMain } from '@/components/nav-main'
@@ -25,6 +26,7 @@ import {
 } from '@/components/ui/sidebar'
 import { usePathname } from 'next/navigation'
 import { useAuth } from '@/hooks/useAuth'
+import { useTheme } from 'next-themes'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { isAuthenticated } = useAuth()
@@ -67,16 +69,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     }
   ]
 
+  const { theme, setTheme } = useTheme()
+
   const navSecondaryData = [
     {
       title: 'Github',
-      url: '#',
+      onClick: () => {
+        window.location.replace('https://github.com/EvaLLLLL/vmemo')
+      },
       icon: Github
     },
     {
-      title: 'Theme',
-      url: '#',
-      icon: SunMoon
+      title: 'Toggle theme',
+      onClick: () => {
+        setTheme(theme === 'light' ? 'dark' : 'light')
+      },
+      icon: theme === 'light' ? SunIcon : MoonIcon
     }
   ]
 
@@ -91,8 +99,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <Command className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Acme Inc</span>
-                  <span className="truncate text-xs">Enterprise</span>
+                  <span className="truncate font-semibold">VMEMO</span>
+                  <span className="truncate text-xs">v1.0.0-beta</span>
                 </div>
               </a>
             </SidebarMenuButton>

@@ -39,7 +39,7 @@ const ReadingText: React.FC<{
   const [textContent, setTextContent] = useState('')
 
   return (
-    <div className="size-full break-words bg-slate-100 p-8">
+    <div className="size-full break-words p-8">
       <div className="relative h-full pt-6">
         <div className="absolute -top-5 flex w-full items-center justify-between">
           <div className="flex items-center gap-x-2">

@@ -104,6 +104,9 @@ importers:
       next:
         specifier: 13.4.13
         version: 13.4.13(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)(sass@1.80.6)
+      next-themes:
+        specifier: ^0.4.3
+        version: 0.4.3(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
       papaparse:
         specifier: ^5.4.1
         version: 5.4.1
@@ -2356,6 +2359,13 @@ packages:
 
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
+
+  next-themes@0.4.3:
+    resolution: {integrity: sha512-nG84VPkTdUHR2YeD89YchvV4I9RbiMAql3GiLEQlPvq1ioaqPaIReK+yMRdg/zgiXws620qS1rU30TiWmmG9lA==}
+    version: 0.4.3
+    peerDependencies:
+      react: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
 
   next@13.4.13:
     resolution: {integrity: sha512-A3YVbVDNeXLhWsZ8Nf6IkxmNlmTNz0yVg186NJ97tGZqPDdPzTrHotJ+A1cuJm2XfuWPrKOUZILl5iBQkIf8Jw==}
@@ -5212,6 +5222,11 @@ snapshots:
   nanoid@https://registry.npmmirror.com/nanoid/-/nanoid-3.3.6.tgz: {}
 
   natural-compare@1.4.0: {}
+
+  next-themes@0.4.3(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz):
+    dependencies:
+      react: https://registry.npmmirror.com/react/-/react-18.2.0.tgz
+      react-dom: https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
 
   next@13.4.13(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz))(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)(sass@1.80.6):
     dependencies:

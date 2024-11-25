@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react'
 import { type LucideIcon } from 'lucide-react'
 
@@ -8,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from '@/components/ui/sidebar'
+import { useHasMounted } from '@/hooks/useHasMounted'
 
 export function NavSecondary({
   items,
@@ -15,21 +18,23 @@ export function NavSecondary({
 }: {
   items: {
     title: string
-    url: string
     icon: LucideIcon
+    onClick: () => void
   }[]
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+  const hasMounted = useHasMounted()
+
+  if (!hasMounted) return null
+
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild size="sm">
-                <a href={item.url}>
-                  <item.icon />
-                  <span>{item.title}</span>
-                </a>
+              <SidebarMenuButton size="sm" onClick={item.onClick}>
+                <item.icon />
+                <span>{item.title}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

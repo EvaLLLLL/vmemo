@@ -4,6 +4,7 @@ import { Open_Sans } from 'next/font/google'
 import ReactQueryProvider from '@/components/ReactQueryProvider'
 import { SidebarProvider } from '@/components/SidebarProvider'
 import { cn } from '@/lib/utils'
+import { ThemeProvider } from '@/components/theme-provider'
 
 const openSans = Open_Sans({
   weight: ['400', '500', '600', '700'],
@@ -23,11 +24,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={cn(openSans.className, 'h-screen')}>
-        <ReactQueryProvider>
-          <SidebarProvider>{children}</SidebarProvider>
-        </ReactQueryProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className={cn(openSans.className)}>
+        <ThemeProvider attribute="class" defaultTheme="dark">
+          <ReactQueryProvider>
+            <SidebarProvider>{children}</SidebarProvider>
+          </ReactQueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

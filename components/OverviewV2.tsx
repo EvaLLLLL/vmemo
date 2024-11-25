@@ -28,14 +28,6 @@ export const Overview: React.FC = () => {
 const chartConfig = {
   views: {
     label: 'Word Count'
-  },
-  desktop: {
-    label: 'Desktop',
-    color: 'hsl(var(--chart-1))'
-  },
-  mobile: {
-    label: 'Mobile',
-    color: 'hsl(var(--chart-2))'
   }
 } satisfies ChartConfig
 
@@ -112,7 +104,7 @@ export function ActivityCart() {
                 />
               }
             />
-            <Bar dataKey="count" fill="hsl(var(--chart-5))" />
+            <Bar dataKey="count" fill="hsl(var(--chart-2))" radius={8} />
           </BarChart>
         </ChartContainer>
       </CardContent>

@@ -5,6 +5,7 @@ import {
   useQuery,
   useQueryClient
 } from '@tanstack/react-query'
+import { useAuth } from './useAuth'
 
 const defaultPagination = {
   level: -1,
@@ -17,6 +18,7 @@ export const useVocabularies = (pg?: {
   pageIndex: number
   size: number
 }) => {
+  const { isAuthenticated } = useAuth()
   const queryClient = useQueryClient()
   const [pagination, setPagination] = useState(pg || defaultPagination)
 
@@ -32,12 +34,13 @@ export const useVocabularies = (pg?: {
         level: pagination.level,
         page: pagination.pageIndex
       }),
-    placeholderData: keepPreviousData
+    placeholderData: keepPreviousData,
+    enabled: isAuthenticated
   })
 
   // prefetch the next page
   useEffect(() => {
-    if (!isPlaceholderData && !data?.isLastPage) {
+    if (isAuthenticated && !isPlaceholderData && !data?.isLastPage) {
       queryClient.prefetchQuery({
         queryKey: [VocabularyServices.getVocabularies.key, pagination],
         queryFn: () =>
@@ -48,7 +51,13 @@ export const useVocabularies = (pg?: {
           })
       })
     }
-  }, [data?.isLastPage, isPlaceholderData, pagination, queryClient])
+  }, [
+    data?.isLastPage,
+    isAuthenticated,
+    isPlaceholderData,
+    pagination,
+    queryClient
+  ])
 
   const hasPreviousPage = pagination.pageIndex > 1
   const hasNextPage =

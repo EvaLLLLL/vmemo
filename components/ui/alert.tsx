@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const alertVariants = cva(
-  'relative w-full cursor-pointer rounded-lg border px-4 py-3 text-sm shadow hover:bg-emerald-50 hover:shadow-xl',
+  'relative w-full cursor-pointer rounded-lg border px-4 py-3 text-sm shadow hover:bg-chart-2 hover:shadow-xl',
   {
     variants: {
       variant: {

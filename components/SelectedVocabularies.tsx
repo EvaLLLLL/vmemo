@@ -31,7 +31,7 @@ export const SelectedVocabularies = () => {
   }
 
   return (
-    <div className="size-full overflow-hidden bg-slate-200 p-4">
+    <div className="size-full overflow-hidden p-4">
       <div className="flex h-full flex-col gap-y-4">
         <div className="flex w-full items-center justify-between">
           <Button variant="outline" onClick={purgeTranslatedWords}>
@@ -121,7 +121,7 @@ const WordItem: React.FC<{
   return (
     <Alert
       ref={ref}
-      className={cn('group', isSelected && 'border-green-700')}
+      className={cn('group', isSelected && 'border-primary')}
       onClick={onClick}>
       <AlertTitle>{word.origin}</AlertTitle>
       <AlertDescription>{word.translation}</AlertDescription>

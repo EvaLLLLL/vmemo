@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AuthServices } from '@/lib/services'
-import { redirect } from 'next/navigation'
 
 export function useAuth() {
   const queryClient = useQueryClient()

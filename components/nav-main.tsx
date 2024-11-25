@@ -30,6 +30,7 @@ export function NavMain({
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton
               asChild
+              isActive={item.isActive}
               className={
                 item.disabled
                   ? 'cursor-not-allowed bg-sidebar-accent text-gray-400 hover:text-gray-400'

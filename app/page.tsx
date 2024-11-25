@@ -33,13 +33,13 @@ export default function Dashboard() {
   ]
 
   return (
-    <div className="flex size-full flex-col items-center gap-y-8 overflow-y-auto bg-slate-200 px-16 py-12 md:px-48 md:py-8">
+    <div className="flex size-full flex-col items-center gap-y-8 overflow-y-auto px-16 py-12 md:px-32 md:py-8">
       <Overview />
 
       <div className="flex w-full flex-col gap-y-4">
         {data.map((d, idx) => (
           <Link key={idx} href={d.href}>
-            <Alert className="w-full cursor-pointer shadow hover:bg-emerald-300 hover:shadow-xl">
+            <Alert className="w-full cursor-pointer shadow hover:bg-chart-2 hover:shadow-xl">
               <AlertTitle>{d.title}</AlertTitle>
               <AlertDescription>{d.description}</AlertDescription>
             </Alert>
