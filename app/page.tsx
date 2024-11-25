@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Overview } from '@/components/OverviewV2'
+import { Overview } from '@/components/Overview'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 export default function Dashboard() {
@@ -36,7 +36,7 @@ export default function Dashboard() {
     <div className="flex size-full flex-col items-center gap-y-8 overflow-y-auto px-16 py-12 md:px-32 md:py-8">
       <Overview />
 
-      <div className="flex w-full flex-col gap-y-4">
+      <div className="grid w-full grid-cols-2 gap-4">
         {data.map((d, idx) => (
           <Link key={idx} href={d.href}>
             <Alert className="w-full cursor-pointer shadow hover:bg-chart-2 hover:shadow-xl">

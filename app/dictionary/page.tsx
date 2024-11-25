@@ -13,13 +13,15 @@ export default function Dictionary() {
     const translated = await addTranslatedWord(word)
 
     if (translated?.audio && !translated?.isSentence && isAutoSpeak) {
-      const audioPlayer = new Audio(translated.audio)
+      const audioPlayer = new Audio(
+        `https://dict.youdao.com/dictvoice?type=0&audio=${translated.origin}`
+      )
       audioPlayer.play()
     }
   }
 
   return (
-    <div className="flex h-full flex-1 flex-col gap-y-4">
+    <div className="flex size-full flex-1 flex-col gap-y-4 overflow-hidden">
       <SearchDict onSelectWord={onSelectWord} />
       <SelectedVocabularies />
     </div>

@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export function getLevelColor(level: number) {
   switch (level) {
     case 0:
-      return 'hsl(var(--chart-1))'
+      return 'hsl(var(--chart-5))'
     case 1:
       return 'hsl(var(--chart-2))'
     case 2:

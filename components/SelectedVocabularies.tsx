@@ -31,7 +31,7 @@ export const SelectedVocabularies = () => {
   }
 
   return (
-    <div className="size-full overflow-hidden px-8 pb-8 pt-2">
+    <div className="overflow-hidden px-8">
       <div className="flex h-full flex-col gap-y-4">
         <div className="flex w-full items-center justify-between">
           <Button variant="outline" onClick={purgeTranslatedWords}>
@@ -64,18 +64,12 @@ export const SelectedVocabularies = () => {
             </Button>
           )}
         </div>
-        <div className="flex h-full flex-1 flex-col gap-2 overflow-y-auto rounded-md border border-accent p-4">
+        <div className="flex h-full flex-1 flex-col gap-2 overflow-y-auto pb-12">
           {translatedWords?.map((word, index) => (
             <WordItem
               key={`${word.origin}-${index}`}
               word={word}
-              onClick={() => {
-                setSelectedWord(word?.origin)
-                if (word.audio && !word.isSentence) {
-                  const audioPlayer = new Audio(word.audio)
-                  audioPlayer.play()
-                }
-              }}
+              onClick={() => setSelectedWord(word?.origin)}
               isSelected={word.origin === selectedWord?.origin}
               onDelete={() => removeTranslatedWord(word?.origin)}
             />
@@ -97,11 +91,11 @@ const WordItem: React.FC<{
   const onClickSound = () => {
     if (onClick) {
       onClick()
-      return
     }
 
-    if (!word.audio) return
-    const audioPlayer = new Audio(word.audio)
+    const audioPlayer = new Audio(
+      `https://dict.youdao.com/dictvoice?type=0&audio=${word.origin}`
+    )
     audioPlayer.play()
   }
 

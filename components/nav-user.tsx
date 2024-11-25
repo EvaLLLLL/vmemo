@@ -39,8 +39,8 @@ export function NavUser() {
               <SidebarMenuButton
                 size="lg"
                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
-                <Avatar className="flex size-8 items-center justify-center rounded-lg">
-                  <Squirrel className="size-6" />
+                <Avatar className="flex !size-8 items-center justify-center rounded-lg bg-primary">
+                  <Squirrel className="size-6 text-primary-foreground" />
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{user?.name}</span>
@@ -56,8 +56,8 @@ export function NavUser() {
               sideOffset={4}>
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                  <Avatar className="flex size-8 items-center justify-center rounded-lg">
-                    <Squirrel className="size-6" />
+                  <Avatar className="flex !size-8 items-center justify-center rounded-lg">
+                    <Squirrel className="size-6 text-primary-foreground" />
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">{user?.name}</span>

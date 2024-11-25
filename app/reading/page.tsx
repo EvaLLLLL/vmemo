@@ -36,10 +36,12 @@ const ReadingText: React.FC<{
   onSelectWord: (word?: string) => void
 }> = ({ onSelectWord }) => {
   const [isEdit, setIsEdit] = useState(true)
-  const [textContent, setTextContent] = useState('')
+  const [textContent, setTextContent] = useState(
+    'Reviving the practice of using elements of popular music in classical composition, an approach that had been in hibernation in the United States during the 1960s, composer Philip Glass (born 1937) embraced the ethos of popular music in his compositions. Glass based two symphonies on music by rock musicians David Bowie and Brian Eno, but the symphonies’ sound is distinctively his. Popular elements do not appear out of place in Glass’s classical music, which from its early days has shared certain harmonies and rhythms with rock music. Yet this use of popular elements has not made Glass a composer of popular music. His music is not a version of popular music packaged to attract classical listeners; it is high art for listeners steeped in rock rather than the classics.'
+  )
 
   return (
-    <div className="size-full break-words p-8">
+    <div className="size-full w-3/5 break-words p-8">
       <div className="relative h-full pt-6">
         <div className="absolute -top-5 flex w-full items-center justify-between">
           <div className="flex items-center gap-x-2">
@@ -76,7 +78,7 @@ const ReadingText: React.FC<{
           </div>
         ) : (
           <div
-            className="size-full overflow-y-auto whitespace-pre-wrap break-words p-8 pb-20 outline-2 outline-transparent selection:bg-teal-200"
+            className="size-full overflow-y-auto whitespace-pre-wrap break-words p-8 pb-20 outline-2 outline-transparent selection:bg-primary selection:text-primary-foreground"
             onMouseUp={() => {
               onSelectWord(window?.getSelection()?.toString())
             }}>

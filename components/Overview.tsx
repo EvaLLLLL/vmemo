@@ -1,13 +1,13 @@
 'use client'
 
-import { TrendingUp } from 'lucide-react'
-import { PolarGrid, RadialBar, RadialBarChart } from 'recharts'
+import * as React from 'react'
+import dayjs from 'dayjs'
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
@@ -17,70 +17,97 @@ import {
   ChartTooltip,
   ChartTooltipContent
 } from '@/components/ui/chart'
-import { LevelStar } from './LevelStar'
-const chartData = [
-  { level: 'level0', count: 275, fill: 'var(--color-level0)' },
-  { level: 'level1', count: 200, fill: 'var(--color-level1)' },
-  { level: 'level2', count: 187, fill: 'var(--color-level2)' },
-  { level: 'level3', count: 173, fill: 'var(--color-level3)' },
-  { level: 'levelL', count: 90, fill: 'var(--color-levelL)' }
-]
+import { useMemoryList } from '@/hooks/useMemoryList'
+import { useMemo } from 'react'
+import groupBy from 'lodash/groupBy'
+
+export const Overview: React.FC = () => {
+  return <ActivityCart />
+}
 
 const chartConfig = {
-  counts: {
-    label: 'counts'
-  },
-  level0: {
-    label: <LevelStar level={0} />,
-    color: 'hsl(var(--chart-1))'
-  },
-  level1: {
-    label: <LevelStar level={1} />,
-    color: 'hsl(var(--chart-2))'
-  },
-  level2: {
-    label: <LevelStar level={2} />,
-    color: 'hsl(var(--chart-3))'
-  },
-  level3: {
-    label: <LevelStar level={3} />,
-    color: 'hsl(var(--chart-4))'
-  },
-  levelL: {
-    label: 'other',
-    color: 'hsl(var(--chart-5))'
+  views: {
+    label: 'Word Count'
   }
 } satisfies ChartConfig
 
-export function Overview() {
+export function ActivityCart() {
+  const { memoryList } = useMemoryList()
+
+  const chartData = useMemo(() => {
+    const allDate = memoryList?.map((m) =>
+      dayjs(m.updatedAt || m.updatedAt)
+        .format('YYYY-MM-DD')
+        .toString()
+    )
+
+    const grouped = groupBy(allDate)
+
+    const m = Object.keys(grouped)
+      .map((k) => ({
+        date: k,
+        count: grouped[k].length
+      }))
+      .sort((a, b) => (dayjs(a.date).isAfter(b.date) ? 1 : -1))
+
+    return m
+  }, [memoryList])
+
   return (
-    <Card className="flex flex-col">
-      <CardHeader className="items-center pb-0">
-        <CardTitle>Radial Chart - Grid</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+    <Card className="w-full">
+      <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
+        <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
+          <CardTitle>Number of Saved or Memorized Words Chart</CardTitle>
+          <CardDescription>
+            Display the Number of Words Saved or Memorized Each Day
+          </CardDescription>
+        </div>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
+      <CardContent className="px-2 sm:p-6">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]">
-          <RadialBarChart data={chartData} innerRadius={30} outerRadius={100}>
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel nameKey="level" />}
+          className="aspect-auto h-[250px] w-full">
+          <BarChart
+            accessibilityLayer
+            data={chartData}
+            margin={{
+              left: 12,
+              right: 12
+            }}>
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="date"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              minTickGap={32}
+              tickFormatter={(value) => {
+                const date = new Date(value)
+                return date.toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric'
+                })
+              }}
             />
-            <PolarGrid gridType="circle" />
-            <RadialBar dataKey="count" />
-          </RadialBarChart>
+            <ChartTooltip
+              content={
+                <ChartTooltipContent
+                  className="w-[150px]"
+                  nameKey="views"
+                  labelFormatter={(value) => {
+                    return new Date(value).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric'
+                    })
+                  }}
+                />
+              }
+            />
+            <Bar dataKey="count" fill="hsl(var(--primary))" radius={6} />
+          </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="size-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
     </Card>
   )
 }

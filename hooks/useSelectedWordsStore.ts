@@ -1,6 +1,8 @@
 import { create } from 'zustand'
 import { EcdictServices } from '@/lib/services'
 import { TVocabulary } from '@/types/vocabulary'
+import { defaultSelectedWord } from '@/config/data'
+import { defaultTranslatedWords } from '@/config/data'
 
 interface SelectedWordsStore {
   isAutoSpeak: boolean
@@ -17,9 +19,9 @@ interface SelectedWordsStore {
 
 export const useSelectedWordsStore = create<SelectedWordsStore>()((set) => {
   return {
-    isAutoSpeak: false,
-    translatedWords: undefined,
-    selectedWord: undefined,
+    isAutoSpeak: true,
+    translatedWords: defaultTranslatedWords,
+    selectedWord: defaultSelectedWord,
 
     setIsAutoSpeak: (v) => set(() => ({ isAutoSpeak: v })),
     addTranslatedWord: async (plain) => {
@@ -41,7 +43,9 @@ export const useSelectedWordsStore = create<SelectedWordsStore>()((set) => {
 
       set((state) => {
         const stored = !!state.translatedWords?.find((v) => v.origin === plain)
-        if (stored) return {}
+        if (stored) {
+          return { selectedWord: result }
+        }
 
         return {
           selectedWord: result,

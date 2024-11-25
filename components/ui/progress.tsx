@@ -20,7 +20,7 @@ export const ProgressLine: React.FC<{
     {
       label: '',
       percentage: '0%',
-      color: 'white',
+      color: '',
       tooltip: ''
     }
   ]
@@ -44,7 +44,7 @@ export const ProgressLine: React.FC<{
   return (
     <TooltipProvider>
       <div className="font-bold">{label}</div>
-      <div className="my-5 flex h-6 overflow-hidden rounded-xl border border-primary bg-accent">
+      <div className="my-5 flex h-6 overflow-hidden rounded-xl border border-primary">
         {visualParts.map((item, index) => {
           return (
             <Tooltip key={index} delayDuration={0}>
