@@ -25,7 +25,7 @@ export default function Dashboard() {
         'Master new words using our interactive flashcard system, designed for effective memorization and retention.'
     },
     {
-      title: 'View Vocabulary List',
+      title: 'Vocabulary List',
       href: '/vocabulary',
       description:
         'Keep track of all the words you’ve learned in one place. Organize, review, and reinforce your vocabulary anytime.'

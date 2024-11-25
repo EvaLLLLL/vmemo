@@ -89,7 +89,8 @@ export async function GET(req: NextRequest) {
 
     const modifiedVocabularies = vocabularies.map((v) => ({
       ...omit(v, 'memories'),
-      level: v.memories?.[0]?.level ?? 0
+      level: v.memories?.[0]?.level ?? 0,
+      updatedAt: v.memories?.[0]?.updatedAt
     }))
 
     const vocabulariesCount = await prisma.vocabulary.count({

@@ -61,7 +61,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       disabled: !isAuthenticated
     },
     {
-      title: 'View Vocabulary List',
+      title: 'Vocabulary List',
       url: '/vocabulary',
       icon: Database,
       isActive: pathname === '/vocabulary',

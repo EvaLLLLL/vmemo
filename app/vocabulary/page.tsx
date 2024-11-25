@@ -1,5 +1,7 @@
 'use client'
 
+import dayjs from 'dayjs'
+
 import {
   ColumnDef,
   flexRender,
@@ -20,6 +22,12 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useVocabularies } from '@/hooks/useVocabularies'
 import { TVocabulary } from '@/types/vocabulary'
 import { LevelStar } from '@/components/LevelStar'
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight
+} from 'lucide-react'
 
 export const columns: ColumnDef<TVocabulary>[] = [
   //   {
@@ -42,7 +50,7 @@ export const columns: ColumnDef<TVocabulary>[] = [
   },
   {
     accessorKey: 'origin',
-    header: 'origin',
+    header: 'word',
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue('origin')}</div>
     )
@@ -57,7 +65,21 @@ export const columns: ColumnDef<TVocabulary>[] = [
   {
     accessorKey: 'level',
     header: 'level',
-    cell: ({ row }) => <div className="capitalize">{row.getValue('level')}</div>
+    cell: ({ row }) => <LevelStar level={row.getValue('level')} />
+  },
+  {
+    accessorKey: 'createdAt',
+    header: 'saved at',
+    cell: ({ row }) => (
+      <div>{dayjs(row.getValue('createdAt')).format('DD/MM/YYYY')}</div>
+    )
+  },
+  {
+    accessorKey: 'updatedAt',
+    header: 'updated at',
+    cell: ({ row }) => (
+      <div>{dayjs(row.getValue('updatedAt')).format('DD/MM/YYYY')}</div>
+    )
   }
 ]
 
@@ -99,6 +121,15 @@ export default function Vocabulary() {
 
   return (
     <div className="w-full overflow-auto p-4 md:p-8">
+      <div className="mb-8 flex items-center justify-between space-y-2">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">Welcome back!</h2>
+          <p className="text-muted-foreground">
+            Here&apos;s your complete vocabulary list!
+          </p>
+        </div>
+      </div>
+
       <Tabs defaultValue="all" className="w-full">
         <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="all" onClick={() => handleTabTrigger(-2)}>
@@ -166,24 +197,44 @@ export default function Vocabulary() {
           </Table>
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
-          {/* <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{' '}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
-          </div> */}
-          <div className="space-x-2">
+          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+            Page {table.getState().pagination.pageIndex + 1} of{' '}
+            {table.getPageCount()}
+          </div>
+          <div className="flex items-center space-x-2">
             <Button
               variant="outline"
-              size="sm"
-              onClick={() => fetchPreviousPage()}
+              className="hidden size-8 p-0 lg:flex"
+              onClick={() => setPagination({ ...pagination, pageIndex: 1 })}
               disabled={!hasPreviousPage}>
-              Previous
+              <span className="sr-only">Go to first page</span>
+              <ChevronsLeft />
             </Button>
             <Button
               variant="outline"
-              size="sm"
+              className="size-8 p-0"
+              onClick={() => fetchPreviousPage()}
+              disabled={!hasPreviousPage}>
+              <span className="sr-only">Go to previous page</span>
+              <ChevronLeft />
+            </Button>
+            <Button
+              variant="outline"
+              className="size-8 p-0"
               onClick={() => fetchNextPage()}
               disabled={!hasNextPage}>
-              Next
+              <span className="sr-only">Go to next page</span>
+              <ChevronRight />
+            </Button>
+            <Button
+              variant="outline"
+              className="hidden size-8 p-0 lg:flex"
+              onClick={() =>
+                setPagination({ ...pagination, pageIndex: pageCount || 1 })
+              }
+              disabled={!hasNextPage}>
+              <span className="sr-only">Go to last page</span>
+              <ChevronsRight />
             </Button>
           </div>
         </div>
