@@ -24,7 +24,10 @@ export function useAuth() {
   const { mutateAsync: signin, isPending: isSigningIn } = useMutation({
     mutationKey: [AuthServices.signIn.key],
     mutationFn: AuthServices.signIn.fn,
-    onSuccess: () => refetchUser()
+    onSuccess: async () => {
+      await refetchUser()
+      window.location.replace('/')
+    }
   })
 
   const { mutateAsync: logout, isPending: isLogingOut } = useMutation({

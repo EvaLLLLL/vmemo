@@ -4,7 +4,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 export default function Page() {
   return (
-    <div className="flex h-screen w-full flex-col items-center justify-center gap-y-8 px-4">
+    <div className="flex size-full flex-col items-center gap-y-8 overflow-y-auto p-8">
       <Alert className="mx-auto max-w-md">
         <div className="flex items-center gap-x-2 font-bold text-red-400">
           <Terminal className="size-4" />

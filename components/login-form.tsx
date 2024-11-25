@@ -11,26 +11,15 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/hooks/useAuth'
-import { redirect } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export function LoginForm() {
-  const { isAuthenticated, signin } = useAuth()
+  const { signin } = useAuth()
 
   const [data, setData] = useState({
     name: '',
     password: ''
   })
-
-  const onSignin = async () => {
-    await signin(data)
-  }
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      redirect('/')
-    }
-  }, [isAuthenticated])
 
   return (
     <Card className="mx-auto max-w-sm">
@@ -66,7 +55,7 @@ export function LoginForm() {
               onChange={(e) => setData({ ...data, password: e.target.value })}
             />
           </div>
-          <Button type="submit" className="w-full" onClick={onSignin}>
+          <Button type="submit" className="w-full" onClick={() => signin(data)}>
             Login
           </Button>
           {/* <Button variant="outline" className="w-full">
