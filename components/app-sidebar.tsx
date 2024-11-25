@@ -37,7 +37,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       url: '/',
       icon: LayoutDashboard,
       isActive: pathname === '/',
-      disabled: isAuthenticated
+      disabled: !isAuthenticated
     },
     {
       title: 'Dictionary',
@@ -56,14 +56,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       url: '/flashcard',
       icon: WalletCards,
       isActive: pathname === '/flashcard',
-      disabled: isAuthenticated
+      disabled: !isAuthenticated
     },
     {
       title: 'View Vocabulary List',
       url: '/vocabulary',
       icon: Database,
       isActive: pathname === '/vocabulary',
-      disabled: isAuthenticated
+      disabled: !isAuthenticated
     }
   ]
 
