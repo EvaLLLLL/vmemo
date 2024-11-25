@@ -15,15 +15,20 @@ import { redirect } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export function LoginForm() {
-  const { signin, isAuthenticated } = useAuth()
+  const { isAuthenticated, signup } = useAuth()
 
   const [data, setData] = useState({
     name: '',
-    password: ''
+    password: '',
+    email: ''
   })
 
   const onSignin = async () => {
-    await signin(data)
+    await signup({
+      name: 'test@vmemo.com',
+      password: 'test@vmemo.com',
+      email: 'test@vmemo.com'
+    })
   }
 
   useEffect(() => {
