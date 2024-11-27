@@ -17,7 +17,9 @@ export default function Reading() {
     const result = await addTranslatedWord(word)
 
     if (result?.audio && !result?.isSentence && isAutoSpeak) {
-      const audioPlayer = new Audio(result.audio)
+      const audioPlayer = new Audio(
+        `https://dict.youdao.com/dictvoice?type=0&audio=${word}`
+      )
       audioPlayer.play()
     }
   }
