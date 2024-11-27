@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
+import { recite } from '@/lib/recite'
 
 export default function Reading() {
   const { addTranslatedWord, isAutoSpeak } = useSelectedWordsStore()
@@ -14,14 +15,9 @@ export default function Reading() {
   const onSelectWord = async (word?: string) => {
     if (!word) return
 
-    const result = await addTranslatedWord(word)
+    await addTranslatedWord(word)
 
-    if (result?.audio && !result?.isSentence && isAutoSpeak) {
-      const audioPlayer = new Audio(
-        `https://dict.youdao.com/dictvoice?type=0&audio=${word}`
-      )
-      audioPlayer.play()
-    }
+    if (isAutoSpeak) recite(word)
   }
 
   return (

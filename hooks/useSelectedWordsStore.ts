@@ -1,8 +1,8 @@
 import { create } from 'zustand'
 import { EcdictServices } from '@/lib/services'
 import { TVocabulary } from '@/types/vocabulary'
-import { defaultSelectedWord } from '@/config/data'
-import { defaultTranslatedWords } from '@/config/data'
+import { defaultSelectedWord, defaultTranslatedWords } from '@/config/data'
+import { getIsSentence } from '@/lib/string'
 
 interface SelectedWordsStore {
   isAutoSpeak: boolean
@@ -30,11 +30,10 @@ export const useSelectedWordsStore = create<SelectedWordsStore>()((set) => {
 
       const ydRes = await EcdictServices.ydTranslate.fn(formattedWord)
       const ecdictRes = await EcdictServices.ecTranslate.fn(formattedWord)
-      const isSentence = (plain?.split(' ').length || 0) >= 10
 
       const result: TVocabulary = {
         ...ecdictRes,
-        isSentence,
+        isSentence: getIsSentence(plain),
         origin: formattedWord,
         audio: ydRes.audio || ecdictRes.audio || null,
         translation:

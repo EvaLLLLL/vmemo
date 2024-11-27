@@ -12,7 +12,7 @@ export async function verifyAuth(token: string) {
     })
     return payload
   } catch (_) {
-    console.log('Failed to verify session')
+    throw Error('Failed to verify session')
   }
 }
 

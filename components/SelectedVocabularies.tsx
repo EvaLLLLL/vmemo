@@ -8,6 +8,7 @@ import { Label } from './ui/label'
 import { TVocabulary } from '@/types/vocabulary'
 import { Alert, AlertDescription, AlertTitle } from './ui/alert'
 import { cn } from '@/lib/utils'
+import { recite } from '@/lib/recite'
 
 export const SelectedVocabularies = () => {
   const {
@@ -93,10 +94,7 @@ const WordItem: React.FC<{
       onClick()
     }
 
-    const audioPlayer = new Audio(
-      `https://dict.youdao.com/dictvoice?type=0&audio=${word.origin}`
-    )
-    audioPlayer.play()
+    recite(word.origin)
   }
 
   const onClickDelete = (e: MouseEvent<HTMLButtonElement>) => {

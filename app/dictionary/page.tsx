@@ -4,20 +4,17 @@ import { useState } from 'react'
 import { SelectedVocabularies } from '@/components/SelectedVocabularies'
 import { useSelectedWordsStore } from '@/hooks/useSelectedWordsStore'
 import { Input } from '@/components/ui/input'
+import { recite } from '@/lib/recite'
 
 export default function Dictionary() {
   const { isAutoSpeak, addTranslatedWord } = useSelectedWordsStore()
 
   const onSelectWord = async (word?: string) => {
     if (!word) return
-    const translated = await addTranslatedWord(word)
 
-    if (translated?.audio && !translated?.isSentence && isAutoSpeak) {
-      const audioPlayer = new Audio(
-        `https://dict.youdao.com/dictvoice?type=0&audio=${translated.origin}`
-      )
-      audioPlayer.play()
-    }
+    await addTranslatedWord(word)
+
+    if (isAutoSpeak) recite(word)
   }
 
   return (
