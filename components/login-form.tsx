@@ -14,14 +14,33 @@ import { useAuth } from '@/hooks/useAuth'
 import { useState } from 'react'
 import { Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useToast } from '@/hooks/use-toast'
 
 export function LoginForm() {
+  const { toast } = useToast()
   const { signin, isLoading } = useAuth()
 
   const [data, setData] = useState({
     name: '',
     password: ''
   })
+
+  const onSignIn = async () => {
+    try {
+      await signin(data)
+      toast({
+        variant: 'success',
+        description: 'You have successfully logged in'
+      })
+    } catch (_) {
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description:
+          'An unexpected error occurred during your login attempt. Please try again later.'
+      })
+    }
+  }
 
   return (
     <Card className="mx-auto max-w-sm">
@@ -58,7 +77,7 @@ export function LoginForm() {
             type="submit"
             disabled={isLoading}
             className="w-full"
-            onClick={() => signin(data)}>
+            onClick={onSignIn}>
             <Loader2 className={cn(isLoading ? 'animate-spin' : 'hidden')} />
             Login
           </Button>

@@ -1,8 +1,10 @@
 import { useMemo } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AuthServices } from '@/lib/services'
+import { useRouter } from 'next/navigation'
 
 export function useAuth() {
+  const router = useRouter()
   const queryClient = useQueryClient()
   const {
     data: user,
@@ -26,7 +28,7 @@ export function useAuth() {
     mutationFn: AuthServices.signIn.fn,
     onSuccess: async () => {
       await refetchUser()
-      window.location.replace('/')
+      router.replace('/')
     }
   })
 
@@ -35,7 +37,7 @@ export function useAuth() {
     mutationFn: AuthServices.logOut.fn,
     onSuccess: () => {
       queryClient.clear()
-      window.location.replace('/login')
+      router.replace('/login')
     }
   })
 
