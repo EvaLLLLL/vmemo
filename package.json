@@ -9,7 +9,7 @@
     "build": "npx prisma migrate deploy && npx prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "node prisma/seed.js"
+    "seed": "npx tsx prisma/seed.ts"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm run lint"
