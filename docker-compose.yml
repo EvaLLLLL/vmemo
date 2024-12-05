@@ -1,13 +1,42 @@
 services:
+  vmemo:
+    image: node:20
+    container_name: vmemo
+    working_dir: /vmemo
+    volumes:
+      - ./:/vmemo
+      - /vmemo/node_modules
+    ports:
+      - '3000:3000'
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - NEXT_PUBLIC_API=${NEXT_PUBLIC_API}
+      - NEXT_PUBLIC_YUDAO_APPKEY=${NEXT_PUBLIC_YUDAO_APPKEY}
+      - NEXT_PUBLIC_YUDAO_KEY=${NEXT_PUBLIC_YUDAO_KEY}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PRISMA_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - POSTGRES_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - POSTGRES_URL_NON_POOLING=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - CHOKIDAR_USEPOLLING=true
+      - WDS_SOCKET_PORT=0
+    command: sh -c "corepack enable && corepack prepare pnpm@9.14.4 --activate && pnpm install --frozen-lockfile && pnpm prisma migrate deploy && pnpm run dev"
+    depends_on:
+      - postgres
+
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_USER: vmemo
-      POSTGRES_PASSWORD: vmemo
-      POSTGRES_DB: vmemo
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     ports:
       - '5432:5432'
     volumes:
       - db:/var/lib/postgresql/data
+
 volumes:
   db:

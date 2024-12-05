@@ -132,7 +132,7 @@ importers:
         specifier: ^1.14.0
         version: https://registry.npmmirror.com/tailwind-merge/-/tailwind-merge-1.14.0.tgz
       tailwindcss:
-        specifier: ^3.4.3
+        specifier: ^3.4.14
         version: 3.4.14
       tailwindcss-animate:
         specifier: ^1.0.7
@@ -172,7 +172,7 @@ importers:
         specifier: ^8.13.0
         version: 8.13.0(eslint@8.57.1)(typescript@5.6.3)
       eslint:
-        specifier: ^8.0.0
+        specifier: ^8.57.1
         version: 8.57.1
       eslint-config-prettier:
         specifier: ^9.1.0
@@ -1324,12 +1324,8 @@ packages:
     resolution: {integrity: sha512-QOSvevhslijgYwRx6Rv7zKdMF8lbRmx+uQGx2+vDc+KI/eBnsy9kit5aj23AgGu3pa4t9AgwbnXWqS+iOY+2aA==}
     engines: {node: '>= 6'}
 
-  caniuse-lite@1.0.30001519:
-    resolution: {integrity: sha512-0QHgqR+Jv4bxHMp8kZ1Kn8CH55OikjKJ6JmKkZYP1F3D7w+lnFXF70nG5eNfsZS89jadi5Ywy5UCSKLAglIRkg==}
-
-  caniuse-lite@https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001519.tgz:
-    resolution: {integrity: sha512-0QHgqR+Jv4bxHMp8kZ1Kn8CH55OikjKJ6JmKkZYP1F3D7w+lnFXF70nG5eNfsZS89jadi5Ywy5UCSKLAglIRkg==, tarball: https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001519.tgz}
-    version: 1.0.30001519
+  caniuse-lite@1.0.30001686:
+    resolution: {integrity: sha512-Y7deg0Aergpa24M3qLC5xjNklnKnhsmSyR/V89dLZ1n0ucJIFNs7PgR2Yfa/Zf6W79SbBicgtGxZr2juHkEUIA==}
 
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
@@ -4171,7 +4167,7 @@ snapshots:
   autoprefixer@https://registry.npmmirror.com/autoprefixer/-/autoprefixer-10.4.14.tgz(postcss@https://registry.npmmirror.com/postcss/-/postcss-8.4.27.tgz):
     dependencies:
       browserslist: https://registry.npmmirror.com/browserslist/-/browserslist-4.21.10.tgz
-      caniuse-lite: https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001519.tgz
+      caniuse-lite: 1.0.30001686
       fraction.js: https://registry.npmmirror.com/fraction.js/-/fraction.js-4.2.0.tgz
       normalize-range: https://registry.npmmirror.com/normalize-range/-/normalize-range-0.1.2.tgz
       picocolors: https://registry.npmmirror.com/picocolors/-/picocolors-1.0.0.tgz
@@ -4232,7 +4228,7 @@ snapshots:
 
   browserslist@https://registry.npmmirror.com/browserslist/-/browserslist-4.21.10.tgz:
     dependencies:
-      caniuse-lite: https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001519.tgz
+      caniuse-lite: 1.0.30001686
       electron-to-chromium: https://registry.npmmirror.com/electron-to-chromium/-/electron-to-chromium-1.4.485.tgz
       node-releases: https://registry.npmmirror.com/node-releases/-/node-releases-2.0.13.tgz
       update-browserslist-db: https://registry.npmmirror.com/update-browserslist-db/-/update-browserslist-db-1.0.11.tgz(browserslist@https://registry.npmmirror.com/browserslist/-/browserslist-4.21.10.tgz)
@@ -4254,9 +4250,7 @@ snapshots:
 
   camelcase-css@2.0.1: {}
 
-  caniuse-lite@1.0.30001519: {}
-
-  caniuse-lite@https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001519.tgz: {}
+  caniuse-lite@1.0.30001686: {}
 
   chalk@4.1.2:
     dependencies:
@@ -5276,7 +5270,7 @@ snapshots:
       '@next/env': 13.4.13
       '@swc/helpers': 0.5.1
       busboy: 1.6.0
-      caniuse-lite: 1.0.30001519
+      caniuse-lite: 1.0.30001686
       postcss: 8.4.14
       react: https://registry.npmmirror.com/react/-/react-18.2.0.tgz
       react-dom: https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
