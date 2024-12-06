@@ -18,57 +18,57 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useVocabularies } from '@/hooks/useVocabularies'
-import { TVocabulary } from '@/types/vocabulary'
-import { LevelStar } from '@/components/LevelStar'
+import { Tabs } from '@/components/ui/tabs'
+import { LevelStar } from '@/components/level-star'
 import {
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
   ChevronsRight
 } from 'lucide-react'
+import { useVocabularies } from '@/hooks/use-vocabulary'
 
-const columns: ColumnDef<TVocabulary>[] = [
-  {
-    accessorKey: 'id',
-    header: 'id',
-    cell: ({ row }) => <div className="capitalize">{row.getValue('id')}</div>
-  },
-  {
-    accessorKey: 'origin',
-    header: 'word',
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('origin')}</div>
-    )
-  },
-  {
-    accessorKey: 'translation',
-    header: 'translation',
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('translation')}</div>
-    )
-  },
-  {
-    accessorKey: 'level',
-    header: 'level',
-    cell: ({ row }) => <LevelStar level={row.getValue('level')} />
-  },
-  {
-    accessorKey: 'createdAt',
-    header: 'saved at',
-    cell: ({ row }) => (
-      <div>{dayjs(row.getValue('createdAt')).format('DD/MM/YYYY')}</div>
-    )
-  },
-  {
-    accessorKey: 'updatedAt',
-    header: 'updated at',
-    cell: ({ row }) => (
-      <div>{dayjs(row.getValue('updatedAt')).format('DD/MM/YYYY')}</div>
-    )
-  }
-]
+const columns: ColumnDef<{ id: number; word: string; translation: string }>[] =
+  [
+    {
+      accessorKey: 'id',
+      header: 'id',
+      cell: ({ row }) => <div className="capitalize">{row.getValue('id')}</div>
+    },
+    {
+      accessorKey: 'word',
+      header: 'word',
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue('word')}</div>
+      )
+    },
+    {
+      accessorKey: 'translation',
+      header: 'translation',
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue('translation')}</div>
+      )
+    },
+    {
+      accessorKey: 'level',
+      header: 'level',
+      cell: ({ row }) => <LevelStar level={row.getValue('level')} />
+    },
+    {
+      accessorKey: 'createdAt',
+      header: 'saved at',
+      cell: ({ row }) => (
+        <div>{dayjs(row.getValue('createdAt')).format('DD/MM/YYYY')}</div>
+      )
+    },
+    {
+      accessorKey: 'updatedAt',
+      header: 'updated at',
+      cell: ({ row }) => (
+        <div>{dayjs(row.getValue('updatedAt')).format('DD/MM/YYYY')}</div>
+      )
+    }
+  ]
 
 export default function Vocabulary() {
   const {
@@ -79,8 +79,7 @@ export default function Vocabulary() {
     fetchNextPage,
     fetchPreviousPage,
     pagination,
-    setPagination,
-    counts
+    setPagination
   } = useVocabularies({ level: -2, pageIndex: 1, size: 10 })
 
   const table = useReactTable({
@@ -92,13 +91,13 @@ export default function Vocabulary() {
     getCoreRowModel: getCoreRowModel()
   })
 
-  const handleTabTrigger = (level: number) => {
-    setPagination({
-      ...pagination,
-      level,
-      pageIndex: 1
-    })
-  }
+  // const handleTabTrigger = (level: number) => {
+  //   setPagination({
+  //     ...pagination,
+  //     level,
+  //     pageIndex: 1
+  //   })
+  // }
 
   return (
     <div className="w-full overflow-auto p-4 md:p-8">
@@ -112,7 +111,7 @@ export default function Vocabulary() {
       </div>
 
       <Tabs defaultValue="all" className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
+        {/* <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="all" onClick={() => handleTabTrigger(-2)}>
             All({counts?.totalCount})
           </TabsTrigger>
@@ -128,7 +127,7 @@ export default function Vocabulary() {
           <TabsTrigger value="level3" onClick={() => handleTabTrigger(3)}>
             <LevelStar level={3} /> ({counts?.level3Count})
           </TabsTrigger>
-        </TabsList>
+        </TabsList> */}
         <div className="mt-2 rounded-md border shadow">
           <Table>
             <TableHeader>

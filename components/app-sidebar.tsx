@@ -25,7 +25,7 @@ import {
   SidebarMenuItem
 } from '@/components/ui/sidebar'
 import { usePathname } from 'next/navigation'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks/use-auth'
 import { useTheme } from 'next-themes'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -55,9 +55,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     },
     {
       title: 'Flashcard',
-      url: '/flashcard',
+      url: '/flashcards',
       icon: WalletCards,
-      isActive: pathname === '/flashcard',
+      isActive: pathname === '/flashcards',
       disabled: !isAuthenticated
     },
     {

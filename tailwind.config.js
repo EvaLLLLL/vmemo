@@ -65,6 +65,15 @@ module.exports = {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))'
         }
+      },
+      rotate: {
+        'y-180': 'rotateY(180deg)'
+      },
+      transformStyle: {
+        'preserve-3d': 'preserve-3d'
+      },
+      backfaceVisibility: {
+        hidden: 'hidden'
       }
     }
   }
