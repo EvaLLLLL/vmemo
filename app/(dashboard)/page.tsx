@@ -1,10 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { Overview } from '@/components/Overview'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Clock, BookOpen, LucideIcon, TrendingUp, Flame } from 'lucide-react'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks/use-auth'
+import { MemoriesOverview } from '@/components/memories-overview'
 
 const StatCard = ({
   title,
@@ -44,7 +44,9 @@ const WelcomeSection = () => {
 
   return (
     <div className="w-full space-y-4">
-      <h1 className="text-3xl font-bold tracking-tight">
+      <h1
+        suppressHydrationWarning
+        className="text-3xl font-bold tracking-tight">
         Good {timeOfDay}, {user?.name || 'Guest'}!
       </h1>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -77,7 +79,7 @@ export default function Dashboard() {
     },
     {
       title: 'Flashcard',
-      href: '/flashcard',
+      href: '/flashcards',
       description:
         'Master new words using our interactive flashcard system, designed for effective memorization and retention.'
     },
@@ -92,7 +94,7 @@ export default function Dashboard() {
   return (
     <div className="flex size-full flex-col items-center gap-y-8 overflow-y-auto px-16 py-12 md:px-32 md:py-8">
       <WelcomeSection />
-      <Overview />
+      <MemoriesOverview />
 
       <div className="grid w-full grid-cols-2 gap-4">
         {data.map((d, idx) => (

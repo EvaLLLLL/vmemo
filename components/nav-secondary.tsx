@@ -10,7 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from '@/components/ui/sidebar'
-import { useHasMounted } from '@/hooks/useHasMounted'
+import { useHasMounted } from '@/hooks/use-has-mounted'
 
 export function NavSecondary({
   items,

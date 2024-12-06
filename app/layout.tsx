@@ -1,11 +1,11 @@
 import '@/styles/globals.scss'
 import { Metadata } from 'next'
 import { Open_Sans } from 'next/font/google'
-import ReactQueryProvider from '@/components/ReactQueryProvider'
-import { SidebarProvider } from '@/components/SidebarProvider'
+import { SidebarProvider } from '@/components/sidebar-provider'
 import { cn } from '@/lib/utils'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/toaster'
+import ReactQueryProvider from '@/components/react-query-provider'
 
 const openSans = Open_Sans({
   weight: ['400', '500', '600', '700'],

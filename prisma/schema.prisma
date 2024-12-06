@@ -11,45 +11,50 @@ datasource db {
 model User {
   id           Int          @id @default(autoincrement())
   name         String       @unique @db.VarChar(255)
+  email        String       @unique @db.VarChar(255)
   password     String       @db.VarChar(255)
-  email        String       @db.VarChar(255)
+  avatar       String?      @db.VarChar(255)
   vocabularies Vocabulary[]
   memories     Memory[]
 }
 
 model Vocabulary {
   id          Int      @id @default(autoincrement())
-  origin      String   @unique(map: "constraint_name") @db.VarChar(255)
-  translation String?
-  audio       String?
+  word        String   @unique @map("origin") @db.VarChar(255)
+  translation String
   createdAt   DateTime @default(now()) @db.Timestamp(6)
   users       User[]
   memories    Memory[]
 }
 
-model Memory {
-  id           Int         @id @default(autoincrement())
-  userId       Int
-  vocabularyId Int
-  level        Int
-  createdAt    DateTime    @default(now()) @db.Timestamp(6)
-  updatedAt    DateTime
-  user         User?       @relation(fields: [userId], references: [id])
-  vocabulary   Vocabulary? @relation(fields: [vocabularyId], references: [id])
+enum MemoryStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
 }
 
-model Ecdict {
-  word        String  @unique @db.Text
-  phonetic    String? @db.Text
-  definition  String? @db.Text
-  translation String? @db.Text
-  pos         String? @db.Text
-  collins     String? @db.Text
-  oxford      String? @db.Text
-  tag         String? @db.Text
-  bnc         String? @db.Text
-  frq         String? @db.Text
-  exchange    String? @db.Text
-  detail      String? @db.Text
-  audio       String? @db.Text
+enum MemoryLevel {
+  LEVEL_1
+  LEVEL_2
+  LEVEL_3
+  LEVEL_4
+  LEVEL_5
+  MASTERED
+}
+
+model Memory {
+  id             Int          @id @default(autoincrement())
+  userId         Int
+  vocabularyId   Int
+  level          MemoryLevel  @default(LEVEL_1)
+  reviewCount    Int          @default(0)
+  lastReviewedAt DateTime?
+  nextReviewDate DateTime?
+  status         MemoryStatus @default(NOT_STARTED)
+  createdAt      DateTime     @default(now()) @db.Timestamp(6)
+  updatedAt      DateTime     @updatedAt
+  user           User         @relation(fields: [userId], references: [id])
+  vocabulary     Vocabulary   @relation(fields: [vocabularyId], references: [id])
+
+  @@unique([userId, vocabularyId])
 }

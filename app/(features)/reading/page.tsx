@@ -1,13 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { SelectedVocabularies } from '@/components/SelectedVocabularies'
-import { useSelectedWordsStore } from '@/hooks/useSelectedWordsStore'
+import { SelectedVocabularies } from '@/components/selected-vocabularies'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { recite } from '@/lib/recite'
+import { useSelectedWordsStore } from '@/hooks/use-selected-store'
 
 export default function Reading() {
   const { addTranslatedWord, isAutoSpeak } = useSelectedWordsStore()

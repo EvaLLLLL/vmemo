@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { SelectedVocabularies } from '@/components/SelectedVocabularies'
-import { useSelectedWordsStore } from '@/hooks/useSelectedWordsStore'
+import { SelectedVocabularies } from '@/components/selected-vocabularies'
 import { Input } from '@/components/ui/input'
 import { recite } from '@/lib/recite'
+import { useSelectedWordsStore } from '@/hooks/use-selected-store'
 
 export default function Dictionary() {
   const { isAutoSpeak, addTranslatedWord } = useSelectedWordsStore()

@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server'
 import { verifyAuth } from '@/lib/auth'
+import { ApiResponse } from './app/api/responses/api-response'
 
 const clientSideProtectedPath = ['/', '/flashcard', '/vocabulary']
 
@@ -20,19 +21,14 @@ export async function middleware(request: NextRequest) {
 
   if (request.nextUrl.pathname.startsWith('/api')) {
     if (!token) {
-      return new NextResponse(
-        JSON.stringify({ message: 'authentication required' }),
-        { status: 401 }
-      )
+      return ApiResponse.unauthorized()
     }
 
     try {
       await verifyAuth(token)
       return NextResponse.next()
     } catch (_) {
-      return new NextResponse(JSON.stringify({ message: 'invalid token' }), {
-        status: 401
-      })
+      return ApiResponse.unauthorized()
     }
   }
 
