@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from './use-auth'
 
 export const useVocabulary = () => {
-  const { vocabularies, refetchVocabularies } = useVocabularies()
+  const { refetchVocabularies } = useVocabularies()
 
   const { mutate: createVocabularies, isPending: isCreatingVocabularies } =
     useMutation({
@@ -31,7 +31,6 @@ export const useVocabulary = () => {
   })
 
   return {
-    vocabularies,
     createVocabularies,
     updateVocabulary,
     deleteVocabulary,
@@ -39,20 +38,12 @@ export const useVocabulary = () => {
   }
 }
 
-const defaultPagination = {
-  level: -1,
-  pageIndex: 1,
-  size: 10
-}
-
-export const useVocabularies = (pg?: {
-  level: number
-  pageIndex: number
-  size: number
-}) => {
+export const useVocabularies = (
+  pg: { size: number; offset: number } = { size: 10, offset: 0 }
+) => {
   const { isAuthenticated } = useAuth()
   const queryClient = useQueryClient()
-  const [pagination, setPagination] = useState(pg || defaultPagination)
+  const [pagination, setPagination] = useState(pg)
 
   const {
     data: vocabulariesResponse,
@@ -63,57 +54,55 @@ export const useVocabularies = (pg?: {
     queryFn: () =>
       VocabularyServices.getVocabularies.fn({
         size: pagination.size,
-        page: pagination.pageIndex
+        offset: pagination.offset
       }),
     placeholderData: keepPreviousData,
     enabled: isAuthenticated
   })
 
+  const currentPage = vocabulariesResponse?.data?.pagination?.page || 0
+  const hasPreviousPage = currentPage > 1
+  const hasNextPage =
+    !!vocabulariesResponse?.data?.pagination.totalPages &&
+    currentPage < vocabulariesResponse?.data?.pagination.totalPages
+  const totalPages = vocabulariesResponse?.data?.pagination.totalPages
+
+  const fetchNextPage = () =>
+    hasNextPage &&
+    setPagination({
+      ...pagination,
+      offset: pagination.offset + pagination.size
+    })
+  const fetchPreviousPage = () =>
+    hasPreviousPage &&
+    setPagination({
+      ...pagination,
+      offset: pagination.offset - pagination.size
+    })
+
   // prefetch the next page
   useEffect(() => {
-    if (
-      isAuthenticated &&
-      !isPlaceholderData &&
-      pagination.pageIndex !== vocabulariesResponse?.data?.pagination.totalPages
-    ) {
+    if (isAuthenticated && !isPlaceholderData && hasNextPage) {
       queryClient.prefetchQuery({
         queryKey: [VocabularyServices.getVocabularies.key, pagination],
         queryFn: () =>
           VocabularyServices.getVocabularies.fn({
             size: pagination.size,
-            page: pagination.pageIndex
+            offset: pagination.offset + pagination.size
           })
       })
     }
-  }, [
-    vocabulariesResponse?.data?.pagination.totalPages,
-    isAuthenticated,
-    isPlaceholderData,
-    pagination,
-    queryClient
-  ])
-
-  const hasPreviousPage = pagination.pageIndex > 1
-  const hasNextPage =
-    !!vocabulariesResponse?.data?.pagination.totalPages &&
-    pagination.pageIndex < vocabulariesResponse?.data?.pagination.totalPages
-  const pageCount = vocabulariesResponse?.data?.pagination.totalPages
-
-  const fetchNextPage = () =>
-    hasNextPage &&
-    setPagination({ ...pagination, pageIndex: pagination.pageIndex + 1 })
-  const fetchPreviousPage = () =>
-    hasPreviousPage &&
-    setPagination({ ...pagination, pageIndex: pagination.pageIndex - 1 })
+  }, [hasNextPage, isAuthenticated, isPlaceholderData, pagination, queryClient])
 
   return {
-    vocabularies: vocabulariesResponse?.data,
+    vocabularies: vocabulariesResponse?.data?.data,
     refetchVocabularies,
     fetchNextPage,
     fetchPreviousPage,
+    currentPage,
     hasNextPage,
     hasPreviousPage,
-    pageCount,
+    totalPages,
     setPagination,
     pagination
   }

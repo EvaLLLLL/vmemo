@@ -70,9 +70,9 @@ export async function GET(req: NextRequest) {
     const userId = userJwt.id as number
 
     const url = new URL(req.url)
-    const page = parseInt(url.searchParams.get('page') || '1', 10)
+    const offset = parseInt(url.searchParams.get('offset') || '0', 10)
     const size = parseInt(url.searchParams.get('size') || '10', 10)
-    const offset = (page - 1) * size
+    const page = Math.floor(offset / size) + 1
 
     const vocabularies = await prisma.vocabulary.findMany({
       where: {

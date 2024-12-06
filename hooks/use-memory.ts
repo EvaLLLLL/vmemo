@@ -1,12 +1,15 @@
-import { useCallback } from 'react'
-import { MemoryServices } from '@/lib/services'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useCallback, useEffect, useState } from 'react'
+import { MemoryServices, VocabularyServices } from '@/lib/services'
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient
+} from '@tanstack/react-query'
+import { useAuth } from './use-auth'
 
 export const useMemory = () => {
-  const { data: dueReviewsResponse, refetch: refetchDueReviews } = useQuery({
-    queryKey: [MemoryServices.getDueReviews.key],
-    queryFn: MemoryServices.getDueReviews.fn
-  })
+  const { refetchDueReviews } = useDueReviews()
 
   const { data: allMemoriesResponse, refetch: refetchAllMemories } = useQuery({
     queryKey: [MemoryServices.getAllMemories.key],
@@ -36,14 +39,74 @@ export const useMemory = () => {
     onSuccess: () => refetch()
   })
 
-  const dueReviews = dueReviewsResponse?.data
   const allMemories = allMemoriesResponse?.data
 
   return {
-    dueReviews,
     allMemories,
     reviewMemory,
     initializeMemories,
     updateMemories
+  }
+}
+
+export const useDueReviews = (
+  pg: { size: number; offset: number } = { size: 10, offset: 0 }
+) => {
+  const { isAuthenticated } = useAuth()
+  const queryClient = useQueryClient()
+  const [pagination, setPagination] = useState(pg)
+
+  const {
+    data: dueReviewsResponse,
+    refetch: refetchDueReviews,
+    isPlaceholderData
+  } = useQuery({
+    queryKey: [MemoryServices.getDueReviews.key, pagination],
+    queryFn: () => MemoryServices.getDueReviews.fn(pagination),
+    placeholderData: keepPreviousData,
+    enabled: isAuthenticated
+  })
+
+  const currentPage = dueReviewsResponse?.data?.pagination?.page || 0
+  const hasPreviousPage = currentPage > 1
+  const hasNextPage =
+    !!dueReviewsResponse?.data?.pagination?.totalPages &&
+    currentPage < dueReviewsResponse?.data?.pagination?.totalPages
+  const totalPages = dueReviewsResponse?.data?.pagination?.totalPages
+
+  const fetchNextPage = () =>
+    hasNextPage &&
+    setPagination({
+      ...pagination,
+      offset: pagination.offset + pagination.size
+    })
+  const fetchPreviousPage = () =>
+    hasPreviousPage &&
+    setPagination({
+      ...pagination,
+      offset: pagination.offset - pagination.size
+    })
+
+  // prefetch the next page
+  useEffect(() => {
+    if (isAuthenticated && !isPlaceholderData && hasNextPage) {
+      queryClient.prefetchQuery({
+        queryKey: [VocabularyServices.getVocabularies.key, pagination],
+        queryFn: () => VocabularyServices.getVocabularies.fn(pagination)
+      })
+    }
+  }, [hasNextPage, isAuthenticated, isPlaceholderData, pagination, queryClient])
+
+  return {
+    dueReviews: dueReviewsResponse?.data?.data,
+    refetchDueReviews,
+    pagination,
+    setPagination,
+    currentPage,
+    hasPreviousPage,
+    hasNextPage,
+    totalPages,
+    fetchNextPage,
+    fetchPreviousPage
   }
 }

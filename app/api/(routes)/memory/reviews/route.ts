@@ -8,9 +8,15 @@ export async function GET(req: NextRequest) {
   const token = req.cookies.get('token')?.value
   const userJwt = await verifyAuth(token!)
 
+  const url = new URL(req.url)
+  const offset = parseInt(url.searchParams.get('offset') || '0', 10)
+  const size = parseInt(url.searchParams.get('size') || '10', 10)
+
   try {
     const dueReviews = await MemoryController.getDueReviews(
-      userJwt.id as number
+      userJwt.id as number,
+      size,
+      offset
     )
 
     return ApiResponse.success(dueReviews)

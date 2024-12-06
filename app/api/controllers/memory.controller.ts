@@ -133,19 +133,48 @@ export class MemoryController {
     }
   }
 
-  static async getDueReviews(userId: number) {
+  static async getDueReviews(
+    userId: number,
+    size: number = 10,
+    offset: number = 0
+  ) {
     try {
       const now = dayjs().toDate()
-      return await prisma.memory.findMany({
+      const dueReviews = await prisma.memory.findMany({
         where: {
           userId,
           status: { not: MemoryStatus.COMPLETED },
           OR: [{ nextReviewDate: { lte: now } }, { nextReviewDate: null }]
         },
+        take: size,
+        skip: offset,
+        orderBy: {
+          nextReviewDate: 'asc'
+        },
         include: {
           vocabulary: true
         }
       })
+
+      const total = await prisma.memory.count({
+        where: {
+          userId,
+          status: { not: MemoryStatus.COMPLETED },
+          OR: [{ nextReviewDate: { lte: now } }, { nextReviewDate: null }]
+        }
+      })
+
+      const page = Math.floor(offset / size) + 1
+
+      return {
+        data: dueReviews,
+        pagination: {
+          page,
+          size,
+          total,
+          totalPages: Math.ceil(total / size)
+        }
+      }
     } catch (error) {
       if (error instanceof MemoryError) throw error
       throw new MemoryError(

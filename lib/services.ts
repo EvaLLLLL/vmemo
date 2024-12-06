@@ -33,7 +33,7 @@ interface IVocabularyUpdate {
 }
 
 interface IGetVocabulariesParams {
-  page: number
+  offset: number
   size: number
 }
 
@@ -42,6 +42,11 @@ interface IPagination {
   size: number
   total: number
   totalPages: number
+}
+
+interface IMemoryReviewResponse {
+  data: (Memory & { vocabulary: Vocabulary })[]
+  pagination: IPagination
 }
 
 interface IVocabularyResponse {
@@ -124,11 +129,11 @@ export const MemoryServices = {
   },
   getDueReviews: {
     key: 'MemoryServices.getDueReviews',
-    fn: () =>
+    fn: (pg: IGetVocabulariesParams) =>
       axiosInstance
         .get<
-          IApiResponse<(Memory & { vocabulary: Vocabulary })[]>
-        >('/api/memory/reviews')
+          IApiResponse<IMemoryReviewResponse>
+        >('/api/memory/reviews', { params: pg })
         .then((res) => res.data)
   },
   initializeMemories: {

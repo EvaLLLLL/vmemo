@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useDragControls, motion, AnimatePresence, PanInfo } from 'motion/react'
 import { cn } from '@/lib/utils'
-import { Skeleton } from './ui/skeleton'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export interface FlashCard {
   id: number
@@ -11,7 +11,7 @@ export interface FlashCard {
 
 interface FlashCardsProps {
   cards: FlashCard[]
-  onComplete?: () => void
+  onComplete?: () => Promise<void>
   onFlip?: (card: FlashCard) => Promise<string>
   onSwipeLeft?: (card: FlashCard) => Promise<void>
   onSwipeRight?: (card: FlashCard) => Promise<void>
@@ -29,7 +29,6 @@ export default function FlashCards({
   const dragControls = useDragControls()
   const [isLoading, setIsLoading] = useState(false)
   const [dragX, setDragX] = useState(0)
-  const [keyColor, setKeyColor] = useState<'pink' | 'green' | null>(null)
 
   const handleFlip = useCallback(async () => {
     if (!flipped && currentCards[0] && !currentCards[0].back) {
@@ -49,9 +48,9 @@ export default function FlashCards({
     setFlipped(!flipped)
   }, [onFlip, currentCards, flipped])
 
-  const moveCard = useCallback(() => {
+  const moveCard = useCallback(async () => {
     if (currentCards.length === 1) {
-      onComplete?.()
+      await onComplete?.()
     }
 
     setFlipped(false)
@@ -103,22 +102,12 @@ export default function FlashCards({
 
       switch (e.key.toLowerCase()) {
         case 'q':
-          try {
-            setKeyColor('green')
-            await onSwipeLeft?.(currentCard)
-            moveCard()
-          } finally {
-            setTimeout(() => setKeyColor(null), 200)
-          }
+          await onSwipeLeft?.(currentCard)
+          moveCard()
           break
         case 'e':
-          try {
-            setKeyColor('pink')
-            await onSwipeRight?.(currentCard)
-            moveCard()
-          } finally {
-            setTimeout(() => setKeyColor(null), 200)
-          }
+          await onSwipeRight?.(currentCard)
+          moveCard()
           break
         case 'w':
           handleFlip()
@@ -135,6 +124,10 @@ export default function FlashCards({
     y: index * 8 + (Math.random() * 4 - 2),
     rotate: index === 0 ? 0 : Math.random() * 10 - 3
   })
+
+  useEffect(() => {
+    setCurrentCards(cards)
+  }, [cards])
 
   return (
     <div className="relative mx-auto aspect-[3/4] w-[300px] [perspective:1000px]">
@@ -159,19 +152,7 @@ export default function FlashCards({
                 x: offset.x,
                 zIndex: currentCards.length - index,
                 rotateY: index === 0 ? (flipped ? 180 : 0) : 0,
-                rotateZ: offset.rotate,
-                backgroundColor:
-                  index === 0
-                    ? keyColor === 'pink'
-                      ? 'rgba(255, 192, 203, 0.3)'
-                      : keyColor === 'green'
-                        ? 'rgba(144, 238, 144, 0.3)'
-                        : dragX > 0
-                          ? 'rgba(255, 192, 203, 0.3)'
-                          : dragX < 0
-                            ? 'rgba(144, 238, 144, 0.3)'
-                            : undefined
-                    : undefined
+                rotateZ: offset.rotate
               }}
               exit={{
                 x: Math.random() * 400 - 200,
