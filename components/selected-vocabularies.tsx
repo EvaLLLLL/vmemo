@@ -9,6 +9,7 @@ import { recite } from '@/lib/recite'
 import { useSelectedWordsStore } from '@/hooks/use-selected-store'
 import { useVocabulary } from '@/hooks/use-vocabulary'
 import { Vocabulary } from '@prisma/client'
+import { MemoryServices, VocabularyServices } from '@/lib/services'
 
 export const SelectedVocabularies = () => {
   const {
@@ -18,7 +19,7 @@ export const SelectedVocabularies = () => {
     setSelectedWord,
     purgeTranslatedWords
   } = useSelectedWordsStore()
-  const { createVocabularies, isCreatingVocabularies } = useVocabulary()
+  const { isCreatingVocabularies } = useVocabulary()
   const { isAutoSpeak, setIsAutoSpeak } = useSelectedWordsStore()
 
   const wordsCount = useMemo(
@@ -26,13 +27,20 @@ export const SelectedVocabularies = () => {
     [translatedWords]
   )
 
-  const onSave = () => {
+  const onSave = async () => {
     if (!translatedWords?.length) return
-    createVocabularies(translatedWords)
+    const vocabulariesRes = await VocabularyServices.checkVocabularies.fn(
+      translatedWords.map((word) => word.word).join(',')
+    )
+    const vocabularyIds = vocabulariesRes?.data?.map(
+      (vocabulary) => vocabulary.id
+    )
+    if (!vocabularyIds?.length) return
+    await MemoryServices.initializeMemories.fn(vocabularyIds)
   }
 
   return (
-    <div className="overflow-hidden px-8">
+    <div className="flex-1 overflow-hidden px-8">
       <div className="flex h-full flex-col gap-y-4">
         <div className="flex w-full items-center justify-between">
           <Button variant="outline" onClick={purgeTranslatedWords}>

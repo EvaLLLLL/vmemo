@@ -44,9 +44,13 @@ interface IPagination {
   totalPages: number
 }
 
-interface IMemoryReviewResponse {
+interface IDueReviewsResponse {
   data: (Memory & { vocabulary: Vocabulary })[]
   pagination: IPagination
+}
+
+interface IGetAllNotCompletedReviews {
+  [date: string]: (Memory & { vocabulary: Vocabulary })[]
 }
 
 interface IVocabularyResponse {
@@ -89,7 +93,14 @@ export const AuthServices = {
 }
 
 export const VocabularyServices = {
-  getVocabularies: {
+  checkVocabularies: {
+    key: 'VocabularyServices.checkVocabularies',
+    fn: (q: string) =>
+      axiosInstance
+        .get<IApiResponse<Vocabulary[]>>(`/api/vocabulary/check?q=${q}`)
+        .then((res) => res.data)
+  },
+  getMyVocabularies: {
     key: 'VocabularyServices.getVocabularies',
     fn: (params: IGetVocabulariesParams) =>
       axiosInstance
@@ -127,13 +138,20 @@ export const MemoryServices = {
         .get<IApiResponse<Memory[]>>('/api/memory')
         .then((res) => res.data)
   },
+  getAllNotCompletedReviews: {
+    key: 'MemoryServices.getAllNotCompletedReviews',
+    fn: () =>
+      axiosInstance
+        .get<IApiResponse<IGetAllNotCompletedReviews>>('/api/memory/reviews')
+        .then((res) => res.data)
+  },
   getDueReviews: {
     key: 'MemoryServices.getDueReviews',
     fn: (pg: IGetVocabulariesParams) =>
       axiosInstance
-        .get<
-          IApiResponse<IMemoryReviewResponse>
-        >('/api/memory/reviews', { params: pg })
+        .get<IApiResponse<IDueReviewsResponse>>('/api/memory/due-reviews', {
+          params: pg
+        })
         .then((res) => res.data)
   },
   initializeMemories: {

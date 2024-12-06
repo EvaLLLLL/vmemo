@@ -2,7 +2,6 @@ import prisma from '@/lib/prisma'
 import { verifyAuth } from '@/lib/auth'
 import { NextRequest } from 'next/server'
 import { VocabularyError } from '@/app/api/errors/vocabulary-error'
-import { MemoryController } from '@/app/api/controllers/memory.controller'
 import { ApiResponse } from '@/app/api/responses/api-response'
 
 export async function POST(req: NextRequest) {
@@ -42,13 +41,6 @@ export async function POST(req: NextRequest) {
 
         return vocabulary
       })
-    )
-
-    // initialize memory
-    await Promise.all(
-      vocabularies.map((vocabulary) =>
-        MemoryController.initializeMemory(userId, vocabulary.id)
-      )
     )
 
     return ApiResponse.created(vocabularies)

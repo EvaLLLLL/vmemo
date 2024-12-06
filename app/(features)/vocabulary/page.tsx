@@ -64,9 +64,9 @@ export default function Vocabulary() {
     hasPreviousPage,
     fetchNextPage,
     fetchPreviousPage,
-    currentPage,
-    pagination,
-    setPagination
+    fetchFirstPage,
+    fetchLastPage,
+    currentPage
   } = useVocabularies({ size: 10, offset: 0 })
 
   const table = useReactTable({
@@ -144,7 +144,7 @@ export default function Vocabulary() {
           <Button
             variant="outline"
             className="hidden size-8 p-0 lg:flex"
-            onClick={() => setPagination({ ...pagination, offset: 0 })}
+            onClick={fetchFirstPage}
             disabled={!hasPreviousPage}>
             <span className="sr-only">Go to first page</span>
             <ChevronsLeft />
@@ -168,7 +168,7 @@ export default function Vocabulary() {
           <Button
             variant="outline"
             className="hidden size-8 p-0 lg:flex"
-            onClick={() => setPagination({ ...pagination, offset: 0 })}
+            onClick={fetchLastPage}
             disabled={!hasNextPage}>
             <span className="sr-only">Go to last page</span>
             <ChevronsRight />

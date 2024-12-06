@@ -50,9 +50,9 @@ export const useVocabularies = (
     refetch: refetchVocabularies,
     isPlaceholderData
   } = useQuery({
-    queryKey: [VocabularyServices.getVocabularies.key, pagination],
+    queryKey: [VocabularyServices.getMyVocabularies.key, pagination],
     queryFn: () =>
-      VocabularyServices.getVocabularies.fn({
+      VocabularyServices.getMyVocabularies.fn({
         size: pagination.size,
         offset: pagination.offset
       }),
@@ -60,7 +60,7 @@ export const useVocabularies = (
     enabled: isAuthenticated
   })
 
-  const currentPage = vocabulariesResponse?.data?.pagination?.page || 0
+  const currentPage = Math.floor(pagination.offset / pagination.size) + 1
   const hasPreviousPage = currentPage > 1
   const hasNextPage =
     !!vocabulariesResponse?.data?.pagination.totalPages &&
@@ -79,14 +79,28 @@ export const useVocabularies = (
       ...pagination,
       offset: pagination.offset - pagination.size
     })
+  const fetchFirstPage = () =>
+    setPagination({
+      ...pagination,
+      offset: 0
+    })
+  const fetchLastPage = () => {
+    if (!vocabulariesResponse?.data?.pagination?.totalPages) return
+    setPagination({
+      ...pagination,
+      offset:
+        (vocabulariesResponse?.data?.pagination?.totalPages - 1) *
+        pagination.size
+    })
+  }
 
   // prefetch the next page
   useEffect(() => {
     if (isAuthenticated && !isPlaceholderData && hasNextPage) {
       queryClient.prefetchQuery({
-        queryKey: [VocabularyServices.getVocabularies.key, pagination],
+        queryKey: [VocabularyServices.getMyVocabularies.key, pagination],
         queryFn: () =>
-          VocabularyServices.getVocabularies.fn({
+          VocabularyServices.getMyVocabularies.fn({
             size: pagination.size,
             offset: pagination.offset + pagination.size
           })
@@ -99,6 +113,8 @@ export const useVocabularies = (
     refetchVocabularies,
     fetchNextPage,
     fetchPreviousPage,
+    fetchFirstPage,
+    fetchLastPage,
     currentPage,
     hasNextPage,
     hasPreviousPage,

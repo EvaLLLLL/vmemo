@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import prisma from '@/lib/prisma'
-import { MemoryStatus, MemoryLevel } from '@prisma/client'
+import { MemoryStatus, MemoryLevel, Memory, Vocabulary } from '@prisma/client'
 import { HttpStatusCode } from 'axios'
 import { MemoryError } from '@/app/api/errors/memory-error'
 
@@ -133,6 +133,42 @@ export class MemoryController {
     }
   }
 
+  static async getAllNotCompletedReviews(userId: number) {
+    try {
+      const reviews = await prisma.memory.findMany({
+        where: { userId, status: { not: MemoryStatus.COMPLETED } },
+        orderBy: {
+          nextReviewDate: 'asc'
+        },
+        include: { vocabulary: true }
+      })
+
+      const groupedReviews = reviews.reduce(
+        (
+          acc: { [date: string]: (Memory & { vocabulary: Vocabulary })[] },
+          review
+        ) => {
+          const date = dayjs(review.nextReviewDate).format('YYYY-MM-DD')
+          if (!acc[date]) {
+            acc[date] = []
+          }
+          acc[date].push(review)
+          return acc
+        },
+        {}
+      )
+
+      return groupedReviews
+    } catch (error) {
+      if (error instanceof MemoryError) throw error
+      throw new MemoryError(
+        'Failed to fetch all not completed reviews',
+        'FETCH_NOT_COMPLETED_REVIEWS_ERROR',
+        HttpStatusCode.InternalServerError
+      )
+    }
+  }
+
   static async getDueReviews(
     userId: number,
     size: number = 10,
@@ -144,7 +180,7 @@ export class MemoryController {
         where: {
           userId,
           status: { not: MemoryStatus.COMPLETED },
-          OR: [{ nextReviewDate: { lte: now } }, { nextReviewDate: null }]
+          nextReviewDate: { lte: now }
         },
         take: size,
         skip: offset,
@@ -160,7 +196,7 @@ export class MemoryController {
         where: {
           userId,
           status: { not: MemoryStatus.COMPLETED },
-          OR: [{ nextReviewDate: { lte: now } }, { nextReviewDate: null }]
+          nextReviewDate: { lte: now }
         }
       })
 

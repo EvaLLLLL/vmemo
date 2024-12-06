@@ -16,10 +16,19 @@ export const useMemory = () => {
     queryFn: MemoryServices.getAllMemories.fn
   })
 
+  const {
+    data: allNotCompletedReviewsResponse,
+    refetch: refetchAllNotCompletedReviews
+  } = useQuery({
+    queryKey: [MemoryServices.getAllNotCompletedReviews.key],
+    queryFn: MemoryServices.getAllNotCompletedReviews.fn
+  })
+
   const refetch = useCallback(() => {
     refetchDueReviews()
     refetchAllMemories()
-  }, [refetchDueReviews, refetchAllMemories])
+    refetchAllNotCompletedReviews()
+  }, [refetchDueReviews, refetchAllMemories, refetchAllNotCompletedReviews])
 
   const { mutate: reviewMemory } = useMutation({
     mutationKey: [MemoryServices.review.key],
@@ -40,12 +49,14 @@ export const useMemory = () => {
   })
 
   const allMemories = allMemoriesResponse?.data
+  const allNotCompletedReviews = allNotCompletedReviewsResponse?.data
 
   return {
     allMemories,
     reviewMemory,
     initializeMemories,
-    updateMemories
+    updateMemories,
+    allNotCompletedReviews
   }
 }
 
@@ -67,7 +78,7 @@ export const useDueReviews = (
     enabled: isAuthenticated
   })
 
-  const currentPage = dueReviewsResponse?.data?.pagination?.page || 0
+  const currentPage = Math.floor(pagination.offset / pagination.size) + 1
   const hasPreviousPage = currentPage > 1
   const hasNextPage =
     !!dueReviewsResponse?.data?.pagination?.totalPages &&
@@ -91,8 +102,8 @@ export const useDueReviews = (
   useEffect(() => {
     if (isAuthenticated && !isPlaceholderData && hasNextPage) {
       queryClient.prefetchQuery({
-        queryKey: [VocabularyServices.getVocabularies.key, pagination],
-        queryFn: () => VocabularyServices.getVocabularies.fn(pagination)
+        queryKey: [VocabularyServices.getMyVocabularies.key, pagination],
+        queryFn: () => VocabularyServices.getMyVocabularies.fn(pagination)
       })
     }
   }, [hasNextPage, isAuthenticated, isPlaceholderData, pagination, queryClient])
@@ -100,7 +111,7 @@ export const useDueReviews = (
   return {
     dueReviews: dueReviewsResponse?.data?.data,
     refetchDueReviews,
-    pagination,
+    pagination: dueReviewsResponse?.data?.pagination,
     setPagination,
     currentPage,
     hasPreviousPage,
