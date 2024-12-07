@@ -8,7 +8,8 @@ import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { recite } from '@/lib/recite'
 import { useSelectedWordsStore } from '@/hooks/use-selected-store'
-
+import { fontClasses } from '@/config/fonts'
+import { cn } from '@/lib/utils'
 export default function Reading() {
   const { addTranslatedWord, isAutoSpeak } = useSelectedWordsStore()
 
@@ -21,9 +22,11 @@ export default function Reading() {
   }
 
   return (
-    <div className="flex flex-1 flex-col justify-center overflow-hidden align-middle">
-      <div className="flex size-full overflow-hidden">
+    <div className="flex flex-1 flex-col overflow-hidden sm:flex-row">
+      <div className="h-full sm:w-[600px]">
         <ReadingText onSelectWord={onSelectWord} />
+      </div>
+      <div className="h-full flex-1">
         <SelectedVocabularies />
       </div>
     </div>
@@ -39,7 +42,7 @@ const ReadingText: React.FC<{
   )
 
   return (
-    <div className="size-full w-3/5 break-words p-8">
+    <div className="size-full break-words p-8">
       <div className="relative h-full pt-6">
         <div className="absolute -top-5 flex w-full items-center justify-between">
           <div className="flex items-center gap-x-2">
@@ -63,7 +66,7 @@ const ReadingText: React.FC<{
               tabIndex={0}
               autoFocus
               placeholder="Type your passage here"
-              className="h-full flex-1 resize-none"
+              className={cn('h-full flex-1 resize-none', fontClasses.reading)}
               value={textContent}
               onChange={(e) => setTextContent(e.target.value)}
             />
@@ -76,7 +79,10 @@ const ReadingText: React.FC<{
           </div>
         ) : (
           <div
-            className="size-full overflow-y-auto whitespace-pre-wrap break-words p-8 pb-20 outline-2 outline-transparent selection:bg-primary selection:text-primary-foreground"
+            className={cn(
+              'size-full overflow-y-auto whitespace-pre-wrap break-words p-8 pb-20 outline-2 outline-transparent selection:bg-primary selection:text-primary-foreground',
+              fontClasses.reading
+            )}
             onMouseUp={() => {
               onSelectWord(window?.getSelection()?.toString())
             }}>

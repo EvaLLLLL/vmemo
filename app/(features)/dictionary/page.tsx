@@ -5,6 +5,8 @@ import { SelectedVocabularies } from '@/components/selected-vocabularies'
 import { Input } from '@/components/ui/input'
 import { recite } from '@/lib/recite'
 import { useSelectedWordsStore } from '@/hooks/use-selected-store'
+import { fontClasses } from '@/config/fonts'
+import { cn } from '@/lib/utils'
 
 export default function Dictionary() {
   const { isAutoSpeak, addTranslatedWord } = useSelectedWordsStore()
@@ -18,9 +20,13 @@ export default function Dictionary() {
   }
 
   return (
-    <div className="flex size-full flex-1 flex-col gap-y-4 overflow-hidden">
-      <SearchDict onSelectWord={onSelectWord} />
-      <SelectedVocabularies />
+    <div className="flex h-full flex-col gap-4 p-4 sm:p-8">
+      <div className="w-full">
+        <SearchDict onSelectWord={onSelectWord} />
+      </div>
+      <div className="flex-1 overflow-hidden">
+        <SelectedVocabularies />
+      </div>
     </div>
   )
 }
@@ -35,12 +41,13 @@ const SearchDict: React.FC<{
   }
 
   return (
-    <div className="px-8 pt-4">
+    <div className="w-full px-8 pt-4">
       <Input
         autoFocus
-        placeholder="type here, press Enter to get translation"
+        placeholder="type word to search, press Enter to get translation"
         tabIndex={0}
         value={value}
+        className={cn(fontClasses.reading)}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => e.code === 'Enter' && onEnter()}
       />

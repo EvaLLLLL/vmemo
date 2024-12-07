@@ -10,6 +10,7 @@ import { useSelectedWordsStore } from '@/hooks/use-selected-store'
 import { useVocabulary } from '@/hooks/use-vocabulary'
 import { Vocabulary } from '@prisma/client'
 import { MemoryServices, VocabularyServices } from '@/lib/services'
+import { fontClasses } from '@/config/fonts'
 
 export const SelectedVocabularies = () => {
   const {
@@ -123,7 +124,11 @@ const WordItem: React.FC<{
   return (
     <Alert
       ref={ref}
-      className={cn('group', isSelected && 'border-primary')}
+      className={cn(
+        'group',
+        isSelected && 'border-primary',
+        fontClasses.reading
+      )}
       onClick={onClick}>
       <AlertTitle>{word.word}</AlertTitle>
       <AlertDescription>{word.translation}</AlertDescription>

@@ -31,27 +31,25 @@ const columns: ColumnDef<{ id: number; word: string; translation: string }>[] =
     {
       accessorKey: 'id',
       header: 'id',
-      cell: ({ row }) => <div className="capitalize">{row.getValue('id')}</div>
+      cell: ({ row }) => (
+        <span className="capitalize">{row.getValue('id')}</span>
+      )
     },
     {
       accessorKey: 'word',
       header: 'word',
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue('word')}</div>
-      )
+      cell: ({ row }) => <span>{row.getValue('word')}</span>
     },
     {
       accessorKey: 'translation',
       header: 'translation',
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue('translation')}</div>
-      )
+      cell: ({ row }) => <span>{row.getValue('translation')}</span>
     },
     {
       accessorKey: 'createdAt',
       header: 'saved at',
       cell: ({ row }) => (
-        <div>{dayjs(row.getValue('createdAt')).format('DD/MM/YYYY')}</div>
+        <span>{dayjs(row.getValue('createdAt')).format('DD/MM/YYYY')}</span>
       )
     }
   ]
@@ -136,8 +134,8 @@ export default function Vocabulary() {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+      <div className="flex flex-col items-center justify-between gap-4 py-4 sm:flex-row">
+        <div className="text-sm font-medium">
           Page {currentPage} of {totalPages}
         </div>
         <div className="flex items-center space-x-2">

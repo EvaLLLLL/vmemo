@@ -1,22 +1,20 @@
 import '@/styles/globals.scss'
 import { Metadata } from 'next'
-import { Open_Sans } from 'next/font/google'
 import { SidebarProvider } from '@/components/sidebar-provider'
-import { cn } from '@/lib/utils'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/toaster'
 import ReactQueryProvider from '@/components/react-query-provider'
-
-const openSans = Open_Sans({
-  weight: ['400', '500', '600', '700'],
-  style: ['normal', 'italic'],
-  subsets: ['latin'],
-  variable: '--font-open-sans'
-})
+import { fontClasses } from '@/config/fonts'
 
 export const metadata: Metadata = {
   title: 'Vmemo',
-  description: 'Learn English efficiently.'
+  description: 'Learn English efficiently.',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false
+  }
 }
 
 export default function RootLayout({
@@ -26,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(openSans.className)}>
+      <body className={fontClasses.default}>
         <ThemeProvider attribute="class" defaultTheme="dark">
           <ReactQueryProvider>
             <Toaster />
