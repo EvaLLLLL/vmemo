@@ -38,7 +38,7 @@ export default function Reading() {
 const ReadingText: React.FC<{
   onSelectWord: (word?: string) => void
 }> = ({ onSelectWord }) => {
-  const [isEdit, setIsEdit] = useState(true)
+  const [isEdit, setIsEdit] = useState(false)
   const [textContent, setTextContent] = useState(
     'Reviving the practice of using elements of popular music in classical composition, an approach that had been in hibernation in the United States during the 1960s, composer Philip Glass (born 1937) embraced the ethos of popular music in his compositions.\nGlass based two symphonies on music by rock musicians David Bowie and Brian Eno, but the symphonies’ sound is distinctively his. Popular elements do not appear out of place in Glass’s classical music, which from its early days has shared certain harmonies and rhythms with rock music.\nYet this use of popular elements has not made Glass a composer of popular music. His music is not a version of popular music packaged to attract classical listeners; it is high art for listeners steeped in rock rather than the classics.'
   )

@@ -183,6 +183,15 @@ export const MemoryServices = {
       axiosInstance
         .post<IApiResponse<Memory[]>>('/api/memory/update', data)
         .then((res) => res.data)
+  },
+  getMemoryByWord: {
+    key: 'MemoryServices.getMemoryByWord',
+    fn: (q: string) =>
+      axiosInstance
+        .get<
+          IApiResponse<Memory & { vocabulary: Vocabulary }>
+        >(`/api/memory/word?q=${q}`)
+        .then((res) => res.data)
   }
 }
 

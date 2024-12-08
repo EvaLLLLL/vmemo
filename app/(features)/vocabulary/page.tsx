@@ -217,7 +217,7 @@ export default function Vocabulary() {
         </div>
       </div>
 
-      <div className="mb-4 flex items-center gap-2 justify-end">
+      <div className="mb-4 flex items-center justify-end gap-2">
         <Button
           variant="default"
           size="sm"

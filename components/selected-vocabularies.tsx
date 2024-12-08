@@ -11,11 +11,12 @@ import {
 } from 'lucide-react'
 import { Switch } from './ui/switch'
 import { Label } from './ui/label'
+import { Badge } from './ui/badge'
 import { cn } from '@/lib/utils'
 import { recite } from '@/lib/recite'
 import { useSelectedWordsStore } from '@/hooks/use-selected-store'
 import { useVocabulary } from '@/hooks/use-vocabulary'
-import { Vocabulary } from '@prisma/client'
+import { MemoryLevel, MemoryStatus, Vocabulary } from '@prisma/client'
 import {
   DictServices,
   MemoryServices,
@@ -132,6 +133,12 @@ const WordItem: React.FC<{
   const ref = useRef<HTMLDivElement | null>(null)
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
+  const { data: memory } = useQuery({
+    queryKey: [MemoryServices.getMemoryByWord.key, word.word],
+    queryFn: () => MemoryServices.getMemoryByWord.fn(word.word),
+    select: (v) => v.data
+  })
+
   const { data: dictResult } = useQuery({
     queryKey: [DictServices.translate.key, word],
     queryFn: () => DictServices.translate.fn(word.word),
@@ -175,20 +182,68 @@ const WordItem: React.FC<{
     }
   }, [isSelected])
 
+  const StatusBadge = ({ status }: { status?: MemoryStatus }) => {
+    if (!status) return null
+
+    const variant = status
+      ? {
+          NOT_STARTED: 'outline',
+          IN_PROGRESS: 'secondary',
+          COMPLETED: 'default'
+        }[status]
+      : 'outline'
+
+    return (
+      <Badge
+        variant={
+          variant as 'default' | 'secondary' | 'destructive' | 'outline'
+        }>
+        {status}
+      </Badge>
+    )
+  }
+
+  const LevelBadge = ({ level }: { level?: MemoryLevel }) => {
+    if (!level) return null
+
+    const variant = level
+      ? {
+          LEVEL_1: 'secondary',
+          LEVEL_2: 'secondary',
+          LEVEL_3: 'secondary',
+          LEVEL_4: 'secondary',
+          LEVEL_5: 'secondary',
+          MASTERED: 'default'
+        }[level]
+      : 'outline'
+
+    return (
+      <Badge
+        variant={
+          variant as 'default' | 'secondary' | 'destructive' | 'outline'
+        }>
+        {level || 'N/A'}
+      </Badge>
+    )
+  }
+
   return (
     <div
       ref={ref}
       className={cn(
         'group border relative cursor-pointer transition-all',
-        'relative w-full cursor-pointer rounded-lg border px-4 py-3 text-sm shadow hover:bg-chart-2 hover:shadow-xl',
+        'relative w-full cursor-pointer rounded-lg border px-4 py-3 text-sm shadow hover:bg-primary/20 hover:shadow-xl',
         isSelected && 'border-primary',
-        isExpanded && 'shadow-lg',
-        fontClasses.reading
+        isExpanded && 'shadow-lg'
       )}
       onClick={handleOnclick}>
-      <div>
-        <span>{word.word} </span>
-        <span>{word.translation} </span>
+      <div className="flex items-center gap-x-2">
+        <span className={cn(fontClasses.reading, 'font-semibold')}>
+          {word.word}
+        </span>
+        <span>{word.translation}</span>
+        <StatusBadge status={memory?.status} />
+        <LevelBadge level={memory?.level} />
       </div>
 
       {isExpanded && (

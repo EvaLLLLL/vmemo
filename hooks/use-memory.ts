@@ -43,12 +43,6 @@ export const useMemory = () => {
     onSuccess: () => refetch()
   })
 
-  const { mutate: updateMemories } = useMutation({
-    mutationKey: [MemoryServices.updateMemories.key],
-    mutationFn: MemoryServices.updateMemories.fn,
-    onSuccess: () => refetch()
-  })
-
   const allMemories = allMemoriesResponse?.data
   const allNotCompletedReviews = allNotCompletedReviewsResponse?.data
 
@@ -57,7 +51,6 @@ export const useMemory = () => {
     reviewMemory,
     batchReview,
     initializeMemories,
-    updateMemories,
     allNotCompletedReviews
   }
 }

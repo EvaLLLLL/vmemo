@@ -142,10 +142,10 @@ importers:
         version: https://registry.npmmirror.com/tailwind-merge/-/tailwind-merge-1.14.0.tgz
       tailwindcss:
         specifier: ^3.4.14
-        version: 3.4.14
+        version: 3.4.14(ts-node@10.9.2(@types/node@https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz)(typescript@5.6.3))
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@3.4.14)
+        version: 1.0.7(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz)(typescript@5.6.3)))
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -155,7 +155,7 @@ importers:
     devDependencies:
       '@tailwindcss/line-clamp':
         specifier: ^0.4.4
-        version: 0.4.4(tailwindcss@3.4.14)
+        version: 0.4.4(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz)(typescript@5.6.3)))
       '@tanstack/eslint-plugin-query':
         specifier: ^5.60.1
         version: 5.60.1(eslint@8.57.1)(typescript@5.6.3)
@@ -191,7 +191,7 @@ importers:
         version: 5.2.1(eslint-config-prettier@9.1.0(eslint@8.57.1))(eslint@8.57.1)(prettier@3.3.3)
       eslint-plugin-tailwindcss:
         specifier: ^3.17.5
-        version: 3.17.5(tailwindcss@3.4.14)
+        version: 3.17.5(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz)(typescript@5.6.3)))
       prettier:
         specifier: ^3.3.3
         version: 3.3.3
@@ -223,6 +223,10 @@ packages:
     resolution: {integrity: sha512-wDb5pWm4WDdF6LFUde3Jl8WzPA+3ZbxYqkC6xAXuD3irdEHN1k0NfTRrJD8ZD378SJ61miMLCqIOXYhd8x+AJQ==, tarball: https://registry.npmmirror.com/@babel/runtime/-/runtime-7.22.6.tgz}
     version: 7.22.6
     engines: {node: '>=6.9.0'}
+
+  '@cspotcode/source-map-support@0.8.1':
+    resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
+    engines: {node: '>=12'}
 
   '@eslint-community/eslint-utils@4.4.0':
     resolution: {integrity: sha512-1/sA4dwrzBAyeUoQ6oxahHKmrZvsnLCg4RfxW3ZFGGmQkSNQPFNLV9CUEFQP1x9EYXHTo5p6xdhZM1Ne9p/AfA==}
@@ -291,6 +295,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.18':
     resolution: {integrity: sha512-w+niJYzMHdd7USdiH2U6869nqhD2nbfZXND5Yp93qIbEmnDNk7PD48o+YchRVpzMU7M6jVCbenTR7PA1FLQ9pA==}
+
+  '@jridgewell/trace-mapping@0.3.9':
+    resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
   '@next/env@13.4.13':
     resolution: {integrity: sha512-fwz2QgVg08v7ZL7KmbQBLF2PubR/6zQdKBgmHEl3BCyWTEDsAQEijjw2gbFhI1tcKfLdOOJUXntz5vZ4S0Polg==}
@@ -952,6 +959,7 @@ packages:
 
   '@tailwindcss/line-clamp@0.4.4':
     resolution: {integrity: sha512-5U6SY5z8N42VtrCrKlsTAA35gy2VSyYtHWCsg1H87NU1SXnEfekTVlrga9fzUDrrHcGi2Lb5KenUWb4lRQT5/g==}
+    version: 0.4.4
     peerDependencies:
       tailwindcss: '>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1'
 
@@ -980,6 +988,18 @@ packages:
   '@tanstack/table-core@8.20.5':
     resolution: {integrity: sha512-P9dF7XbibHph2PFRz8gfBKEXEY/HJPOhym8CHmjF8y3q5mWpKx9xtZapXQUWCgkqvsK0R46Azuz+VaxD4Xl+Tg==}
     engines: {node: '>=12'}
+
+  '@tsconfig/node10@1.0.11':
+    resolution: {integrity: sha512-DcRjDCujK/kCk/cUe8Xz8ZSpm8mS3mNNpta+jGCA6USEDfktlNvm1+IuZ9eTcDbNk41BHwpHHeW+N1lKCz4zOw==}
+
+  '@tsconfig/node12@1.0.11':
+    resolution: {integrity: sha512-cqefuRsh12pWyGsIoBKJA9luFu3mRxCA+ORZvA4ktLSzIuCUtWVxGIuXigEwO5/ywWFMZ2QEGKWvkZG1zDMTag==}
+
+  '@tsconfig/node14@1.0.3':
+    resolution: {integrity: sha512-ysT8mhdixWK6Hw3i1V2AeRqZ5WfXg1G43mqoYlM2nc6388Fq5jcXyr5mRsqViLx/GJYdoL0bfXD8nmF+Zn/Iow==}
+
+  '@tsconfig/node16@1.0.4':
+    resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
 
   '@types/bcryptjs@2.4.6':
     resolution: {integrity: sha512-9xlo6R2qDs5uixm0bcIqCeMCE6HiQsIyel9KQySStiyqNl2tnj2mP3DX1Nf56MD6KMenNNlBBsy3LJ7gUEQPXQ==}
@@ -1156,6 +1176,10 @@ packages:
     peerDependencies:
       acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
 
+  acorn-walk@8.3.4:
+    resolution: {integrity: sha512-ueEepnujpqee2o5aIYnvHU6C0A42MNdsIDeqy5BydrkuC5R1ZuUFnm27EeFJGoEHJQgn3uleRvmTXaJgfXbt4g==}
+    engines: {node: '>=0.4.0'}
+
   acorn@8.14.0:
     resolution: {integrity: sha512-cl669nCJTZBsL97OF4kUQm5g5hC2uihk0NxY3WENAC0TYdILVkAyHymAntgxGkl7K+t0cXIrH5siy5S4XkFycA==}
     engines: {node: '>=0.4.0'}
@@ -1178,6 +1202,9 @@ packages:
   anymatch@3.1.3:
     resolution: {integrity: sha512-KMReFUr0B4t+D+OBkjR3KYqvocp2XaSzO55UcB6mgQMd3KbcE+mWTyvVV7D/zsdEbNnV6acZUutkiHQXvTr1Rw==}
     engines: {node: '>= 8'}
+
+  arg@4.1.3:
+    resolution: {integrity: sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA==}
 
   arg@5.0.2:
     resolution: {integrity: sha512-PYjyFOLKQ9y57JvQ6QLo8dAgNqswh8M1RMJYdQduT6xbWSgK36P/Z/v+p888pM69jMMfS8Xd8F6I1kQ/I9HUGg==}
@@ -1388,6 +1415,9 @@ packages:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==, tarball: https://registry.npmmirror.com/concat-map/-/concat-map-0.0.1.tgz}
     version: 0.0.1
 
+  create-require@1.1.1:
+    resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
+
   cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
     engines: {node: '>= 8'}
@@ -1537,6 +1567,10 @@ packages:
 
   didyoumean@1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
+
+  diff@4.0.2:
+    resolution: {integrity: sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==}
+    engines: {node: '>=0.3.1'}
 
   dir-glob@https://registry.npmmirror.com/dir-glob/-/dir-glob-3.0.1.tgz:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==, tarball: https://registry.npmmirror.com/dir-glob/-/dir-glob-3.0.1.tgz}
@@ -1711,6 +1745,7 @@ packages:
 
   eslint-plugin-tailwindcss@3.17.5:
     resolution: {integrity: sha512-8Mi7p7dm+mO1dHgRHHFdPu4RDTBk69Cn4P0B40vRQR+MrguUpwmKwhZy1kqYe3Km8/4nb+cyrCF+5SodOEmaow==}
+    version: 3.17.5
     engines: {node: '>=18.12.0'}
     peerDependencies:
       tailwindcss: ^3.4.0
@@ -2322,6 +2357,9 @@ packages:
     version: 0.263.1
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0
+
+  make-error@1.3.6:
+    resolution: {integrity: sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==}
 
   merge-stream@https://registry.npmmirror.com/merge-stream/-/merge-stream-2.0.0.tgz:
     resolution: {integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==, tarball: https://registry.npmmirror.com/merge-stream/-/merge-stream-2.0.0.tgz}
@@ -3058,11 +3096,13 @@ packages:
 
   tailwindcss-animate@1.0.7:
     resolution: {integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==}
+    version: 1.0.7
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
 
   tailwindcss@3.4.14:
     resolution: {integrity: sha512-IcSvOcTRcUtQQ7ILQL5quRDg7Xs93PdJEk1ZLbhhvJc7uj/OAhYOnruEiwnGgBvUtaUAJ8/mhSw1o8L2jCiENA==}
+    version: 3.4.14
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -3106,6 +3146,21 @@ packages:
 
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
+
+  ts-node@10.9.2:
+    resolution: {integrity: sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==}
+    version: 10.9.2
+    hasBin: true
+    peerDependencies:
+      '@swc/core': '>=1.2.50'
+      '@swc/wasm': '>=1.2.50'
+      '@types/node': '*'
+      typescript: '>=2.7'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      '@swc/wasm':
+        optional: true
 
   tsconfig-paths@https://registry.npmmirror.com/tsconfig-paths/-/tsconfig-paths-3.14.2.tgz:
     resolution: {integrity: sha512-o/9iXgCYc5L/JxCHPe3Hvh8Q/2xm5Z+p18PESBU6Ff33695QnCHBEjcytY2q19ua7Mbl/DavtBOLq+oG0RCL+g==, tarball: https://registry.npmmirror.com/tsconfig-paths/-/tsconfig-paths-3.14.2.tgz}
@@ -3211,6 +3266,9 @@ packages:
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
+  v8-compile-cache-lib@3.0.1:
+    resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
+
   victory-vendor@36.9.2:
     resolution: {integrity: sha512-PnpQQMuxlwYdocC8fIJqVXvkeViHYzotI+NJrCuav0ZYFoq912ZHBk3mCeuj+5/VpodOjPe1z0Fk2ihgzlXqjQ==}
 
@@ -3252,6 +3310,10 @@ packages:
   yaml@2.3.1:
     resolution: {integrity: sha512-2eHWfjaoXgTBC2jNM1LRef62VQa0umtvRiDSk6HSzW7RvS5YtkabJrwYLLEKWBc8a5U2PTSCs+dJjUTJdlHsWQ==}
     engines: {node: '>= 14'}
+
+  yn@3.1.1:
+    resolution: {integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==}
+    engines: {node: '>=6'}
 
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
@@ -3295,6 +3357,11 @@ snapshots:
   '@babel/runtime@https://registry.npmmirror.com/@babel/runtime/-/runtime-7.22.6.tgz':
     dependencies:
       regenerator-runtime: https://registry.npmmirror.com/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz
+
+  '@cspotcode/source-map-support@0.8.1':
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.9
+    optional: true
 
   '@eslint-community/eslint-utils@4.4.0(eslint@8.57.1)':
     dependencies:
@@ -3366,6 +3433,12 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
+
+  '@jridgewell/trace-mapping@0.3.9':
+    dependencies:
+      '@jridgewell/resolve-uri': 3.1.0
+      '@jridgewell/sourcemap-codec': 1.4.15
+    optional: true
 
   '@next/env@13.4.13': {}
 
@@ -3920,9 +3993,9 @@ snapshots:
     dependencies:
       tslib: 2.6.1
 
-  '@tailwindcss/line-clamp@0.4.4(tailwindcss@3.4.14)':
+  '@tailwindcss/line-clamp@0.4.4(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz)(typescript@5.6.3)))':
     dependencies:
-      tailwindcss: 3.4.14
+      tailwindcss: 3.4.14(ts-node@10.9.2(@types/node@https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz)(typescript@5.6.3))
 
   '@tanstack/eslint-plugin-query@5.60.1(eslint@8.57.1)(typescript@5.6.3)':
     dependencies:
@@ -3946,6 +4019,18 @@ snapshots:
       react-dom: https://registry.npmmirror.com/react-dom/-/react-dom-18.2.0.tgz(react@https://registry.npmmirror.com/react/-/react-18.2.0.tgz)
 
   '@tanstack/table-core@8.20.5': {}
+
+  '@tsconfig/node10@1.0.11':
+    optional: true
+
+  '@tsconfig/node12@1.0.11':
+    optional: true
+
+  '@tsconfig/node14@1.0.3':
+    optional: true
+
+  '@tsconfig/node16@1.0.4':
+    optional: true
 
   '@types/bcryptjs@2.4.6': {}
 
@@ -4132,6 +4217,11 @@ snapshots:
     dependencies:
       acorn: 8.14.0
 
+  acorn-walk@8.3.4:
+    dependencies:
+      acorn: 8.14.0
+    optional: true
+
   acorn@8.14.0: {}
 
   ajv@6.12.6:
@@ -4153,6 +4243,9 @@ snapshots:
     dependencies:
       normalize-path: 3.0.0
       picomatch: 2.3.1
+
+  arg@4.1.3:
+    optional: true
 
   arg@5.0.2: {}
 
@@ -4361,6 +4454,9 @@ snapshots:
 
   concat-map@https://registry.npmmirror.com/concat-map/-/concat-map-0.0.1.tgz: {}
 
+  create-require@1.1.1:
+    optional: true
+
   cross-spawn@7.0.3:
     dependencies:
       path-key: 3.1.1
@@ -4468,6 +4564,9 @@ snapshots:
   detect-node-es@1.1.0: {}
 
   didyoumean@1.2.2: {}
+
+  diff@4.0.2:
+    optional: true
 
   dir-glob@https://registry.npmmirror.com/dir-glob/-/dir-glob-3.0.1.tgz:
     dependencies:
@@ -4720,11 +4819,11 @@ snapshots:
       semver: https://registry.npmmirror.com/semver/-/semver-6.3.1.tgz
       string.prototype.matchall: https://registry.npmmirror.com/string.prototype.matchall/-/string.prototype.matchall-4.0.8.tgz
 
-  eslint-plugin-tailwindcss@3.17.5(tailwindcss@3.4.14):
+  eslint-plugin-tailwindcss@3.17.5(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz)(typescript@5.6.3))):
     dependencies:
       fast-glob: 3.3.2
       postcss: 8.4.27
-      tailwindcss: 3.4.14
+      tailwindcss: 3.4.14(ts-node@10.9.2(@types/node@https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz)(typescript@5.6.3))
 
   eslint-scope@7.2.2:
     dependencies:
@@ -5277,6 +5376,9 @@ snapshots:
     dependencies:
       react: https://registry.npmmirror.com/react/-/react-18.2.0.tgz
 
+  make-error@1.3.6:
+    optional: true
+
   merge-stream@https://registry.npmmirror.com/merge-stream/-/merge-stream-2.0.0.tgz: {}
 
   merge2@1.4.1: {}
@@ -5538,12 +5640,13 @@ snapshots:
       camelcase-css: 2.0.1
       postcss: https://registry.npmmirror.com/postcss/-/postcss-8.4.27.tgz
 
-  postcss-load-config@4.0.1(postcss@https://registry.npmmirror.com/postcss/-/postcss-8.4.27.tgz):
+  postcss-load-config@4.0.1(postcss@https://registry.npmmirror.com/postcss/-/postcss-8.4.27.tgz)(ts-node@10.9.2(@types/node@https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz)(typescript@5.6.3)):
     dependencies:
       lilconfig: 2.1.0
       yaml: 2.3.1
     optionalDependencies:
       postcss: https://registry.npmmirror.com/postcss/-/postcss-8.4.27.tgz
+      ts-node: 10.9.2(@types/node@https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz)(typescript@5.6.3)
 
   postcss-nested@6.0.1(postcss@https://registry.npmmirror.com/postcss/-/postcss-8.4.27.tgz):
     dependencies:
@@ -5895,11 +5998,11 @@ snapshots:
 
   tailwind-merge@https://registry.npmmirror.com/tailwind-merge/-/tailwind-merge-1.14.0.tgz: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@3.4.14):
+  tailwindcss-animate@1.0.7(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz)(typescript@5.6.3))):
     dependencies:
-      tailwindcss: 3.4.14
+      tailwindcss: 3.4.14(ts-node@10.9.2(@types/node@https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz)(typescript@5.6.3))
 
-  tailwindcss@3.4.14:
+  tailwindcss@3.4.14(ts-node@10.9.2(@types/node@https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz)(typescript@5.6.3)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -5918,7 +6021,7 @@ snapshots:
       postcss: 8.4.27
       postcss-import: 15.1.0(postcss@https://registry.npmmirror.com/postcss/-/postcss-8.4.27.tgz)
       postcss-js: 4.0.1(postcss@https://registry.npmmirror.com/postcss/-/postcss-8.4.27.tgz)
-      postcss-load-config: 4.0.1(postcss@https://registry.npmmirror.com/postcss/-/postcss-8.4.27.tgz)
+      postcss-load-config: 4.0.1(postcss@https://registry.npmmirror.com/postcss/-/postcss-8.4.27.tgz)(ts-node@10.9.2(@types/node@https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz)(typescript@5.6.3))
       postcss-nested: 6.0.1(postcss@https://registry.npmmirror.com/postcss/-/postcss-8.4.27.tgz)
       postcss-selector-parser: 6.0.13
       resolve: 1.22.4
@@ -5955,6 +6058,25 @@ snapshots:
       typescript: 5.6.3
 
   ts-interface-checker@0.1.13: {}
+
+  ts-node@10.9.2(@types/node@https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz)(typescript@5.6.3):
+    dependencies:
+      '@cspotcode/source-map-support': 0.8.1
+      '@tsconfig/node10': 1.0.11
+      '@tsconfig/node12': 1.0.11
+      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.4
+      '@types/node': https://registry.npmmirror.com/@types/node/-/node-20.4.8.tgz
+      acorn: 8.14.0
+      acorn-walk: 8.3.4
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      typescript: 5.6.3
+      v8-compile-cache-lib: 3.0.1
+      yn: 3.1.1
+    optional: true
 
   tsconfig-paths@https://registry.npmmirror.com/tsconfig-paths/-/tsconfig-paths-3.14.2.tgz:
     dependencies:
@@ -6049,6 +6171,9 @@ snapshots:
 
   util-deprecate@1.0.2: {}
 
+  v8-compile-cache-lib@3.0.1:
+    optional: true
+
   victory-vendor@36.9.2:
     dependencies:
       '@types/d3-array': 3.2.1
@@ -6102,6 +6227,9 @@ snapshots:
   yallist@https://registry.npmmirror.com/yallist/-/yallist-4.0.0.tgz: {}
 
   yaml@2.3.1: {}
+
+  yn@3.1.1:
+    optional: true
 
   yocto-queue@0.1.0: {}
 

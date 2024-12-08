@@ -4,21 +4,14 @@ import { IBaiduDict } from '@/types/dict'
 
 interface IGetBaiduDictResponse {
   result: {
-    // source language
     from: string
     trans_result: {
-      // detailed dict
       dict: string
-      // translation
       dst: string
-      // origin audio url
       src_tts: string
-      // translation audio url
       dst_tts: string
-      // origin word
       src: string
     }[]
-    // target language
     to: string
   }
   log_id: string
@@ -65,13 +58,8 @@ export class DictController {
       }))
 
       return dicts[0]
-    } catch (error) {
-      if (error instanceof DictError) throw error
-      throw new DictError(
-        'Failed to calculate next level',
-        'LEVEL_CALCULATION_ERROR',
-        HttpStatusCode.InternalServerError
-      )
+    } catch (_) {
+      return null
     }
   }
 }

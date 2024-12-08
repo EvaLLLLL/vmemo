@@ -263,4 +263,33 @@ export class MemoryController {
       )
     }
   }
+
+  static async getMemoryByWord(userId: number, word: string) {
+    try {
+      const memory = await prisma.memory.findFirst({
+        where: {
+          userId,
+          vocabulary: {
+            word
+          }
+        },
+        include: {
+          vocabulary: true
+        }
+      })
+
+      if (!memory) {
+        return null
+      }
+
+      return memory
+    } catch (error) {
+      if (error instanceof MemoryError) throw error
+      throw new MemoryError(
+        'Failed to fetch memory by word',
+        'FETCH_MEMORY_ERROR',
+        HttpStatusCode.InternalServerError
+      )
+    }
+  }
 }
