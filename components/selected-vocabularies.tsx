@@ -1,6 +1,14 @@
 import { useEffect, useMemo, useRef, MouseEvent, useState } from 'react'
 import { Button } from './ui/button'
-import { HeadphonesIcon, Loader2, XIcon } from 'lucide-react'
+import {
+  HeadphonesIcon,
+  Loader2,
+  XIcon,
+  EarOff,
+  FileAudio2,
+  Save,
+  Trash2
+} from 'lucide-react'
 import { Switch } from './ui/switch'
 import { Label } from './ui/label'
 import { cn } from '@/lib/utils'
@@ -49,33 +57,53 @@ export const SelectedVocabularies = () => {
     <div className="flex-1 overflow-hidden px-8">
       <div className="flex h-full flex-col gap-y-4">
         <div className="flex w-full items-center justify-between">
-          <Button variant="outline" onClick={purgeTranslatedWords}>
+          <Button
+            variant="ghost"
+            onClick={purgeTranslatedWords}
+            className="flex gap-x-2 hover:bg-destructive/90 hover:text-destructive-foreground">
+            <Trash2 size={16} />
             Clear
           </Button>
           <div className="flex items-center gap-x-2">
-            <Switch
-              id="auto-speak"
-              checked={isAutoSpeak}
-              onCheckedChange={(e) => {
-                setIsAutoSpeak(e)
-              }}
-            />
+            <div className="relative inline-grid h-9 grid-cols-[1fr_1fr] items-center text-sm font-medium">
+              <Switch
+                id="switch-isAutoSpeak"
+                checked={isAutoSpeak}
+                onCheckedChange={setIsAutoSpeak}
+                className="peer absolute inset-0 h-[inherit] w-auto data-[state=checked]:bg-input/50 data-[state=unchecked]:bg-input/50 [&_span]:h-full [&_span]:w-1/2 [&_span]:transition-transform [&_span]:duration-300 [&_span]:[transition-timing-function:cubic-bezier(0.16,1,0.3,1)] data-[state=checked]:[&_span]:translate-x-full rtl:data-[state=checked]:[&_span]:-translate-x-full"
+              />
+              <span className="pointer-events-none relative ms-0.5 flex min-w-8 items-center justify-center text-center peer-data-[state=checked]:text-muted-foreground/70">
+                <EarOff size={16} strokeWidth={2} aria-hidden="true" />
+              </span>
+              <span className="pointer-events-none relative me-0.5 flex min-w-8 items-center justify-center text-center peer-data-[state=unchecked]:text-muted-foreground/70">
+                <FileAudio2 size={16} strokeWidth={2} aria-hidden="true" />
+              </span>
+            </div>
             <Label
-              htmlFor="airplane-mode"
-              className={
+              htmlFor="switch-isAutoSpeak"
+              className={cn(
+                'text-xl',
                 isAutoSpeak ? 'text-primary' : 'text-muted-foreground'
-              }>
-              Auto speak
+              )}>
+              {isAutoSpeak ? 'Auto speak' : 'Auto speak off'}
             </Label>
           </div>
           {isCreatingVocabularies ? (
-            <Button variant="outline" disabled>
-              <Loader2 className="animate-spin" />
+            <Button disabled className="min-w-[120px]">
+              <Loader2 className="mr-2 size-4 animate-spin" />
               Please wait
             </Button>
           ) : (
-            <Button variant="outline" onClick={onSave}>
-              Save({wordsCount})
+            <Button
+              onClick={onSave}
+              className="flex min-w-[120px] gap-x-2 bg-primary text-primary-foreground hover:bg-primary/90">
+              <Save size={16} />
+              Save
+              {wordsCount > 0 && (
+                <span className="ml-1 rounded-full bg-primary-foreground/20 px-2 py-0.5 text-xs">
+                  {wordsCount}
+                </span>
+              )}
             </Button>
           )}
         </div>

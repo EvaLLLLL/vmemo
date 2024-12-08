@@ -1,12 +1,7 @@
-import { useCallback, useEffect, useState } from 'react'
-import { MemoryServices, VocabularyServices } from '@/lib/services'
-import {
-  keepPreviousData,
-  useMutation,
-  useQuery,
-  useQueryClient
-} from '@tanstack/react-query'
-import { useAuth } from './use-auth'
+import { useCallback, useState } from 'react'
+import { useAuth } from '@/hooks/use-auth'
+import { MemoryServices } from '@/lib/services'
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
 
 export const useMemory = () => {
   const { refetchDueReviews } = useDueReviews()
@@ -36,6 +31,12 @@ export const useMemory = () => {
     onSuccess: () => refetch()
   })
 
+  const { mutate: batchReview } = useMutation({
+    mutationKey: [MemoryServices.batchReview.key],
+    mutationFn: MemoryServices.batchReview.fn,
+    onSuccess: () => refetch()
+  })
+
   const { mutate: initializeMemories } = useMutation({
     mutationKey: [MemoryServices.initializeMemories.key],
     mutationFn: MemoryServices.initializeMemories.fn,
@@ -54,6 +55,7 @@ export const useMemory = () => {
   return {
     allMemories,
     reviewMemory,
+    batchReview,
     initializeMemories,
     updateMemories,
     allNotCompletedReviews
@@ -64,14 +66,9 @@ export const useDueReviews = (
   pg: { size: number; offset: number } = { size: 10, offset: 0 }
 ) => {
   const { isAuthenticated } = useAuth()
-  const queryClient = useQueryClient()
   const [pagination, setPagination] = useState(pg)
 
-  const {
-    data: dueReviewsResponse,
-    refetch: refetchDueReviews,
-    isPlaceholderData
-  } = useQuery({
+  const { data: dueReviewsResponse, refetch: refetchDueReviews } = useQuery({
     queryKey: [MemoryServices.getDueReviews.key, pagination],
     queryFn: () => MemoryServices.getDueReviews.fn(pagination),
     placeholderData: keepPreviousData,
@@ -97,16 +94,6 @@ export const useDueReviews = (
       ...pagination,
       offset: pagination.offset - pagination.size
     })
-
-  // prefetch the next page
-  useEffect(() => {
-    if (isAuthenticated && !isPlaceholderData && hasNextPage) {
-      queryClient.prefetchQuery({
-        queryKey: [VocabularyServices.getMyVocabularies.key, pagination],
-        queryFn: () => VocabularyServices.getMyVocabularies.fn(pagination)
-      })
-    }
-  }, [hasNextPage, isAuthenticated, isPlaceholderData, pagination, queryClient])
 
   return {
     dueReviews: dueReviewsResponse?.data?.data,

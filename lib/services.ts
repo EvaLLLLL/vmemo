@@ -54,7 +54,7 @@ interface IGetAllNotCompletedReviews {
 }
 
 interface IVocabularyResponse {
-  data: Vocabulary[]
+  data: (Vocabulary & { memories?: Memory[] })[]
   pagination: IPagination
 }
 
@@ -123,9 +123,9 @@ export const VocabularyServices = {
   },
   deleteVocabulary: {
     key: 'VocabularyServices.deleteVocabulary',
-    fn: (id: number) =>
+    fn: (ids: number[]) =>
       axiosInstance
-        .delete<IApiResponse<Vocabulary>>(`/api/vocabulary?id=${id}`)
+        .delete<IApiResponse<Vocabulary>>(`/api/vocabulary?id=${ids.join(',')}`)
         .then((res) => res.data)
   }
 }
@@ -168,6 +168,13 @@ export const MemoryServices = {
     fn: (data: IMemoryReview) =>
       axiosInstance
         .post<IApiResponse<Memory>>('/api/memory/review', data)
+        .then((res) => res.data)
+  },
+  batchReview: {
+    key: 'MemoryServices.batchReview',
+    fn: (data: IMemoryReview[]) =>
+      axiosInstance
+        .post<IApiResponse<Memory[]>>('/api/memory/batch-review', data)
         .then((res) => res.data)
   },
   updateMemories: {

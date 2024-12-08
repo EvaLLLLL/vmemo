@@ -5,6 +5,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Clock, BookOpen, LucideIcon, TrendingUp, Flame } from 'lucide-react'
 import { useAuth } from '@/hooks/use-auth'
 import { MemoriesOverview } from '@/components/memories-overview'
+import { useStatistics } from '@/hooks/use-statistics'
 
 const StatCard = ({
   title,
@@ -36,11 +37,7 @@ const getTimeOfDay = () => {
 const WelcomeSection = () => {
   const { user } = useAuth()
   const timeOfDay = getTimeOfDay()
-
-  const todayProgress = 65
-  const streak = 7
-  const wordsCount = 128
-  const studyHours = 2.5
+  const { todayProgress, streak, wordsCount, studyHours } = useStatistics()
 
   return (
     <div className="w-full space-y-4">

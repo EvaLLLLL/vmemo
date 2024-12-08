@@ -73,6 +73,10 @@ export class MemoryController {
     }
   }
 
+  static async batchReview(data: ReviewResult[]) {
+    return Promise.all(data.map((item) => this.review(item)))
+  }
+
   static async review({ memoryId, remembered }: ReviewResult) {
     try {
       if (!memoryId) {

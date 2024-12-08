@@ -25,7 +25,12 @@ export const useSelectedWordsStore = create<SelectedWordsStore>()((
     selectedWord: undefined,
 
     setIsAutoSpeak: (v) => set(() => ({ isAutoSpeak: v })),
-    addTranslatedWord: async (plain) => {
+    addTranslatedWord: async (word) => {
+      const plain = word
+        .replace(/[^a-zA-Z]/g, '')
+        .trim()
+        .toLowerCase()
+
       const state = get()
       const stored = state.translatedWords?.find((v) => v.word === plain)
 

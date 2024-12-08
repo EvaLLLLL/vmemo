@@ -24,35 +24,141 @@ import {
   ChevronsLeft,
   ChevronsRight
 } from 'lucide-react'
-import { useVocabularies } from '@/hooks/use-vocabulary'
+import { useVocabularies, useVocabulary } from '@/hooks/use-vocabulary'
+import { Memory, Vocabulary as VocabularyType } from '@prisma/client'
+import { Badge } from '@/components/ui/badge'
+import { Checkbox } from '@/components/ui/checkbox'
+import { useMemory } from '@/hooks/use-memory'
 
-const columns: ColumnDef<{ id: number; word: string; translation: string }>[] =
-  [
-    {
-      accessorKey: 'id',
-      header: 'id',
-      cell: ({ row }) => (
-        <span className="capitalize">{row.getValue('id')}</span>
-      )
-    },
-    {
-      accessorKey: 'word',
-      header: 'word',
-      cell: ({ row }) => <span>{row.getValue('word')}</span>
-    },
-    {
-      accessorKey: 'translation',
-      header: 'translation',
-      cell: ({ row }) => <span>{row.getValue('translation')}</span>
-    },
-    {
-      accessorKey: 'createdAt',
-      header: 'saved at',
-      cell: ({ row }) => (
-        <span>{dayjs(row.getValue('createdAt')).format('DD/MM/YYYY')}</span>
+const columns: ColumnDef<VocabularyType & { memories?: Memory[] }>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllRowsSelected()}
+        onCheckedChange={(e) => table.toggleAllRowsSelected(!!e)}
+        className="size-6 rounded-full border-gray-300"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(e) => row.toggleSelected(!!e)}
+        className="size-6 rounded-full border-gray-300"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false
+  },
+  {
+    accessorKey: 'id',
+    header: 'id',
+    cell: ({ row }) => <span className="capitalize">{row.getValue('id')}</span>
+  },
+  {
+    accessorKey: 'word',
+    header: 'word',
+    cell: ({ row }) => <span>{row.getValue('word')}</span>
+  },
+  {
+    accessorKey: 'translation',
+    header: 'translation',
+    cell: ({ row }) => <span>{row.getValue('translation')}</span>
+  },
+  {
+    accessorKey: 'createdAt',
+    header: 'saved at',
+    cell: ({ row }) => (
+      <span>{dayjs(row.getValue('createdAt')).format('DD/MM/YYYY')}</span>
+    )
+  },
+  {
+    accessorKey: 'updatedAt',
+    header: 'updated at',
+    cell: ({ row }) => (
+      <span>{dayjs(row.getValue('updatedAt')).format('DD/MM/YYYY')}</span>
+    )
+  },
+  {
+    accessorKey: 'memoryStatus',
+    header: 'memory status',
+    cell: ({ row }) => {
+      const status = row.original.memories?.[0]?.status
+      const variant = status
+        ? {
+            NOT_STARTED: 'outline',
+            IN_PROGRESS: 'secondary',
+            COMPLETED: 'default'
+          }[status]
+        : 'outline'
+
+      return (
+        <Badge
+          variant={
+            variant as 'default' | 'secondary' | 'destructive' | 'outline'
+          }>
+          {status || 'N/A'}
+        </Badge>
       )
     }
-  ]
+  },
+  {
+    accessorKey: 'memoryLevel',
+    header: 'memory level',
+    cell: ({ row }) => {
+      const level = row.original.memories?.[0]?.level
+      const variant = level
+        ? {
+            LEVEL_1: 'secondary',
+            LEVEL_2: 'secondary',
+            LEVEL_3: 'secondary',
+            LEVEL_4: 'secondary',
+            LEVEL_5: 'secondary',
+            MASTERED: 'default'
+          }[level]
+        : 'outline'
+
+      return (
+        <Badge
+          variant={
+            variant as 'default' | 'secondary' | 'destructive' | 'outline'
+          }>
+          {level || 'N/A'}
+        </Badge>
+      )
+    }
+  },
+  {
+    accessorKey: 'lastReviewedAt',
+    header: 'last reviewed at',
+    cell: ({ row }) => {
+      return (
+        <span>
+          {row.original.memories?.[0]?.lastReviewedAt
+            ? dayjs(row.original.memories?.[0]?.lastReviewedAt).format(
+                'DD/MM/YYYY'
+              )
+            : 'N/A'}
+        </span>
+      )
+    }
+  },
+  {
+    accessorKey: 'nextReviewAt',
+    header: 'next review at',
+    cell: ({ row }) => {
+      return (
+        <span>
+          {row.original.memories?.[0]?.nextReviewDate
+            ? dayjs(row.original.memories?.[0]?.nextReviewDate).format(
+                'DD/MM/YYYY'
+              )
+            : 'N/A'}
+        </span>
+      )
+    }
+  }
+]
 
 export default function Vocabulary() {
   const {
@@ -64,7 +170,8 @@ export default function Vocabulary() {
     fetchPreviousPage,
     fetchFirstPage,
     fetchLastPage,
-    currentPage
+    currentPage,
+    refetchVocabularies
   } = useVocabularies({ size: 10, offset: 0 })
 
   const table = useReactTable({
@@ -75,6 +182,30 @@ export default function Vocabulary() {
     getCoreRowModel: getCoreRowModel()
   })
 
+  const { batchReview } = useMemory()
+  const { deleteVocabularies } = useVocabulary()
+
+  const handleReviewVocabularies = async () => {
+    const selectedRows = table.getSelectedRowModel().rows
+    const memories = selectedRows.map((row) => row.original.memories?.[0])
+    await batchReview(
+      memories?.map((m) => ({
+        memoryId: m?.id as number,
+        remembered: true
+      }))
+    )
+    await refetchVocabularies()
+    table.toggleAllRowsSelected(false)
+  }
+
+  const handleDeleteVocabularies = async () => {
+    const selectedRows = table.getSelectedRowModel().rows
+    const ids = selectedRows.map((row) => row.original.id)
+    await deleteVocabularies(ids)
+    await refetchVocabularies()
+    table.toggleAllRowsSelected(false)
+  }
+
   return (
     <div className="w-full overflow-auto p-4 md:p-8">
       <div className="mb-8 flex items-center justify-between space-y-2">
@@ -83,6 +214,26 @@ export default function Vocabulary() {
           <p className="text-muted-foreground">
             Here&apos;s your complete vocabulary list!
           </p>
+        </div>
+      </div>
+
+      <div className="mb-4 flex items-center gap-2 justify-end">
+        <Button
+          variant="default"
+          size="sm"
+          onClick={handleReviewVocabularies}
+          disabled={table.getSelectedRowModel().rows.length === 0}>
+          Review Selected
+        </Button>
+        <Button
+          variant="destructive"
+          size="sm"
+          onClick={handleDeleteVocabularies}
+          disabled={table.getSelectedRowModel().rows.length === 0}>
+          Delete Selected
+        </Button>
+        <div className="ml-2 text-sm text-muted-foreground">
+          {table.getSelectedRowModel().rows.length} row(s) selected
         </div>
       </div>
 

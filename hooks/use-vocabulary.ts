@@ -1,12 +1,7 @@
+import { useState } from 'react'
+import { useAuth } from '@/hooks/use-auth'
 import { VocabularyServices } from '@/lib/services'
-import {
-  useQueryClient,
-  keepPreviousData,
-  useMutation,
-  useQuery
-} from '@tanstack/react-query'
-import { useState, useEffect } from 'react'
-import { useAuth } from './use-auth'
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
 
 export const useVocabulary = () => {
   const { refetchVocabularies } = useVocabularies()
@@ -24,7 +19,7 @@ export const useVocabulary = () => {
     onSuccess: () => refetchVocabularies()
   })
 
-  const { mutate: deleteVocabulary } = useMutation({
+  const { mutate: deleteVocabularies } = useMutation({
     mutationKey: [VocabularyServices.deleteVocabulary.key],
     mutationFn: VocabularyServices.deleteVocabulary.fn,
     onSuccess: () => refetchVocabularies()
@@ -33,7 +28,7 @@ export const useVocabulary = () => {
   return {
     createVocabularies,
     updateVocabulary,
-    deleteVocabulary,
+    deleteVocabularies,
     isCreatingVocabularies
   }
 }
@@ -42,23 +37,20 @@ export const useVocabularies = (
   pg: { size: number; offset: number } = { size: 10, offset: 0 }
 ) => {
   const { isAuthenticated } = useAuth()
-  const queryClient = useQueryClient()
   const [pagination, setPagination] = useState(pg)
 
-  const {
-    data: vocabulariesResponse,
-    refetch: refetchVocabularies,
-    isPlaceholderData
-  } = useQuery({
-    queryKey: [VocabularyServices.getMyVocabularies.key, pagination],
-    queryFn: () =>
-      VocabularyServices.getMyVocabularies.fn({
-        size: pagination.size,
-        offset: pagination.offset
-      }),
-    placeholderData: keepPreviousData,
-    enabled: isAuthenticated
-  })
+  const { data: vocabulariesResponse, refetch: refetchVocabularies } = useQuery(
+    {
+      queryKey: [VocabularyServices.getMyVocabularies.key, pagination],
+      queryFn: () =>
+        VocabularyServices.getMyVocabularies.fn({
+          size: pagination.size,
+          offset: pagination.offset
+        }),
+      placeholderData: keepPreviousData,
+      enabled: isAuthenticated
+    }
+  )
 
   const currentPage = Math.floor(pagination.offset / pagination.size) + 1
   const hasPreviousPage = currentPage > 1
@@ -93,20 +85,6 @@ export const useVocabularies = (
         pagination.size
     })
   }
-
-  // prefetch the next page
-  useEffect(() => {
-    if (isAuthenticated && !isPlaceholderData && hasNextPage) {
-      queryClient.prefetchQuery({
-        queryKey: [VocabularyServices.getMyVocabularies.key, pagination],
-        queryFn: () =>
-          VocabularyServices.getMyVocabularies.fn({
-            size: pagination.size,
-            offset: pagination.offset + pagination.size
-          })
-      })
-    }
-  }, [hasNextPage, isAuthenticated, isPlaceholderData, pagination, queryClient])
 
   return {
     vocabularies: vocabulariesResponse?.data?.data,

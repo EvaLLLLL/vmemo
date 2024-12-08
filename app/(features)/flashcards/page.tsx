@@ -32,10 +32,6 @@ export default function Flashcards() {
     await reviewMemory({ memoryId: card.id, remembered: true })
   }
 
-  const onComplete = async () => {
-    console.log('hi')
-  }
-
   const onFlip = async (c: FlashCard) => {
     if (!c.front) return null
 
@@ -110,7 +106,7 @@ export default function Flashcards() {
   }
 
   return (
-    <div className="flex flex-col-reverse overflow-auto p-4 sm:flex-row sm:p-12">
+    <div className="flex flex-col-reverse overflow-auto p-4 !pt-2 sm:flex-row sm:p-12">
       <div className="mt-4 flex-1 sm:mt-0">
         <div className="mb-4 flex flex-col items-center gap-2 sm:mb-8 sm:gap-4">
           <h1 className="text-xl font-bold sm:text-3xl">Today&apos;s Review</h1>
@@ -126,7 +122,6 @@ export default function Flashcards() {
           <FlashCards
             cards={cards}
             onFlip={onFlip}
-            onComplete={onComplete}
             onSwipeLeft={onSwipeLeft}
             onSwipeRight={onSwipeRight}
           />

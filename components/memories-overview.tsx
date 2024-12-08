@@ -1,9 +1,8 @@
 'use client'
 
 import * as React from 'react'
-// import dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
-
 import {
   Card,
   CardContent,
@@ -17,12 +16,11 @@ import {
   ChartTooltip,
   ChartTooltipContent
 } from '@/components/ui/chart'
-// import { useMemo } from 'react'
-// import groupBy from 'lodash/groupBy'
-// import { useMemory } from '@/hooks/use-memory'
+import { useMemo } from 'react'
+import { useMemory } from '@/hooks/use-memory'
 
 export const MemoriesOverview: React.FC = () => {
-  return <ActivityCart />
+  return <ActivityChart />
 }
 
 const chartConfig = {
@@ -31,27 +29,37 @@ const chartConfig = {
   }
 } satisfies ChartConfig
 
-export function ActivityCart() {
-  // const { allMemories } = useMemory()
+export function ActivityChart() {
+  const { allMemories } = useMemory()
 
-  // const chartData = useMemo(() => {
-  //   const allDate = allMemories?.map((m) =>
-  //     dayjs(m.updatedAt || m.updatedAt)
-  //       .format('YYYY-MM-DD')
-  //       .toString()
-  //   )
+  const chartData = useMemo(() => {
+    if (!allMemories?.length) return []
 
-  //   const grouped = groupBy(allDate)
+    // Create an array of the last 30 days
+    const dates = Array.from({ length: 30 }, (_, i) => {
+      return dayjs().subtract(i, 'day').format('YYYY-MM-DD')
+    }).reverse()
 
-  //   const m = Object.keys(grouped)
-  //     .map((k) => ({
-  //       date: k,
-  //       count: grouped[k].length
-  //     }))
-  //     .sort((a, b) => (dayjs(a.date).isAfter(b.date) ? 1 : -1))
+    // Count memories for each date
+    const dateCountMap = dates.reduce(
+      (acc, date) => {
+        const count = allMemories.filter(
+          (memory) =>
+            dayjs(memory.createdAt).format('YYYY-MM-DD') === date ||
+            dayjs(memory.updatedAt).format('YYYY-MM-DD') === date
+        ).length
 
-  //   return m
-  // }, [allMemories])
+        acc.push({
+          date,
+          count
+        })
+        return acc
+      },
+      [] as { date: string; count: number }[]
+    )
+
+    return dateCountMap
+  }, [allMemories])
 
   return (
     <Card className="w-full">
@@ -68,8 +76,7 @@ export function ActivityCart() {
           config={chartConfig}
           className="aspect-auto h-[250px] w-full">
           <BarChart
-            accessibilityLayer
-            data={[]}
+            data={chartData}
             margin={{
               left: 12,
               right: 12

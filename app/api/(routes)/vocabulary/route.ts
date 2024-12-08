@@ -70,6 +70,9 @@ export async function GET(req: NextRequest) {
       where: {
         users: { some: { id: userId } }
       },
+      include: {
+        memories: true
+      },
       take: size,
       skip: offset,
       orderBy: { createdAt: 'desc' }
@@ -137,17 +140,17 @@ export async function DELETE(req: NextRequest) {
     const userId = userJwt.id as number
 
     const url = new URL(req.url)
-    const id = parseInt(url.searchParams.get('id') || '', 10)
+    const ids = url.searchParams.get('id')?.split(',').map(Number)
 
-    if (!id) {
-      return ApiResponse.badRequest('Vocabulary ID is required')
+    if (!ids?.length) {
+      return ApiResponse.badRequest('Vocabulary IDs are required')
     }
 
     await prisma.user.update({
       where: { id: userId },
       data: {
         vocabularies: {
-          disconnect: { id }
+          disconnect: ids.map((id) => ({ id }))
         }
       }
     })
