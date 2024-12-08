@@ -8,11 +8,13 @@ import { IBaiduDict } from '@/types/dict'
 import { useQueryClient } from '@tanstack/react-query'
 import { AnimatePresence, motion } from 'motion/react'
 import { cn } from '@/lib/utils'
+import { formatDictResult } from '@/utils/dict'
 
 export default function Flashcards() {
   const { reviewMemory, allNotCompletedReviews } = useMemory()
   const { dueReviews, pagination } = useDueReviews()
   const queryClient = useQueryClient()
+
   const cards =
     dueReviews?.map((review) => ({
       id: review.id,
@@ -35,21 +37,80 @@ export default function Flashcards() {
   }
 
   const onFlip = async (c: FlashCard) => {
-    if (!c.front) return ''
+    if (!c.front) return null
 
     const cachedData = queryClient.getQueryData<IBaiduDict>([
       DictServices.translate.key,
       c.front
     ])
 
-    if (cachedData) return cachedData.dst || ''
-    const dictResult = await DictServices.translate.fn(c.front)
-    queryClient.setQueryData([DictServices.translate.key, c.front], dictResult)
-    return dictResult?.data?.dst || ''
+    let result = formatDictResult(cachedData)
+
+    if (cachedData) {
+      result = formatDictResult(cachedData)
+    } else {
+      const dictResult = await DictServices.translate.fn(c.front as string)
+
+      queryClient.setQueryData(
+        [DictServices.translate.key, c.front],
+        dictResult
+      )
+
+      result = formatDictResult(dictResult?.data)
+    }
+
+    const { simpleMeans, derivatives, examples } = result
+
+    return (
+      <div className="flex flex-col gap-6 p-4">
+        <div className="text-xl">{c.front}</div>
+
+        {simpleMeans && (
+          <div className="text-base font-medium text-foreground">
+            {simpleMeans}
+          </div>
+        )}
+
+        {examples && examples.length > 0 && (
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold text-muted-foreground">
+              Examples
+            </h3>
+            <div className="space-y-3">
+              {examples.map((e) => (
+                <div key={e.pos} className="space-y-2">
+                  <div className="text-sm leading-relaxed">
+                    <span className="font-medium text-foreground">{e.pos}</span>
+                    <span className="mx-2">·</span>
+                    {e.tr_group[0].example[0]}
+                  </div>
+                  {e.tr_group[0].similar_word[0] && (
+                    <div className="text-xs text-muted-foreground">
+                      Similar: {e.tr_group[0].similar_word[0]}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {derivatives && Object.keys(derivatives).length > 0 && (
+          <div className="space-y-2">
+            <h3 className="text-sm font-semibold text-muted-foreground">
+              Derivatives
+            </h3>
+            <div className="text-sm text-foreground">
+              {Object.values(derivatives).join(' · ')}
+            </div>
+          </div>
+        )}
+      </div>
+    )
   }
 
   return (
-    <div className="flex min-h-screen flex-col-reverse p-4 sm:flex-row sm:p-12">
+    <div className="flex flex-col-reverse overflow-auto p-4 sm:flex-row sm:p-12">
       <div className="mt-4 flex-1 sm:mt-0">
         <div className="mb-4 flex flex-col items-center gap-2 sm:mb-8 sm:gap-4">
           <h1 className="text-xl font-bold sm:text-3xl">Today&apos;s Review</h1>

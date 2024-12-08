@@ -1,18 +1,18 @@
-import { useCallback, useEffect, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { useDragControls, motion, AnimatePresence, PanInfo } from 'motion/react'
 import { cn } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export interface FlashCard {
   id: number
-  front?: string
-  back?: string
+  front?: ReactNode
+  back?: ReactNode | Promise<ReactNode>
 }
 
 interface FlashCardsProps {
   cards: FlashCard[]
   onComplete?: () => Promise<void>
-  onFlip?: (card: FlashCard) => Promise<string>
+  onFlip?: (card: { id: number; front?: ReactNode }) => Promise<ReactNode>
   onSwipeLeft?: (card: FlashCard) => Promise<void>
   onSwipeRight?: (card: FlashCard) => Promise<void>
 }
@@ -34,11 +34,13 @@ export default function FlashCards({
     if (!flipped && currentCards[0] && !currentCards[0].back) {
       setIsLoading(true)
       try {
-        const backContent = await onFlip?.(currentCards[0])
-        setCurrentCards((prevCards: FlashCard[]) => {
-          const [first, ...rest] = prevCards
-          return [{ ...first, back: backContent }, ...rest]
-        })
+        const card = currentCards[0]
+        if (onFlip) {
+          const backContent = await onFlip(card)
+          const newCards = [...currentCards]
+          newCards[0] = { ...card, back: backContent }
+          setCurrentCards(newCards)
+        }
       } catch (error) {
         console.error('Error flipping card:', error)
       } finally {
@@ -130,72 +132,172 @@ export default function FlashCards({
   }, [cards])
 
   return (
-    <div className="relative mx-auto aspect-[3/4] w-[300px] [perspective:1000px]">
-      <AnimatePresence mode="popLayout">
-        {currentCards.map((card, index) => {
-          const offset = getRandomOffset(index)
+    <div className="relative">
+      <div className="relative mx-auto aspect-[3/4] w-[300px] [perspective:1000px]">
+        <AnimatePresence mode="popLayout">
+          {currentCards.map((card, index) => {
+            const offset = getRandomOffset(index)
 
-          return (
-            <motion.div
-              key={card.front}
-              onClick={() => index === 0 && handleClick()}
-              dragControls={dragControls}
-              drag={index === 0}
-              dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-              dragElastic={0.6}
-              onDrag={handleDrag}
-              onDragEnd={handleDragEnd}
-              initial={{ scale: 1, y: 0, zIndex: currentCards.length - index }}
-              animate={{
-                scale: 1 - index * 0.05,
-                y: offset.y,
-                x: offset.x,
-                zIndex: currentCards.length - index,
-                rotateY: index === 0 ? (flipped ? 180 : 0) : 0,
-                rotateZ: offset.rotate
-              }}
-              exit={{
-                x: Math.random() * 400 - 200,
-                y: Math.random() * 400 - 200,
-                opacity: 0,
-                scale: 0.6
-              }}
-              transition={{
-                duration: 0.3,
-                flip: { duration: 0.5 }
-              }}
-              style={{
-                transformOrigin: 'top center',
-                transformStyle: 'preserve-3d',
-                filter: `brightness(${1 - index * 0.05})`
-              }}
-              className={cn(
-                'absolute left-0 top-0 border bg-accent overflow-hidden text-popover-foreground h-full w-full cursor-grab rounded-xl active:cursor-grabbing',
-                {
-                  'shadow-lg': index === 0,
-                  'shadow-sm': index !== 0,
-                  'border-accent': index === 0,
-                  'border-border/50': index !== 0
-                }
-              )}>
-              <div
-                style={{
-                  transform:
-                    flipped && index === 0 ? 'rotateY(180deg)' : 'rotateY(0deg)'
+            return (
+              <motion.div
+                key={card.id}
+                onClick={() => index === 0 && handleClick()}
+                dragControls={dragControls}
+                drag={index === 0}
+                dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+                dragElastic={0.6}
+                onDrag={handleDrag}
+                onDragEnd={handleDragEnd}
+                initial={{
+                  scale: 1,
+                  y: 0,
+                  zIndex: currentCards.length - index
                 }}
-                className="absolute flex size-full items-center justify-center text-xl">
-                {isLoading && index === 0 ? (
-                  <Skeleton className="absolute left-0 top-0 size-full bg-accent/10" />
-                ) : flipped && index === 0 ? (
-                  card.back
-                ) : (
-                  card.front
-                )}
-              </div>
-            </motion.div>
-          )
-        })}
-      </AnimatePresence>
+                animate={{
+                  scale: 1 - index * 0.05,
+                  y: offset.y,
+                  x: offset.x,
+                  zIndex: currentCards.length - index,
+                  rotateY: index === 0 ? (flipped ? 180 : 0) : 0,
+                  rotateZ: offset.rotate
+                }}
+                exit={{
+                  x: Math.random() * 400 - 200,
+                  y: Math.random() * 400 - 200,
+                  opacity: 0,
+                  scale: 0.6
+                }}
+                transition={{
+                  duration: 0.3,
+                  flip: { duration: 0.5 }
+                }}
+                style={{
+                  transformOrigin: 'top center',
+                  transformStyle: 'preserve-3d',
+                  filter: `brightness(${1 - index * 0.05})`
+                }}
+                className={cn(
+                  'absolute left-0 top-0 border bg-accent overflow-hidden text-popover-foreground h-full w-full cursor-grab rounded-xl active:cursor-grabbing',
+                  {
+                    'shadow-lg': index === 0,
+                    'shadow-sm': index !== 0,
+                    'border-accent': index === 0,
+                    'border-border/50': index !== 0
+                  }
+                )}>
+                <div
+                  style={{
+                    transform:
+                      flipped && index === 0
+                        ? 'rotateY(180deg)'
+                        : 'rotateY(0deg)'
+                  }}
+                  className="absolute flex size-full items-center justify-center text-xl">
+                  {isLoading && index === 0 ? (
+                    <Skeleton className="absolute left-0 top-0 size-full bg-accent/10" />
+                  ) : flipped && index === 0 ? (
+                    card.back
+                  ) : (
+                    card.front
+                  )}
+                </div>
+              </motion.div>
+            )
+          })}
+        </AnimatePresence>
+      </div>
+      {currentCards.length > 0 && (
+        <div className="mt-4 flex flex-col items-center gap-4">
+          <div className="flex gap-2 text-sm text-muted-foreground">
+            <span className="flex items-center gap-1">
+              <kbd className="rounded bg-muted px-1.5 py-0.5">Q</kbd>
+              <span>Swipe Left - Don&apos;t Remember</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <kbd className="rounded bg-muted px-1.5 py-0.5">W</kbd>
+              <span>Flip Card</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <kbd className="rounded bg-muted px-1.5 py-0.5">E</kbd>
+              <span>Swipe Right - Remember</span>
+            </span>
+          </div>
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={async () => {
+                if (currentCards[0]) {
+                  if (!flipped) {
+                    await handleFlip()
+                  }
+                  await onSwipeLeft?.(currentCards[0])
+                  moveCard()
+                }
+              }}
+              className="rounded-full bg-red-500 p-3 text-white shadow-md hover:bg-red-600"
+              aria-label="Swipe Left">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round">
+                <path d="m12 19-7-7 7-7" />
+                <path d="M19 12H5" />
+              </svg>
+            </button>
+            <button
+              onClick={handleFlip}
+              className="rounded-full bg-blue-500 p-3 text-white shadow-md hover:bg-blue-600"
+              aria-label="Flip Card">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round">
+                <path d="M2 9V5c0-1.1.9-2 2-2h4" />
+                <path d="M22 15v4c0 1.1-.9 2-2 2h-4" />
+                <path d="M18 4v16" />
+                <path d="M6 20V4" />
+              </svg>
+            </button>
+            <button
+              onClick={async () => {
+                if (currentCards[0]) {
+                  if (!flipped) {
+                    await handleFlip()
+                  }
+                  await onSwipeRight?.(currentCards[0])
+                  moveCard()
+                }
+              }}
+              className="rounded-full bg-green-500 p-3 text-white shadow-md hover:bg-green-600"
+              aria-label="Swipe Right">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round">
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
