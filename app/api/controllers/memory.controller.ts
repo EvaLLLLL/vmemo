@@ -292,4 +292,45 @@ export class MemoryController {
       )
     }
   }
+
+  static async postponeUncompletedReviews() {
+    try {
+      const today = dayjs().startOf('day')
+
+      const uncompletedReviews = await prisma.memory.findMany({
+        where: {
+          nextReviewDate: {
+            lt: today.endOf('day').toDate()
+          },
+          status: {
+            not: MemoryStatus.COMPLETED
+          }
+        }
+      })
+
+      const tomorrow = today.add(1, 'day').toDate()
+
+      if (uncompletedReviews.length > 0) {
+        await prisma.memory.updateMany({
+          where: {
+            id: {
+              in: uncompletedReviews.map((review) => review.id)
+            }
+          },
+          data: {
+            nextReviewDate: tomorrow
+          }
+        })
+      }
+
+      return uncompletedReviews
+    } catch (error) {
+      if (error instanceof MemoryError) throw error
+      throw new MemoryError(
+        'Failed to postpone uncompleted reviews',
+        'POSTPONE_REVIEWS_ERROR',
+        HttpStatusCode.InternalServerError
+      )
+    }
+  }
 }

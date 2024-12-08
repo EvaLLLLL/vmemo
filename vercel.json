@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/postpone",
+      "schedule": "0 0 * * *" 
+    }
+  ]
+}
