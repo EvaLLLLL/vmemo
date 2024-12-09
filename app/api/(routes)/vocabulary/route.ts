@@ -1,14 +1,13 @@
 import prisma from '@/lib/prisma'
-import { verifyAuth } from '@/lib/auth'
 import { NextRequest } from 'next/server'
 import { VocabularyError } from '@/app/api/errors/vocabulary-error'
 import { ApiResponse } from '@/app/api/responses/api-response'
+import { auth } from '@/lib/next-auth'
 
 export async function POST(req: NextRequest) {
   try {
-    const token = req.cookies.get('token')?.value
-    const userJwt = await verifyAuth(token!)
-    const userId = userJwt.id as number
+    const session = await auth()
+    const userId = session?.user?.id as string | undefined
 
     const words = (await req.json()) as { word: string; translation: string }[]
     const vocabularies = await Promise.all(
@@ -22,12 +21,10 @@ export async function POST(req: NextRequest) {
             data: {
               word,
               translation,
-              users: {
-                connect: { id: userId }
-              }
+              users: userId ? { connect: { id: userId } } : undefined
             }
           })
-        } else {
+        } else if (userId) {
           // Connect existing vocabulary to user if not already connected
           await prisma.user.update({
             where: { id: userId },
@@ -57,9 +54,8 @@ export async function POST(req: NextRequest) {
 // Read vocabularies
 export async function GET(req: NextRequest) {
   try {
-    const token = req.cookies.get('token')?.value
-    const userJwt = await verifyAuth(token!)
-    const userId = userJwt.id as number
+    const session = await auth()
+    const userId = session?.user?.id as string
 
     const url = new URL(req.url)
     const offset = parseInt(url.searchParams.get('offset') || '0', 10)
@@ -102,9 +98,8 @@ export async function GET(req: NextRequest) {
 // Update vocabulary
 export async function PUT(req: NextRequest) {
   try {
-    const token = req.cookies.get('token')?.value
-    const userJwt = await verifyAuth(token!)
-    const userId = userJwt.id as number
+    const session = await auth()
+    const userId = session?.user?.id as string
 
     const data = await req.json()
     const { id, translation } = data
@@ -135,9 +130,8 @@ export async function PUT(req: NextRequest) {
 // Delete vocabulary
 export async function DELETE(req: NextRequest) {
   try {
-    const token = req.cookies.get('token')?.value
-    const userJwt = await verifyAuth(token!)
-    const userId = userJwt.id as number
+    const session = await auth()
+    const userId = session?.user?.id as string
 
     const url = new URL(req.url)
     const ids = url.searchParams.get('id')?.split(',').map(Number)
@@ -150,7 +144,7 @@ export async function DELETE(req: NextRequest) {
       where: { id: userId },
       data: {
         vocabularies: {
-          disconnect: ids.map((id) => ({ id }))
+          disconnect: { id: { in: ids } }
         }
       }
     })

@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/toaster'
 import ReactQueryProvider from '@/components/react-query-provider'
 import { fontClasses } from '@/config/fonts'
+import NextAuthProvider from '@/components/next-auth-provider'
 
 export const metadata: Metadata = {
   title: 'Vmemo',
@@ -17,16 +18,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={fontClasses.default}>
-        <ThemeProvider attribute="class" defaultTheme="system">
-          <ReactQueryProvider>
-            <Toaster />
-            <SidebarProvider>{children}</SidebarProvider>
-          </ReactQueryProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    <NextAuthProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body className={fontClasses.default}>
+          <ThemeProvider attribute="class" defaultTheme="system">
+            <ReactQueryProvider>
+              <Toaster />
+              <SidebarProvider>{children}</SidebarProvider>
+            </ReactQueryProvider>
+          </ThemeProvider>
+        </body>
+      </html>
+    </NextAuthProvider>
   )
 }
 

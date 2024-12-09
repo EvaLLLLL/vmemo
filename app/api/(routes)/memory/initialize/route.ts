@@ -1,15 +1,14 @@
 import { HttpStatusCode } from 'axios'
-import { verifyAuth } from '@/lib/auth'
 import { NextRequest } from 'next/server'
 import { MemoryController } from '@/app/api/controllers/memory.controller'
 import { MemoryError } from '@/app/api/errors/memory-error'
 import { ApiResponse } from '@/app/api/responses/api-response'
+import { auth } from '@/lib/next-auth'
 
 export async function POST(req: NextRequest) {
   try {
-    const token = req.cookies.get('token')?.value
-    const userJwt = await verifyAuth(token!)
-    const userId = userJwt.id as number
+    const session = await auth()
+    const userId = session?.user?.id as string
 
     const { vocabularyIds } = (await req.json()) as { vocabularyIds: number[] }
 

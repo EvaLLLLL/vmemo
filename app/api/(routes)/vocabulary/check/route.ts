@@ -1,13 +1,12 @@
 import { NextRequest } from 'next/server'
-import { verifyAuth } from '@/lib/auth'
 import { ApiResponse } from '@/app/api/responses/api-response'
 import prisma from '@/lib/prisma'
+import { auth } from '@/lib/next-auth'
 
 export async function GET(req: NextRequest) {
   try {
-    const token = req.cookies.get('token')?.value
-    const userJwt = await verifyAuth(token!)
-    const userId = userJwt.id as number
+    const session = await auth()
+    const userId = session?.user?.id as string
 
     const url = new URL(req.url)
     const q = url.searchParams.get('q')

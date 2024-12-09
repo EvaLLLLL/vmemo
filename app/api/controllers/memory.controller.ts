@@ -121,7 +121,7 @@ export class MemoryController {
     }
   }
 
-  static async getAllMemories(userId: number) {
+  static async getAllMemories(userId: string) {
     try {
       return await prisma.memory.findMany({
         where: { userId },
@@ -137,7 +137,7 @@ export class MemoryController {
     }
   }
 
-  static async getAllNotCompletedReviews(userId: number) {
+  static async getAllNotCompletedReviews(userId: string) {
     try {
       const reviews = await prisma.memory.findMany({
         where: { userId, status: { not: MemoryStatus.COMPLETED } },
@@ -174,7 +174,7 @@ export class MemoryController {
   }
 
   static async getDueReviews(
-    userId: number,
+    userId: string,
     size: number = 10,
     offset: number = 0
   ) {
@@ -225,7 +225,7 @@ export class MemoryController {
     }
   }
 
-  static async initializeMemory(userId: number, vocabularyId: number) {
+  static async initializeMemory(userId: string, vocabularyId: number) {
     try {
       if (!userId || !vocabularyId) {
         throw new MemoryError(
@@ -264,7 +264,7 @@ export class MemoryController {
     }
   }
 
-  static async getMemoryByWord(userId: number, word: string) {
+  static async getMemoryByWord(userId: string, word: string) {
     try {
       const memory = await prisma.memory.findFirst({
         where: {
