@@ -1,4 +1,3 @@
-import { ApiResponse } from '@/app/api/responses/api-response'
 import { auth } from '@/lib/next-auth'
 import prisma from '@/lib/prisma'
 
@@ -11,9 +10,5 @@ export async function checkAuth() {
     }
   })
 
-  if (!user) {
-    return ApiResponse.unauthorized()
-  }
-
-  return user.id
+  return user
 }

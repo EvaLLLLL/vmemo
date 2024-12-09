@@ -1,4 +1,4 @@
-import { Memory, User, Vocabulary } from '@prisma/client'
+import { Memory, Message, Room, User, Vocabulary } from '@prisma/client'
 import { axiosInstance } from '@/lib/axios'
 import { IBaiduDict } from '@/types/dict'
 
@@ -67,6 +67,16 @@ interface IMemoryReview {
 interface IMemoryUpdate {
   vocabularyIds: number[]
   action: 'add' | 'reduce'
+}
+
+interface ICreateRoom {
+  name: string
+  description?: string
+}
+
+interface IMessageSend {
+  content: string
+  roomId: string
 }
 
 // Service Definitions
@@ -201,6 +211,54 @@ export const DictServices = {
     fn: (q: string) =>
       axiosInstance
         .get<IApiResponse<IBaiduDict>>(`/api/dict?q=${q}`)
+        .then((res) => res.data)
+  }
+}
+
+export const RoomServices = {
+  getRooms: {
+    key: 'RoomServices.getRooms',
+    fn: () =>
+      axiosInstance
+        .get<
+          IApiResponse<
+            (Room & {
+              _count: { messages: number; members: number }
+              members: { id: string; name: string; image: string }[]
+            })[]
+          >
+        >('/api/rooms')
+        .then((res) => res.data)
+  },
+  createRoom: {
+    key: 'RoomServices.createRoom',
+    fn: (data: ICreateRoom) =>
+      axiosInstance
+        .post<IApiResponse<Room>>('/api/rooms', data)
+        .then((res) => res.data)
+  },
+  joinRoom: {
+    key: 'RoomServices.joinRoom',
+    fn: (roomId: string) =>
+      axiosInstance.put<IApiResponse<Room>>('/api/rooms', roomId)
+  }
+}
+
+export const MessageServices = {
+  getMessages: {
+    key: 'MessageServices.getMessages',
+    fn: (roomId: string) =>
+      axiosInstance
+        .get<
+          IApiResponse<(Message & { user: { name: string; image?: string } })[]>
+        >(`/api/messages?roomId=${roomId}`)
+        .then((res) => res.data)
+  },
+  sendMessage: {
+    key: 'MessageServices.sendMessage',
+    fn: (data: IMessageSend) =>
+      axiosInstance
+        .post<IApiResponse<Message>>('/api/messages', data)
         .then((res) => res.data)
   }
 }

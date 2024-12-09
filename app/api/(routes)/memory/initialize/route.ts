@@ -7,7 +7,7 @@ import { checkAuth } from '../../auth/check'
 
 export async function POST(req: NextRequest) {
   try {
-    const userId = await checkAuth()
+    const user = await checkAuth()
 
     const { vocabularyIds } = (await req.json()) as { vocabularyIds: number[] }
 
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
 
     const memories = await Promise.all(
       vocabularyIds.map((vocabularyId) =>
-        MemoryController.initializeMemory(userId as string, vocabularyId)
+        MemoryController.initializeMemory(user?.id as string, vocabularyId)
       )
     )
 

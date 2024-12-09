@@ -81,6 +81,10 @@ export class ApiResponse<T = unknown> extends NextResponse {
     )
   }
 
+  static forbidden(message: string = 'Forbidden'): ApiResponse {
+    return this.apiError(message, 'FORBIDDEN', HttpStatusCode.Forbidden)
+  }
+
   static notFound(message: string = 'Not Found'): ApiResponse {
     return this.apiError(message, 'NOT_FOUND', HttpStatusCode.NotFound)
   }

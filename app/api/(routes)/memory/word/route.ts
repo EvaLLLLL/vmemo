@@ -5,7 +5,7 @@ import { ApiResponse } from '@/app/api/responses/api-response'
 import { checkAuth } from '../../auth/check'
 
 export async function GET(req: NextRequest) {
-  const userId = await checkAuth()
+  const user = await checkAuth()
 
   const word = req.nextUrl.searchParams.get('q')
 
@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const memory = await MemoryController.getMemoryByWord(
-      userId as string,
+      user?.id as string,
       word
     )
     return ApiResponse.success(memory)

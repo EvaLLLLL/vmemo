@@ -4,10 +4,12 @@ import { ApiResponse } from '@/app/api/responses/api-response'
 import { checkAuth } from '../auth/check'
 
 export async function GET() {
-  const userId = await checkAuth()
+  const user = await checkAuth()
 
   try {
-    const allMemories = await MemoryController.getAllMemories(userId as string)
+    const allMemories = await MemoryController.getAllMemories(
+      user?.id as string
+    )
 
     return ApiResponse.success(allMemories)
   } catch (error) {

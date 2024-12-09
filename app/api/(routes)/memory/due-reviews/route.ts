@@ -5,7 +5,7 @@ import { ApiResponse } from '@/app/api/responses/api-response'
 import { checkAuth } from '../../auth/check'
 
 export async function GET(req: NextRequest) {
-  const userId = await checkAuth()
+  const user = await checkAuth()
 
   const url = new URL(req.url)
   const offset = parseInt(url.searchParams.get('offset') || '0', 10)
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const dueReviews = await MemoryController.getDueReviews(
-      userId as string,
+      user?.id as string,
       size,
       offset
     )

@@ -4,11 +4,11 @@ import { ApiResponse } from '@/app/api/responses/api-response'
 import { checkAuth } from '../../auth/check'
 
 export async function GET() {
-  const userId = await checkAuth()
+  const user = await checkAuth()
 
   try {
     const allNotCompletedReviews =
-      await MemoryController.getAllNotCompletedReviews(userId as string)
+      await MemoryController.getAllNotCompletedReviews(user?.id as string)
 
     return ApiResponse.success(allNotCompletedReviews)
   } catch (error) {

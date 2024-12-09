@@ -1,11 +1,17 @@
+import { useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
+import { AuthServices } from '@/lib/services'
 
 export function useAuth() {
-  const { data: session, status } = useSession()
+  const { status } = useSession()
+
+  const { data: user, isLoading } = useQuery({
+    queryKey: [AuthServices.getUser.key],
+    queryFn: AuthServices.getUser.fn,
+    select: (data) => data.data
+  })
 
   const isAuthenticated = status === 'authenticated'
-  const isLoading = status === 'loading'
-  const user = session?.user
 
   return {
     isAuthenticated,
