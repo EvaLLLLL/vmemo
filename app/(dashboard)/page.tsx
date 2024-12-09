@@ -1,11 +1,30 @@
 'use client'
 
 import Link from 'next/link'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Clock, BookOpen, LucideIcon, TrendingUp, Flame } from 'lucide-react'
+import {
+  Clock,
+  BookOpen,
+  LucideIcon,
+  TrendingUp,
+  Flame,
+  Book,
+  Brain,
+  History
+} from 'lucide-react'
 import { useAuth } from '@/hooks/use-auth'
 import { MemoriesOverview } from '@/components/memories-overview'
 import { useStatistics } from '@/hooks/use-statistics'
+import { Button } from '@/components/ui/button'
+
+export default function Dashboard() {
+  return (
+    <div className="flex size-full flex-col items-center gap-y-8 overflow-y-auto px-16 py-12 md:px-32 md:py-8">
+      <WelcomeSection />
+      <QuickStart />
+      <MemoriesOverview />
+    </div>
+  )
+}
 
 const StatCard = ({
   title,
@@ -34,6 +53,40 @@ const getTimeOfDay = () => {
   return 'evening'
 }
 
+const QuickStart = () => {
+  return (
+    <div className="w-full space-y-4">
+      <h2 className="text-xl font-semibold">Quick Start</h2>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <QuickActionCard
+          icon={Brain}
+          title="Review Due"
+          description="Review words scheduled for today"
+          href="/flashcards"
+        />
+        <QuickActionCard
+          icon={BookOpen}
+          title="Continue Reading"
+          description="Pick up where you left off"
+          href="/reading"
+        />
+        <QuickActionCard
+          icon={Book}
+          title="Dictionary"
+          description="Look up new words"
+          href="/dictionary"
+        />
+        <QuickActionCard
+          icon={History}
+          title="Recent Words"
+          description="Review recently learned words"
+          href="/vocabulary"
+        />
+      </div>
+    </div>
+  )
+}
+
 const WelcomeSection = () => {
   const { user } = useAuth()
   const timeOfDay = getTimeOfDay()
@@ -60,49 +113,26 @@ const WelcomeSection = () => {
   )
 }
 
-export default function Dashboard() {
-  const data = [
-    {
-      title: 'Dictionary',
-      href: '/dictionary',
-      description:
-        'Quickly look up definitions and meanings as you read. Understand every word with ease and never miss a context.'
-    },
-    {
-      title: 'Reading',
-      href: '/reading',
-      description:
-        ' Enjoy a seamless reading experience with built-in tools to support learning, from word lookup to vocabulary tracking.'
-    },
-    {
-      title: 'Flashcard',
-      href: '/flashcards',
-      description:
-        'Master new words using our interactive flashcard system, designed for effective memorization and retention.'
-    },
-    {
-      title: 'Vocabulary List',
-      href: '/vocabulary',
-      description:
-        'Keep track of all the words you’ve learned in one place. Organize, review, and reinforce your vocabulary anytime.'
-    }
-  ]
-
-  return (
-    <div className="flex size-full flex-col items-center gap-y-8 overflow-y-auto px-16 py-12 md:px-32 md:py-8">
-      <WelcomeSection />
-      <MemoriesOverview />
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {data.map((d, idx) => (
-          <Link key={idx} href={d.href}>
-            <Alert className="w-full cursor-pointer shadow hover:bg-chart-2 hover:shadow-xl">
-              <AlertTitle>{d.title}</AlertTitle>
-              <AlertDescription>{d.description}</AlertDescription>
-            </Alert>
-          </Link>
-        ))}
+const QuickActionCard = ({
+  icon: Icon,
+  title,
+  description,
+  href
+}: {
+  icon: LucideIcon
+  title: string
+  description: string
+  href: string
+}) => (
+  <Link href={href}>
+    <Button
+      variant="outline"
+      className="flex h-auto w-full flex-col items-start gap-2 p-6 hover:bg-accent">
+      <Icon className="size-6 text-primary" />
+      <div className="text-left">
+        <h3 className="font-semibold">{title}</h3>
+        <p className="text-sm text-muted-foreground">{description}</p>
       </div>
-    </div>
-  )
-}
+    </Button>
+  </Link>
+)

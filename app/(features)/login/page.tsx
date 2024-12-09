@@ -14,6 +14,15 @@ import Image from 'next/image'
 export default function Page() {
   return (
     <div className="flex size-full flex-col items-center gap-y-8 overflow-y-auto p-8">
+      <div className="rounded-md p-4 text-center text-muted-foreground">
+        <p className="text-lg font-semibold">Note:</p>
+        <p className="mt-2">
+          You can still use the <span className="text-primary">dictionary</span>{' '}
+          and <span className="text-primary">reading</span> sections without
+          logging in.
+        </p>
+      </div>
+
       <Card className="mx-auto max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>

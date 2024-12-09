@@ -26,8 +26,10 @@ import { fontClasses } from '@/config/fonts'
 import { useQuery } from '@tanstack/react-query'
 import { formatDictResult } from '@/utils/dict'
 import { useAuth } from '@/hooks/use-auth'
+import { useToast } from '@/hooks/use-toast'
 
 export const SelectedVocabularies = () => {
+  const { toast } = useToast()
   const { isAuthenticated } = useAuth()
   const {
     translatedWords,
@@ -54,6 +56,10 @@ export const SelectedVocabularies = () => {
     )
     if (!vocabularyIds?.length) return
     await MemoryServices.initializeMemories.fn(vocabularyIds)
+    toast({
+      title: 'Vocabularies saved successfully!',
+      description: 'You can now review them in the vocabulary list.'
+    })
   }
 
   return (

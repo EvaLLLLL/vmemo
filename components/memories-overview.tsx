@@ -72,48 +72,59 @@ export function ActivityChart() {
         </div>
       </CardHeader>
       <CardContent className="px-2 sm:p-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full">
-          <BarChart
-            data={chartData}
-            margin={{
-              left: 12,
-              right: 12
-            }}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value)
-                return date.toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric'
-                })
-              }}
-            />
-            <ChartTooltip
-              content={
-                <ChartTooltipContent
-                  className="w-[150px]"
-                  nameKey="views"
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric'
-                    })
-                  }}
-                />
-              }
-            />
-            <Bar dataKey="count" fill="hsl(var(--primary))" radius={6} />
-          </BarChart>
-        </ChartContainer>
+        {chartData.length === 0 ? (
+          <div className="flex h-[250px] flex-col items-center justify-center gap-2 text-center">
+            <p className="text-lg font-medium text-muted-foreground">
+              No data yet
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Start saving and memorizing words to see your progress here!
+            </p>
+          </div>
+        ) : (
+          <ChartContainer
+            config={chartConfig}
+            className="aspect-auto h-[250px] w-full">
+            <BarChart
+              data={chartData}
+              margin={{
+                left: 12,
+                right: 12
+              }}>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="date"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                minTickGap={32}
+                tickFormatter={(value) => {
+                  const date = new Date(value)
+                  return date.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                  })
+                }}
+              />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    className="w-[150px]"
+                    nameKey="views"
+                    labelFormatter={(value) => {
+                      return new Date(value).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                      })
+                    }}
+                  />
+                }
+              />
+              <Bar dataKey="count" fill="hsl(var(--primary))" radius={6} />
+            </BarChart>
+          </ChartContainer>
+        )}
       </CardContent>
     </Card>
   )
