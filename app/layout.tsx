@@ -8,13 +8,7 @@ import { fontClasses } from '@/config/fonts'
 
 export const metadata: Metadata = {
   title: 'Vmemo',
-  description: 'Learn English efficiently.',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false
-  }
+  description: 'Learn English efficiently.'
 }
 
 export default function RootLayout({
@@ -34,4 +28,11 @@ export default function RootLayout({
       </body>
     </html>
   )
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false
 }
