@@ -1,8 +1,6 @@
-'use client'
-
 import { ChevronsUpDown, LogOut, Squirrel } from 'lucide-react'
-
-import { Avatar } from '@/components/ui/avatar'
+import { signOut } from 'next-auth/react'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,9 +20,9 @@ import { useRouter } from 'next/navigation'
 import { Button } from './ui/button'
 
 export function NavUser() {
-  const { user, logout, isAuthenticated } = useAuth()
-  const { isMobile } = useSidebar()
   const router = useRouter()
+  const { user, isAuthenticated } = useAuth()
+  const { isMobile } = useSidebar()
 
   return (
     <SidebarMenu>
@@ -43,7 +41,10 @@ export function NavUser() {
                 size="lg"
                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
                 <Avatar className="flex !size-8 items-center justify-center rounded-lg bg-primary">
-                  <Squirrel className="size-6 text-primary-foreground" />
+                  <AvatarImage src={user?.image ?? ''} alt={user?.name ?? ''} />
+                  <AvatarFallback>
+                    <Squirrel className="size-6 text-primary-foreground" />
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{user?.name}</span>
@@ -60,7 +61,13 @@ export function NavUser() {
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar className="flex !size-8 items-center justify-center rounded-lg bg-primary">
-                    <Squirrel className="size-6 text-primary-foreground" />
+                    <AvatarImage
+                      src={user?.image ?? ''}
+                      alt={user?.name ?? ''}
+                    />
+                    <AvatarFallback>
+                      <Squirrel className="size-6 text-primary-foreground" />
+                    </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">{user?.name}</span>
@@ -69,7 +76,8 @@ export function NavUser() {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => logout()}>
+              <DropdownMenuItem
+                onClick={() => signOut({ redirectTo: '/login' })}>
                 <LogOut />
                 Log out
               </DropdownMenuItem>

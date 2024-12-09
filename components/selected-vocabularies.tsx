@@ -25,8 +25,10 @@ import {
 import { fontClasses } from '@/config/fonts'
 import { useQuery } from '@tanstack/react-query'
 import { formatDictResult } from '@/utils/dict'
+import { useAuth } from '@/hooks/use-auth'
 
 export const SelectedVocabularies = () => {
+  const { isAuthenticated } = useAuth()
   const {
     translatedWords,
     removeTranslatedWord,
@@ -96,8 +98,12 @@ export const SelectedVocabularies = () => {
             </Button>
           ) : (
             <Button
+              disabled={!isAuthenticated}
               onClick={onSave}
-              className="flex min-w-[120px] gap-x-2 bg-primary text-primary-foreground hover:bg-primary/90">
+              className={cn(
+                'flex min-w-[120px] gap-x-2 bg-primary text-primary-foreground hover:bg-primary/90',
+                !isAuthenticated && 'opacity-50 cursor-not-allowed'
+              )}>
               <Save size={16} />
               Save
               {wordsCount > 0 && (

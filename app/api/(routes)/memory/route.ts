@@ -1,17 +1,14 @@
-import { NextRequest } from 'next/server'
-import { verifyAuth } from '@/lib/auth'
 import { MemoryError } from '@/app/api/errors/memory-error'
 import { MemoryController } from '@/app/api/controllers/memory.controller'
 import { ApiResponse } from '@/app/api/responses/api-response'
+import { auth } from '@/lib/next-auth'
 
-export async function GET(req: NextRequest) {
-  const token = req.cookies.get('token')?.value
-  const userJwt = await verifyAuth(token!)
+export async function GET() {
+  const session = await auth()
+  const userId = session?.user?.id as string
 
   try {
-    const allMemories = await MemoryController.getAllMemories(
-      userJwt.id as number
-    )
+    const allMemories = await MemoryController.getAllMemories(userId)
 
     return ApiResponse.success(allMemories)
   } catch (error) {

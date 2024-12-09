@@ -1,12 +1,12 @@
 import { NextRequest } from 'next/server'
-import { verifyAuth } from '@/lib/auth'
 import { MemoryError } from '@/app/api/errors/memory-error'
 import { MemoryController } from '@/app/api/controllers/memory.controller'
 import { ApiResponse } from '@/app/api/responses/api-response'
+import { auth } from '@/lib/next-auth'
 
 export async function GET(req: NextRequest) {
-  const token = req.cookies.get('token')?.value
-  const userJwt = await verifyAuth(token!)
+  const session = await auth()
+  const userId = session?.user?.id as string
 
   const url = new URL(req.url)
   const offset = parseInt(url.searchParams.get('offset') || '0', 10)
@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const dueReviews = await MemoryController.getDueReviews(
-      userJwt.id as number,
+      userId,
       size,
       offset
     )
