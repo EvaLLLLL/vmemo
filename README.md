@@ -1,7 +1,6 @@
 # Vmemo
 
-**Unlock the Power of English Reading**
-Struggling with unfamiliar words while reading English articles? We’ve got you covered!
+A modern web application designed to enhance your English reading and vocabulary learning experience.
 
 ## Screenshots
 
@@ -10,30 +9,110 @@ Struggling with unfamiliar words while reading English articles? We’ve got you
 <img src="https://raw.githubusercontent.com/EvaLLLLL/x/main/vmemo03.png" />
 <img src="https://raw.githubusercontent.com/EvaLLLLL/x/main/vmemo04.png" />
 <img src="https://raw.githubusercontent.com/EvaLLLLL/x/main/vmemo05.png" />
+<img src="https://raw.githubusercontent.com/EvaLLLLL/x/main/vmemo06.png" />
 
 ## Features
 
-- Seamless Reading Experience: Read English articles with built-in word lookup.
+### 📚 Seamless Reading Experience
 
-- Effortless Learning: Save new words instantly to your personalized vocabulary list.
+- Built-in dictionary for instant word lookup
+- Interactive text highlighting
+- Auto rerange reading content
 
-- Efficient Memorization: Master new words using interactive flashcard, designed for effective memorization and retention.
+### 📝 Smart Vocabulary Management
 
-## Test
+- One-click word saving while reading
+- Automatic word tracking
+- Progress tracking and statistics
 
-Since the word-tracking features are currently for personal use only, registration is not available. If you’d like to access all features, you can use the test account provided below.
+### 🔄 Spaced Repetition Learning
+
+- Interactive flashcard system
+- Smart review scheduling
+- Progress tracking with visual analytics
+
+### 🎯 Learning Analytics
+
+- Detailed progress tracking
+- Study streak monitoring
+- Visual learning progress charts
+
+### 🌐 Community and Posts Wall
+
+- Engage with the community of learners
+- Share your reading thoughts and experiences
+- Like, comment, and interact with posts
+
+## TODO
+
+- [ ] Customizable flashcards review interval
+- [ ] Posts comments
+- [ ] User profile
+- [ ] User settings
+- [ ] Support for both plain text and formatted content for reading, flashcards and posts
+
+## Tech Stack
+
+- **Framework**: Next.js 15.0
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: Shadcn UI
+- **State Management**: Zustand
+- **Database**: PostgreSQL with Prisma
+- **Authentication**: NextAuth.js
+- **Charts**: Recharts
+- **Package Manager**: pnpm
+
+## Development
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/vmemo.git
+cd vmemo
+```
+
+2. Install dependencies:
+
+```bash
+pnpm install
+```
+
+3. Set up environment variables:
+
+Configure the environment variables according to the `.env.example` file
+
+4. Run database migrations:
+
+```bash
+pnpm prisma migrate dev
+```
+
+5. Start the development server:
+
+```bash
+pnpm dev
+```
+
+## Demo Account
+
+Since registration is currently limited, you can use the following test account:
 
 ```
-email: test@vmemo.com
-password: test@vmemo.com
+Email: test@vmemo.com
+Password: test@vmemo.com
 ```
 
-However, you can still use the reading and dictionary features without logging in. I hope this offers you some help!
+## Contributing
 
-## Why
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-While preparing for my TOEFL and GRE exams, I was often overwhelmed by the massive volume of vocabulary. I needed a way to quickly save the words I looked up and review them efficiently. Moreover, when reading English articles, I wanted a faster method to look up words and track the ones I had checked, eliminating the need to waste time switching between apps. That’s why I designed this simple application, where you can list the words you’ve looked up on the right side while reading and save them instantly after checking.
+## Acknowledgments
+
+This project was created to help English learners efficiently manage their vocabulary learning journey.
+
+Preparing for TOEFL and GRE, I was overwhelmed by vocabulary. I needed a way to save and review words quickly. While reading English articles, I wanted a faster method to look up and track words without switching apps. So, I designed this application to list and save words instantly.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
