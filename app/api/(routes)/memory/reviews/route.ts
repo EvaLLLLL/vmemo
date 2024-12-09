@@ -1,7 +1,7 @@
 import { MemoryError } from '@/app/api/errors/memory-error'
 import { MemoryController } from '@/app/api/controllers/memory.controller'
 import { ApiResponse } from '@/app/api/responses/api-response'
-import { checkAuth } from '../../auth/check'
+import { checkAuth } from '@/lib/next-auth'
 
 export async function GET() {
   const user = await checkAuth()

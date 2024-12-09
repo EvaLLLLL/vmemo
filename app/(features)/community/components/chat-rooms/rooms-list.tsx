@@ -10,13 +10,13 @@ export const RoomsList: React.FC<{
   const { rooms, joinRoom } = useChatRooms()
 
   return (
-    <div className="flex-1 space-y-2 overflow-y-auto rounded-lg bg-white p-2">
+    <div className="flex-1 space-y-2 overflow-y-auto rounded-lg bg-card p-2">
       {rooms?.map((room) => (
         <div
           key={room.id}
           onClick={() => setSelectedRoom(room)}
           className={cn(
-            'w-full rounded-lg p-2 cursor-pointer text-left transition-colors hover:bg-gray-100',
+            'w-full rounded-lg p-2 cursor-pointer text-left transition-colors hover:bg-primary/30 dark:text-gray-100',
             selectedRoom?.id === room.id &&
               'bg-primary/70 hover:bg-primary/60 text-white'
           )}>
@@ -31,7 +31,7 @@ export const RoomsList: React.FC<{
               </div>
             </div>
             {room.members.some((member) => member.id === user?.id) ? (
-              <button className="cursor-not-allowed rounded-lg bg-gray-300 px-2 py-1 text-xs text-gray-700">
+              <button className="cursor-not-allowed rounded-lg bg-card px-2 py-1 text-xs text-gray-700 dark:text-gray-300">
                 Joined
               </button>
             ) : (

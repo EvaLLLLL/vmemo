@@ -1,6 +1,12 @@
 import { auth } from '@/lib/next-auth'
 
-const protectedRoutes = ['/', '/flashcards', '/vocabulary']
+const protectedRoutes = [
+  '/',
+  '/flashcards',
+  '/vocabulary',
+  '/postswall',
+  '/community'
+]
 
 export default auth((req) => {
   if (!req.auth && protectedRoutes.includes(req.nextUrl.pathname)) {

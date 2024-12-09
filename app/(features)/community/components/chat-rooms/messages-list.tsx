@@ -77,10 +77,10 @@ export const MessagesList: React.FC<{
   }, [])
 
   return (
-    <div className="flex flex-1 flex-col overflow-hidden rounded-lg bg-white">
+    <div className="flex flex-1 flex-col overflow-hidden rounded-lg bg-card">
       {selectedRoom ? (
         <>
-          <div className="border-b p-4">
+          <div className="border-b border-accent p-4">
             <h2 className="text-lg font-semibold">{selectedRoom.name}</h2>
             {selectedRoom.description && (
               <p className="text-sm text-gray-600">
@@ -141,7 +141,7 @@ export const MessagesList: React.FC<{
                         'max-w-[70%] rounded-lg p-3 break-words',
                         message.userId === user?.id
                           ? 'mr-2 bg-primary/80 text-white'
-                          : 'ml-2 bg-gray-100 text-gray-800'
+                          : 'ml-2 bg-accent text-accent-foreground dark:bg-gray-700 dark:text-gray-200'
                       )}>
                       <div className="flex-wrap break-words">
                         {message.content}
@@ -181,7 +181,7 @@ export const MessagesList: React.FC<{
             )}
           </div>
 
-          <div className="border-t p-4">
+          <div className="border-t border-accent p-4">
             <div className="flex items-center gap-2">
               <Input
                 type="text"
@@ -197,7 +197,7 @@ export const MessagesList: React.FC<{
                     ? 'Join the room to chat'
                     : 'Type your message...'
                 }
-                className="flex-1 rounded-lg border border-gray-300 bg-white p-2 focus:border-primary focus:outline-none"
+                className="flex-1 rounded-lg border border-accent p-2 focus:border-primary focus:outline-none"
               />
               <button
                 onClick={handleSendMessage}

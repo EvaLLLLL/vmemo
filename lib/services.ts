@@ -1,4 +1,12 @@
-import { Memory, Message, Room, User, Vocabulary } from '@prisma/client'
+import {
+  Like,
+  Memory,
+  Message,
+  Post,
+  Room,
+  User,
+  Vocabulary
+} from '@prisma/client'
 import { axiosInstance } from '@/lib/axios'
 import { IBaiduDict } from '@/types/dict'
 
@@ -77,6 +85,10 @@ interface ICreateRoom {
 interface IMessageSend {
   content: string
   roomId: string
+}
+
+interface ICreatePost {
+  content: string
 }
 
 // Service Definitions
@@ -240,7 +252,9 @@ export const RoomServices = {
   joinRoom: {
     key: 'RoomServices.joinRoom',
     fn: (roomId: string) =>
-      axiosInstance.put<IApiResponse<Room>>('/api/rooms', roomId)
+      axiosInstance
+        .put<IApiResponse<Room>>('/api/rooms', roomId)
+        .then((res) => res.data)
   }
 }
 
@@ -259,6 +273,51 @@ export const MessageServices = {
     fn: (data: IMessageSend) =>
       axiosInstance
         .post<IApiResponse<Message>>('/api/messages', data)
+        .then((res) => res.data)
+  }
+}
+
+export const PostsServices = {
+  getPosts: {
+    key: 'PostsServices.getPosts',
+    fn: () =>
+      axiosInstance
+        .get<
+          IApiResponse<
+            (Post & {
+              likes: Like[]
+              user: { id: string; name: string; image?: string }
+            })[]
+          >
+        >('/api/posts')
+        .then((res) => res.data)
+  },
+  getMyTodayPosts: {
+    key: 'PostsServices.getMyTodayPosts',
+    fn: () =>
+      axiosInstance
+        .get<IApiResponse<Post[]>>('/api/posts/my')
+        .then((res) => res.data)
+  },
+  createPost: {
+    key: 'PostsServices.createPost',
+    fn: (data: ICreatePost) =>
+      axiosInstance
+        .post<IApiResponse<Post>>('/api/posts', data)
+        .then((res) => res.data)
+  },
+  getLikes: {
+    key: 'PostsServices.getLikes',
+    fn: () =>
+      axiosInstance
+        .get<IApiResponse<Like[]>>('/api/posts/likes')
+        .then((res) => res.data)
+  },
+  likeTogglePost: {
+    key: 'PostsServices.likeTogglePost',
+    fn: (postId: string) =>
+      axiosInstance
+        .post<IApiResponse<Post>>(`/api/posts/${postId}/like`)
         .then((res) => res.data)
   }
 }

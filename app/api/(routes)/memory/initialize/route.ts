@@ -3,8 +3,7 @@ import { NextRequest } from 'next/server'
 import { MemoryController } from '@/app/api/controllers/memory.controller'
 import { MemoryError } from '@/app/api/errors/memory-error'
 import { ApiResponse } from '@/app/api/responses/api-response'
-import { checkAuth } from '../../auth/check'
-
+import { checkAuth } from '@/lib/next-auth'
 export async function POST(req: NextRequest) {
   try {
     const user = await checkAuth()

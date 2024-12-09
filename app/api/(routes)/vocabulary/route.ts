@@ -2,7 +2,7 @@ import prisma from '@/lib/prisma'
 import { NextRequest } from 'next/server'
 import { VocabularyError } from '@/app/api/errors/vocabulary-error'
 import { ApiResponse } from '@/app/api/responses/api-response'
-import { checkAuth } from '../auth/check'
+import { checkAuth } from '@/lib/next-auth'
 
 export async function POST(req: NextRequest) {
   try {

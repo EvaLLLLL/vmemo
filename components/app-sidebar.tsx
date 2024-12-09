@@ -9,7 +9,8 @@ import {
   WalletCards,
   SunIcon,
   MoonIcon,
-  Users
+  Users,
+  MessageSquare
 } from 'lucide-react'
 
 import { NavMain } from '@/components/nav-main'
@@ -71,7 +72,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       title: 'Community',
       url: '/community',
       icon: Users,
-      isActive: pathname === '/community'
+      isActive: pathname === '/community',
+      disabled: !isAuthenticated
+    },
+    {
+      title: 'Postswall',
+      url: '/postswall',
+      icon: MessageSquare,
+      isActive: pathname === '/postswall',
+      disabled: !isAuthenticated
     }
   ]
 

@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server'
 import { ApiResponse } from '@/app/api/responses/api-response'
 import prisma from '@/lib/prisma'
-import { checkAuth } from '../../auth/check'
+import { checkAuth } from '@/lib/next-auth'
 
 export async function GET(req: NextRequest) {
   try {

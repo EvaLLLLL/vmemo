@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma'
 import { ApiResponse } from '@/app/api/responses/api-response'
-import { checkAuth } from '../auth/check'
+import { checkAuth } from '@/lib/next-auth'
 
 export async function GET(req: Request) {
   try {

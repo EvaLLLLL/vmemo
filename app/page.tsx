@@ -14,7 +14,6 @@ import { Button } from '@/components/ui/button'
 import prisma from '@/lib/prisma'
 import dayjs from 'dayjs'
 import { MemoryStatus } from '@prisma/client'
-import { checkAuth } from './api/(routes)/auth/check'
 import { auth } from '@/lib/next-auth'
 
 export default async function Dashboard() {
@@ -89,6 +88,15 @@ const QuickStart = () => {
 }
 
 async function getStatistics(userId: string) {
+  if (!userId) {
+    return {
+      todayProgress: 0,
+      streak: 0,
+      wordsCount: 0,
+      studyHours: 0
+    }
+  }
+
   const allMemories = await prisma.memory.findMany({
     where: { userId }
   })
@@ -144,10 +152,9 @@ async function getStatistics(userId: string) {
 
 const WelcomeSection = async () => {
   const timeOfDay = getTimeOfDay()
-  const user = await checkAuth()
   const session = await auth()
 
-  if (!user) {
+  if (!session?.user) {
     return (
       <div className="w-full space-y-4">
         <h1 className="text-3xl font-bold tracking-tight">Welcome, Guest!</h1>
@@ -161,7 +168,7 @@ const WelcomeSection = async () => {
     )
   }
 
-  const stats = await getStatistics(user.id)
+  const stats = await getStatistics(session?.user?.id || '')
 
   return (
     <div className="w-full space-y-4">

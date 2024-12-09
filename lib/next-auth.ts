@@ -11,6 +11,18 @@ import { Adapter } from 'next-auth/adapters'
 export const { handlers, signIn, signOut, auth } = NextAuth({
   debug: true,
   session: { strategy: 'jwt' },
+  callbacks: {
+    async session({ session, user }) {
+      session.userId = user?.id
+      return session
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user?.id // Add user ID to token
+      }
+      return token
+    }
+  },
   providers: [
     Credentials({
       credentials: {
@@ -25,13 +37,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email: 'test@vmemo.com' }
+        const user = await prisma.user.upsert({
+          where: { email: 'test@vmemo.com' },
+          update: { email: 'test@vmemo.com', name: 'test@vmemo.com' },
+          create: { email: 'test@vmemo.com', name: 'test@vmemo.com' }
         })
-
-        if (!user) {
-          return null
-        }
 
         return user
       }
@@ -51,3 +61,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   adapter: PrismaAdapter(prisma) as Adapter
 })
+
+export async function checkAuth() {
+  const session = await auth()
+
+  const user = await prisma.user.findFirst({
+    where: {
+      OR: [
+        { email: session?.user?.email as string },
+        { name: session?.user?.name as string }
+      ]
+    }
+  })
+
+  return user
+}

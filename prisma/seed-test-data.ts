@@ -45,7 +45,6 @@ async function seedTestData() {
   // Create test user
   const user = await prisma.user.create({
     data: {
-      id: crypto.randomUUID(),
       email: 'test@vmemo.com',
       name: 'test@vmemo.com'
     }
