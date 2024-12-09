@@ -4,6 +4,7 @@ import { MemoryController } from '@/app/api/controllers/memory.controller'
 import { MemoryError } from '@/app/api/errors/memory-error'
 import { ApiResponse } from '@/app/api/responses/api-response'
 import { checkAuth } from '@/lib/next-auth'
+
 export async function POST(req: NextRequest) {
   try {
     const user = await checkAuth()
@@ -11,7 +12,7 @@ export async function POST(req: NextRequest) {
     const { vocabularyIds } = (await req.json()) as { vocabularyIds: number[] }
 
     if (!vocabularyIds?.length) {
-      return new MemoryError(
+      throw new MemoryError(
         'Vocabulary IDs are required',
         'MISSING_VOCABULARY_IDS',
         HttpStatusCode.BadRequest

@@ -1,15 +1,17 @@
 import { ApiResponse } from '@/app/api/responses/api-response'
 import { checkAuth } from '@/lib/next-auth'
 import prisma from '@/lib/prisma'
+import { NextRequest } from 'next/server'
 
-export async function POST(
-  _req: Request,
-  { params }: { params: { postId: string } }
-) {
+export async function POST(req: NextRequest) {
   try {
     const user = await checkAuth()
 
-    const { postId } = params
+    const postId = req.nextUrl.searchParams.get('postId')
+
+    if (!postId) {
+      return ApiResponse.badRequest('postId is required')
+    }
 
     const post = await prisma.post.findUnique({
       where: {

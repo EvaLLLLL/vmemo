@@ -1,12 +1,17 @@
 import { ReactNode, useCallback, useEffect, useState } from 'react'
-import { useDragControls, motion, AnimatePresence, PanInfo } from 'motion/react'
+import {
+  useDragControls,
+  motion,
+  AnimatePresence,
+  PanInfo
+} from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export interface FlashCard {
   id: number
   front?: ReactNode
-  back?: ReactNode | Promise<ReactNode>
+  back?: ReactNode
 }
 
 interface FlashCardsProps {
@@ -31,22 +36,21 @@ export default function FlashCards({
   const [dragX, setDragX] = useState(0)
 
   const handleFlip = useCallback(async () => {
-    if (!flipped && currentCards[0] && !currentCards[0].back) {
-      setIsLoading(true)
-      try {
-        const card = currentCards[0]
-        if (onFlip) {
-          const backContent = await onFlip(card)
-          const newCards = [...currentCards]
-          newCards[0] = { ...card, back: backContent }
-          setCurrentCards(newCards)
-        }
-      } catch (error) {
-        console.error('Error flipping card:', error)
-      } finally {
-        setIsLoading(false)
+    setIsLoading(true)
+    try {
+      const card = currentCards[0]
+      if (onFlip) {
+        const backContent = await onFlip(card)
+        const newCards = [...currentCards]
+        newCards[0] = { ...card, back: backContent }
+        setCurrentCards(newCards)
       }
+    } catch (error) {
+      console.error('Error flipping card:', error)
+    } finally {
+      setIsLoading(false)
     }
+
     setFlipped(!flipped)
   }, [onFlip, currentCards, flipped])
 

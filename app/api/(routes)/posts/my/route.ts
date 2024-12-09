@@ -10,7 +10,7 @@ export async function GET(_req: Request) {
     today.setHours(0, 0, 0, 0)
 
     if (!user) {
-      return []
+      return ApiResponse.success([])
     }
 
     const posts = await prisma.post.findMany({
