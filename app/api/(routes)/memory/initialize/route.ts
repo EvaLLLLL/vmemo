@@ -3,12 +3,11 @@ import { NextRequest } from 'next/server'
 import { MemoryController } from '@/app/api/controllers/memory.controller'
 import { MemoryError } from '@/app/api/errors/memory-error'
 import { ApiResponse } from '@/app/api/responses/api-response'
-import { auth } from '@/lib/next-auth'
+import { checkAuth } from '../../auth/check'
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await auth()
-    const userId = session?.user?.id as string
+    const userId = await checkAuth()
 
     const { vocabularyIds } = (await req.json()) as { vocabularyIds: number[] }
 
@@ -22,7 +21,7 @@ export async function POST(req: NextRequest) {
 
     const memories = await Promise.all(
       vocabularyIds.map((vocabularyId) =>
-        MemoryController.initializeMemory(userId, vocabularyId)
+        MemoryController.initializeMemory(userId as string, vocabularyId)
       )
     )
 

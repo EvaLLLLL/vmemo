@@ -5,9 +5,8 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
+import { Squirrel } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-// import { Input } from '@/components/ui/input'
-// import { Label } from '@/components/ui/label'
 import { signIn } from '@/lib/next-auth'
 import Image from 'next/image'
 
@@ -23,6 +22,23 @@ export default function Page() {
         </p>
       </div>
 
+      <div>
+        <form
+          action={async (_) => {
+            'use server'
+            await signIn('credentials', {
+              name: 'test@vmemo.com',
+              email: 'test@vmemo.com',
+              redirectTo: '/refresh'
+            })
+          }}>
+          <Button type="submit" variant="outline" className="w-full">
+            Login as Test User
+            <Squirrel className="size-6" />
+          </Button>
+        </form>
+      </div>
+
       <Card className="mx-auto max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
@@ -32,28 +48,10 @@ export default function Page() {
         </CardHeader>
         <CardContent>
           <div className="grid gap-4">
-            {/* <form
-              action={async (formData) => {
-                'use server'
-                await signIn('resend', formData)
-              }}>
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  name="email"
-                  type="text"
-                  placeholder="m@example.com"
-                  required
-                />
-              </div>
-              <Button type="submit" variant="default" className="mt-4 w-full">
-                Login with Email
-              </Button>
-            </form> */}
             <form
               action={async () => {
                 'use server'
-                await signIn('github', { redirectTo: '/' })
+                await signIn('github', { redirectTo: '/refresh' })
               }}>
               <Button type="submit" variant="outline" className="w-full">
                 Login with Github
@@ -63,7 +61,7 @@ export default function Page() {
             <form
               action={async () => {
                 'use server'
-                await signIn('google', { redirectTo: '/' })
+                await signIn('google', { redirectTo: '/refresh' })
               }}>
               <Button type="submit" variant="outline" className="w-full">
                 Login with Google
@@ -73,7 +71,7 @@ export default function Page() {
             <form
               action={async () => {
                 'use server'
-                await signIn('twitter', { redirectTo: '/' })
+                await signIn('twitter', { redirectTo: '/refresh' })
               }}>
               <Button type="submit" variant="outline" className="w-full">
                 Login with Twitter
@@ -88,7 +86,7 @@ export default function Page() {
             <form
               action={async () => {
                 'use server'
-                await signIn('discord', { redirectTo: '/' })
+                await signIn('discord', { redirectTo: '/refresh' })
               }}>
               <Button type="submit" variant="outline" className="w-full">
                 Login with Discord

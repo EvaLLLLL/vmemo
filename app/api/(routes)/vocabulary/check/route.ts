@@ -1,12 +1,11 @@
 import { NextRequest } from 'next/server'
 import { ApiResponse } from '@/app/api/responses/api-response'
 import prisma from '@/lib/prisma'
-import { auth } from '@/lib/next-auth'
+import { checkAuth } from '../../auth/check'
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await auth()
-    const userId = session?.user?.id as string
+    const userId = await checkAuth()
 
     const url = new URL(req.url)
     const q = url.searchParams.get('q')
@@ -19,7 +18,7 @@ export async function GET(req: NextRequest) {
     const vocabularies = await prisma.vocabulary.findMany({
       where: {
         word: { in: words },
-        users: { some: { id: userId } }
+        users: { some: { id: userId as string } }
       }
     })
 

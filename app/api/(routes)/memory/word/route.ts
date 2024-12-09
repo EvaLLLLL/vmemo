@@ -2,11 +2,10 @@ import { NextRequest } from 'next/server'
 import { MemoryError } from '@/app/api/errors/memory-error'
 import { MemoryController } from '@/app/api/controllers/memory.controller'
 import { ApiResponse } from '@/app/api/responses/api-response'
-import { auth } from '@/lib/next-auth'
+import { checkAuth } from '../../auth/check'
 
 export async function GET(req: NextRequest) {
-  const session = await auth()
-  const userId = session?.user?.id as string
+  const userId = await checkAuth()
 
   const word = req.nextUrl.searchParams.get('q')
 
@@ -15,7 +14,10 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const memory = await MemoryController.getMemoryByWord(userId, word)
+    const memory = await MemoryController.getMemoryByWord(
+      userId as string,
+      word
+    )
     return ApiResponse.success(memory)
   } catch (error) {
     if (error instanceof MemoryError) {

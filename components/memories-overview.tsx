@@ -16,12 +16,7 @@ import {
   ChartTooltip,
   ChartTooltipContent
 } from '@/components/ui/chart'
-import { useMemo } from 'react'
 import { useMemory } from '@/hooks/use-memory'
-
-export const MemoriesOverview: React.FC = () => {
-  return <ActivityChart />
-}
 
 const chartConfig = {
   views: {
@@ -29,19 +24,17 @@ const chartConfig = {
   }
 } satisfies ChartConfig
 
-export function ActivityChart() {
+export function MemoriesOverview() {
   const { allMemories } = useMemory()
 
-  const chartData = useMemo(() => {
+  const chartData = React.useMemo(() => {
     if (!allMemories?.length) return []
 
-    // Create an array of the last 30 days
     const dates = Array.from({ length: 30 }, (_, i) => {
       return dayjs().subtract(i, 'day').format('YYYY-MM-DD')
     }).reverse()
 
-    // Count memories for each date
-    const dateCountMap = dates.reduce(
+    return dates.reduce(
       (acc, date) => {
         const count = allMemories.filter(
           (memory) =>
@@ -57,8 +50,6 @@ export function ActivityChart() {
       },
       [] as { date: string; count: number }[]
     )
-
-    return dateCountMap
   }, [allMemories])
 
   return (

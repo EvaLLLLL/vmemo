@@ -2,12 +2,11 @@ import prisma from '@/lib/prisma'
 import { NextRequest } from 'next/server'
 import { VocabularyError } from '@/app/api/errors/vocabulary-error'
 import { ApiResponse } from '@/app/api/responses/api-response'
-import { auth } from '@/lib/next-auth'
+import { checkAuth } from '../auth/check'
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await auth()
-    const userId = session?.user?.id as string | undefined
+    const userId = await checkAuth()
 
     const words = (await req.json()) as { word: string; translation: string }[]
     const vocabularies = await Promise.all(
@@ -21,13 +20,15 @@ export async function POST(req: NextRequest) {
             data: {
               word,
               translation,
-              users: userId ? { connect: { id: userId } } : undefined
+              users: !!userId
+                ? { connect: { id: userId as string } }
+                : undefined
             }
           })
         } else if (userId) {
           // Connect existing vocabulary to user if not already connected
           await prisma.user.update({
-            where: { id: userId },
+            where: { id: userId as string },
             data: {
               vocabularies: {
                 connect: { id: vocabulary.id }
@@ -54,8 +55,7 @@ export async function POST(req: NextRequest) {
 // Read vocabularies
 export async function GET(req: NextRequest) {
   try {
-    const session = await auth()
-    const userId = session?.user?.id as string
+    const userId = await checkAuth()
 
     const url = new URL(req.url)
     const offset = parseInt(url.searchParams.get('offset') || '0', 10)
@@ -64,7 +64,7 @@ export async function GET(req: NextRequest) {
 
     const vocabularies = await prisma.vocabulary.findMany({
       where: {
-        users: { some: { id: userId } }
+        users: { some: { id: userId as string } }
       },
       include: {
         memories: true
@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
 
     const total = await prisma.vocabulary.count({
       where: {
-        users: { some: { id: userId } }
+        users: { some: { id: userId as string } }
       }
     })
 
@@ -98,8 +98,7 @@ export async function GET(req: NextRequest) {
 // Update vocabulary
 export async function PUT(req: NextRequest) {
   try {
-    const session = await auth()
-    const userId = session?.user?.id as string
+    const userId = await checkAuth()
 
     const data = await req.json()
     const { id, translation } = data
@@ -107,7 +106,7 @@ export async function PUT(req: NextRequest) {
     const vocabulary = await prisma.vocabulary.findFirst({
       where: {
         id,
-        users: { some: { id: userId } }
+        users: { some: { id: userId as string } }
       }
     })
 
@@ -130,8 +129,7 @@ export async function PUT(req: NextRequest) {
 // Delete vocabulary
 export async function DELETE(req: NextRequest) {
   try {
-    const session = await auth()
-    const userId = session?.user?.id as string
+    const userId = await checkAuth()
 
     const url = new URL(req.url)
     const ids = url.searchParams.get('id')?.split(',').map(Number)
@@ -141,7 +139,7 @@ export async function DELETE(req: NextRequest) {
     }
 
     await prisma.user.update({
-      where: { id: userId },
+      where: { id: userId as string },
       data: {
         vocabularies: {
           disconnect: { id: { in: ids } }

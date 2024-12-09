@@ -1,15 +1,14 @@
 import { MemoryError } from '@/app/api/errors/memory-error'
 import { MemoryController } from '@/app/api/controllers/memory.controller'
 import { ApiResponse } from '@/app/api/responses/api-response'
-import { auth } from '@/lib/next-auth'
+import { checkAuth } from '../../auth/check'
 
 export async function GET() {
-  const session = await auth()
-  const userId = session?.user?.id as string
+  const userId = await checkAuth()
 
   try {
     const allNotCompletedReviews =
-      await MemoryController.getAllNotCompletedReviews(userId)
+      await MemoryController.getAllNotCompletedReviews(userId as string)
 
     return ApiResponse.success(allNotCompletedReviews)
   } catch (error) {

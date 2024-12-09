@@ -6,19 +6,22 @@ import { Toaster } from '@/components/ui/toaster'
 import ReactQueryProvider from '@/components/react-query-provider'
 import { fontClasses } from '@/config/fonts'
 import NextAuthProvider from '@/components/next-auth-provider'
+import { auth } from '@/lib/next-auth'
 
 export const metadata: Metadata = {
   title: 'Vmemo',
   description: 'Learn English efficiently.'
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: {
   children: React.ReactNode
 }) {
+  const session = await auth()
+
   return (
-    <NextAuthProvider>
+    <NextAuthProvider session={session}>
       <html lang="en" suppressHydrationWarning>
         <body className={fontClasses.default}>
           <ThemeProvider attribute="class" defaultTheme="system">

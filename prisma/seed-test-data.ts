@@ -1,6 +1,5 @@
 import { PrismaClient, MemoryLevel, MemoryStatus } from '@prisma/client'
 import dayjs from 'dayjs'
-import { hashPassword } from '@/lib/auth'
 
 const prisma = new PrismaClient()
 
@@ -38,54 +37,35 @@ const enrichedWords = [
 ]
 
 async function seedTestData() {
-  await prisma.user.delete({
+  // Clean up existing test user and related data
+  await prisma.user.deleteMany({
     where: { email: 'test@vmemo.com' }
   })
 
-  const hashedPassword = await hashPassword('test@vmemo.com')
-
-  // 1. Create test user if not exists
-  const user = await prisma.user.upsert({
-    where: { email: 'test@vmemo.com' },
-    update: {},
-    create: {
+  // Create test user
+  const user = await prisma.user.create({
+    data: {
+      id: crypto.randomUUID(),
       email: 'test@vmemo.com',
-      name: 'test@vmemo.com',
-      password: hashedPassword
+      name: 'test@vmemo.com'
     }
   })
 
-  // 2. Create vocabularies from default list
+  // Create vocabularies and memories
   const vocabularies = await Promise.all(
     enrichedWords.map(async (word) => {
       const vocabulary = await prisma.vocabulary.upsert({
         where: { word: word.word },
-        update: {
-          users: {
-            connect: { id: user.id }
-          }
-        },
+        update: {},
         create: {
           word: word.word,
-          translation: word.translation,
-          users: {
-            connect: { id: user.id }
-          }
+          translation: word.translation
         }
       })
-      return vocabulary
-    })
-  )
 
-  const memories = await Promise.all(
-    vocabularies.map(async (vocab) => {
+      // Create memory for each vocabulary
       const daysAgo = Math.floor(Math.random() * 30)
       const createdAt = dayjs().subtract(daysAgo, 'day').toDate()
-
-      const levels = Object.values(MemoryLevel)
-      const randomLevel =
-        levels[Math.floor(Math.random() * (levels.length - 1))]
-
       const reviewCount = Math.floor(Math.random() * 6)
 
       const lastReviewedAt =
@@ -93,12 +73,16 @@ async function seedTestData() {
           ? dayjs()
               .subtract(Math.floor(Math.random() * daysAgo), 'day')
               .toDate()
-          : dayjs().toDate()
+          : null
 
-      return await prisma.memory.create({
+      const levels = Object.values(MemoryLevel)
+      const randomLevel =
+        levels[Math.floor(Math.random() * (levels.length - 1))]
+
+      await prisma.memory.create({
         data: {
           userId: user.id,
-          vocabularyId: vocab.id,
+          vocabularyId: vocabulary.id,
           level: randomLevel,
           reviewCount,
           lastReviewedAt,
@@ -115,10 +99,12 @@ async function seedTestData() {
           updatedAt: lastReviewedAt || createdAt
         }
       })
+
+      return vocabulary
     })
   )
 
-  console.log(`Created ${memories.length} test memories`)
+  console.log(`Created ${vocabularies.length} test vocabularies and memories`)
 }
 
 seedTestData()
