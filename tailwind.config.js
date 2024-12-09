@@ -46,6 +46,13 @@ module.exports = {
           foreground: 'hsl(var(--destructive-foreground))'
         },
         border: 'hsl(var(--border))',
+        borderPost: {
+          1: 'hsl(var(--border-post-1))',
+          2: 'hsl(var(--border-post-2))',
+          3: 'hsl(var(--border-post-3))',
+          4: 'hsl(var(--border-post-4))',
+          5: 'hsl(var(--border-post-5))'
+        },
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         chart: {
@@ -65,6 +72,15 @@ module.exports = {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))'
         }
+      },
+      rotate: {
+        'y-180': 'rotateY(180deg)'
+      },
+      transformStyle: {
+        'preserve-3d': 'preserve-3d'
+      },
+      backfaceVisibility: {
+        hidden: 'hidden'
       }
     }
   }

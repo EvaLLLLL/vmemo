@@ -9,47 +9,163 @@ datasource db {
 }
 
 model User {
-  id           Int          @id @default(autoincrement())
-  name         String       @unique @db.VarChar(255)
-  password     String       @db.VarChar(255)
-  email        String       @db.VarChar(255)
-  vocabularies Vocabulary[]
+  id            String          @id @default(cuid())
+  name          String?
+  email         String?         @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  // Optional for WebAuthn support
+  Authenticator Authenticator[]
+
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  vocabularies Vocabulary? @relation(fields: [vocabularyId], references: [id])
+  vocabularyId Int?
   memories     Memory[]
+  messages     Message[]
+  rooms        Room[]      @relation("RoomMembers")
+  Post         Post[]
+  Like         Like[]
+}
+
+model Account {
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String?
+  access_token             String?
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String?
+  session_state            String?
+  refresh_token_expires_in Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+// Optional for WebAuthn support
+model Authenticator {
+  credentialID         String  @unique
+  userId               String
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, credentialID])
 }
 
 model Vocabulary {
   id          Int      @id @default(autoincrement())
-  origin      String   @unique(map: "constraint_name") @db.VarChar(255)
-  translation String?
-  audio       String?
+  word        String   @unique @map("origin") @db.VarChar(255)
+  translation String
   createdAt   DateTime @default(now()) @db.Timestamp(6)
   users       User[]
   memories    Memory[]
 }
 
-model Memory {
-  id           Int         @id @default(autoincrement())
-  userId       Int
-  vocabularyId Int
-  level        Int
-  createdAt    DateTime    @default(now()) @db.Timestamp(6)
-  updatedAt    DateTime
-  user         User?       @relation(fields: [userId], references: [id])
-  vocabulary   Vocabulary? @relation(fields: [vocabularyId], references: [id])
+enum MemoryStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
 }
 
-model Ecdict {
-  word        String  @unique @db.Text
-  phonetic    String? @db.Text
-  definition  String? @db.Text
-  translation String? @db.Text
-  pos         String? @db.Text
-  collins     String? @db.Text
-  oxford      String? @db.Text
-  tag         String? @db.Text
-  bnc         String? @db.Text
-  frq         String? @db.Text
-  exchange    String? @db.Text
-  detail      String? @db.Text
-  audio       String? @db.Text
+enum MemoryLevel {
+  LEVEL_1
+  LEVEL_2
+  LEVEL_3
+  LEVEL_4
+  LEVEL_5
+  MASTERED
+}
+
+model Memory {
+  id             Int          @id @default(autoincrement())
+  userId         String
+  vocabularyId   Int
+  level          MemoryLevel  @default(LEVEL_1)
+  reviewCount    Int          @default(0)
+  lastReviewedAt DateTime?
+  nextReviewDate DateTime?
+  status         MemoryStatus @default(NOT_STARTED)
+  createdAt      DateTime     @default(now()) @db.Timestamp(6)
+  updatedAt      DateTime     @updatedAt
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vocabulary     Vocabulary   @relation(fields: [vocabularyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, vocabularyId])
+}
+
+model Room {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  messages    Message[]
+  members     User[]    @relation("RoomMembers")
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  userId    String
+  userName  String
+  roomId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  content   String
+  userId    String
+  userName  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes     Like[]
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

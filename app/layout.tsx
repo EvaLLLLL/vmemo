@@ -1,39 +1,44 @@
 import '@/styles/globals.scss'
 import { Metadata } from 'next'
-import { Open_Sans } from 'next/font/google'
-import ReactQueryProvider from '@/components/ReactQueryProvider'
-import { SidebarProvider } from '@/components/SidebarProvider'
-import { cn } from '@/lib/utils'
+import { SidebarProvider } from '@/components/sidebar-provider'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/toaster'
-
-const openSans = Open_Sans({
-  weight: ['400', '500', '600', '700'],
-  style: ['normal', 'italic'],
-  subsets: ['latin'],
-  variable: '--font-open-sans'
-})
+import ReactQueryProvider from '@/components/react-query-provider'
+import { fontClasses } from '@/config/fonts'
+import NextAuthProvider from '@/components/next-auth-provider'
+import { auth } from '@/lib/next-auth'
 
 export const metadata: Metadata = {
   title: 'Vmemo',
   description: 'Learn English efficiently.'
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: {
   children: React.ReactNode
 }) {
+  const session = await auth()
+
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={cn(openSans.className)}>
-        <ThemeProvider attribute="class" defaultTheme="dark">
-          <ReactQueryProvider>
-            <Toaster />
-            <SidebarProvider>{children}</SidebarProvider>
-          </ReactQueryProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    <NextAuthProvider session={session}>
+      <html lang="en" suppressHydrationWarning>
+        <body className={fontClasses.default}>
+          <ThemeProvider attribute="class" defaultTheme="system">
+            <ReactQueryProvider>
+              <Toaster />
+              <SidebarProvider>{children}</SidebarProvider>
+            </ReactQueryProvider>
+          </ThemeProvider>
+        </body>
+      </html>
+    </NextAuthProvider>
   )
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false
 }

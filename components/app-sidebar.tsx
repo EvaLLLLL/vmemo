@@ -1,5 +1,4 @@
-'use client'
-
+import Link from 'next/link'
 import {
   BookOpen,
   Command,
@@ -9,7 +8,9 @@ import {
   BookMarkedIcon,
   WalletCards,
   SunIcon,
-  MoonIcon
+  MoonIcon,
+  Users,
+  MessageSquare
 } from 'lucide-react'
 
 import { NavMain } from '@/components/nav-main'
@@ -25,7 +26,7 @@ import {
   SidebarMenuItem
 } from '@/components/ui/sidebar'
 import { usePathname } from 'next/navigation'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks/use-auth'
 import { useTheme } from 'next-themes'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -55,9 +56,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     },
     {
       title: 'Flashcard',
-      url: '/flashcard',
+      url: '/flashcards',
       icon: WalletCards,
-      isActive: pathname === '/flashcard',
+      isActive: pathname === '/flashcards',
       disabled: !isAuthenticated
     },
     {
@@ -65,6 +66,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       url: '/vocabulary',
       icon: Database,
       isActive: pathname === '/vocabulary',
+      disabled: !isAuthenticated
+    },
+    {
+      title: 'Community',
+      url: '/community',
+      icon: Users,
+      isActive: pathname === '/community',
+      disabled: !isAuthenticated
+    },
+    {
+      title: 'Postswall',
+      url: '/postswall',
+      icon: MessageSquare,
+      isActive: pathname === '/postswall',
       disabled: !isAuthenticated
     }
   ]
@@ -94,7 +109,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="/">
+              <Link href="/">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-sidebar-primary-foreground">
                   <Command className="size-4" />
                 </div>
@@ -102,7 +117,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <span className="truncate font-semibold">VMEMO</span>
                   <span className="truncate text-xs">v1.0.0-beta</span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
