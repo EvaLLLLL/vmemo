@@ -3,11 +3,14 @@ import { checkAuth } from '@/lib/next-auth'
 import prisma from '@/lib/prisma'
 import { NextRequest } from 'next/server'
 
-export async function POST(req: NextRequest) {
+export async function POST(
+  _request: NextRequest,
+  { params }: { params: Promise<{ postId: string }> }
+) {
   try {
     const user = await checkAuth()
 
-    const postId = req.nextUrl.searchParams.get('postId')
+    const postId = (await params).postId
 
     if (!postId) {
       return ApiResponse.badRequest('postId is required')

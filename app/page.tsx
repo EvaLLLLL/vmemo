@@ -132,9 +132,11 @@ const QuickActionCard = ({
       variant="outline"
       className="flex h-auto w-full flex-col items-start gap-2 p-6 hover:bg-accent">
       <Icon className="size-6 text-primary" />
-      <div className="text-left">
+      <div className="w-full text-left">
         <h3 className="font-semibold">{title}</h3>
-        <p className="text-sm text-muted-foreground">{description}</p>
+        <p className="w-full truncate text-sm text-muted-foreground">
+          {description}
+        </p>
       </div>
     </Button>
   </Link>
