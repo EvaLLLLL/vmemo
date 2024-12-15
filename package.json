@@ -5,7 +5,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "postinstall": "simple-git-hooks",
-    "dev": "next dev --turbopack",
+    "dev": "npx prisma migrate deploy && npx prisma generate && next dev --turbopack",
     "build": "npx prisma migrate deploy && npx prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
