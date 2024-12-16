@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils'
 import { useChatRooms } from '@/hooks/use-chat-rooms'
 import { useParams } from 'next/navigation'
 
-const Room: React.FC = () => {
+export const RoomMessages: React.FC = () => {
   const { user } = useAuth()
 
   const params = useParams()
@@ -228,5 +228,3 @@ const Room: React.FC = () => {
     </div>
   )
 }
-
-export default Room

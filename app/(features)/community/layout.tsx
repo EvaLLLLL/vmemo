@@ -1,4 +1,4 @@
-import { RoomsList } from './components/rooms-list'
+import { RoomList } from './components/room-list'
 
 export default function CommunityLayout({
   children
@@ -11,7 +11,7 @@ export default function CommunityLayout({
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-800">Chat Rooms</h2>
         </div>
-        <RoomsList />
+        <RoomList />
       </div>
 
       {children}

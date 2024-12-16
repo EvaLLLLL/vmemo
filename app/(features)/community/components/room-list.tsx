@@ -5,7 +5,7 @@ import { useChatRooms } from '@/hooks/use-chat-rooms'
 import { cn } from '@/lib/utils'
 import { useRouter, useParams } from 'next/navigation'
 
-export const RoomsList: React.FC = () => {
+export const RoomList: React.FC = () => {
   const { user } = useAuth()
   const { rooms, joinRoom } = useChatRooms()
   const router = useRouter()
