@@ -7,6 +7,7 @@ import {
 } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
+import { FlipIcon, LeftIcon, RightIcon } from '@/icons'
 
 export interface FlashCard {
   id: number
@@ -239,39 +240,13 @@ export default function FlashCards({
               }}
               className="rounded-full bg-red-500 p-3 text-white shadow-md hover:bg-red-600"
               aria-label="Swipe Left">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round">
-                <path d="m12 19-7-7 7-7" />
-                <path d="M19 12H5" />
-              </svg>
+              <LeftIcon />
             </button>
             <button
               onClick={handleFlip}
               className="rounded-full bg-blue-500 p-3 text-white shadow-md hover:bg-blue-600"
               aria-label="Flip Card">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round">
-                <path d="M2 9V5c0-1.1.9-2 2-2h4" />
-                <path d="M22 15v4c0 1.1-.9 2-2 2h-4" />
-                <path d="M18 4v16" />
-                <path d="M6 20V4" />
-              </svg>
+              <FlipIcon />
             </button>
             <button
               onClick={async () => {
@@ -285,19 +260,7 @@ export default function FlashCards({
               }}
               className="rounded-full bg-green-500 p-3 text-white shadow-md hover:bg-green-600"
               aria-label="Swipe Right">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round">
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
-              </svg>
+              <RightIcon />
             </button>
           </div>
         </div>

@@ -9,6 +9,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { AnimatePresence, motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { formatDictResult } from '@/utils/dict'
+import { BubbleIcon, CloseIcon } from '@/icons'
 
 export default function Flashcards() {
   const { reviewMemory } = useMemory()
@@ -169,20 +170,7 @@ const ReviewPlan = () => {
                   <button
                     onClick={() => setIsReviewPlanVisible(false)}
                     className="text-muted-foreground transition-colors hover:text-foreground">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="sm:size-6">
-                      <path d="M18 6 6 18" />
-                      <path d="m6 6 12 12" />
-                    </svg>
+                    <CloseIcon />
                   </button>
                 </div>
                 <p className="mb-3 text-xs text-muted-foreground sm:mb-6 sm:text-sm">
@@ -258,19 +246,7 @@ const ReviewPlan = () => {
           onClick={() => setIsReviewPlanVisible(true)}
           className="fixed bottom-0 left-0 z-10 flex h-12 w-full items-center justify-center bg-accent/80 text-accent-foreground transition-colors hover:bg-accent sm:absolute sm:left-auto sm:right-0 sm:top-0 sm:h-full sm:w-12">
           <div className="flex items-center gap-2 sm:flex-col">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="sm:size-5">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-            </svg>
+            <BubbleIcon />
             <span className="text-xs font-medium sm:[writing-mode:vertical-lr]">
               Review Plan
             </span>
