@@ -1,7 +1,8 @@
 import { RoomServices } from '@/lib/services'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMemo } from 'react'
 
-export const useChatRooms = () => {
+export const useChatRooms = (id?: string) => {
   const {
     data: rooms,
     isLoading,
@@ -11,6 +12,11 @@ export const useChatRooms = () => {
     queryFn: RoomServices.getRooms.fn,
     select: (data) => data.data
   })
+
+  const room = useMemo(
+    () => (id ? rooms?.find((room) => room.id === id) : null),
+    [id, rooms]
+  )
 
   const { mutate: createRoom } = useMutation({
     mutationKey: [RoomServices.createRoom.key],
@@ -24,5 +30,5 @@ export const useChatRooms = () => {
     onSuccess: () => refetch()
   })
 
-  return { rooms, isLoading, createRoom, joinRoom }
+  return { rooms, isLoading, createRoom, joinRoom, room }
 }

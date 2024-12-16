@@ -1,3 +1,5 @@
+'use client'
+
 import { useRef, useState, useEffect } from 'react'
 import {
   Tooltip,
@@ -5,30 +7,41 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { useAuth } from '@/hooks/use-auth'
-import { RoomWithMembersAndMessages } from '../../type'
 import { useChatMessages } from '@/hooks/use-chat-messages'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
+import { useChatRooms } from '@/hooks/use-chat-rooms'
+import { useParams } from 'next/navigation'
 
-export const MessagesList: React.FC<{
-  selectedRoom: RoomWithMembersAndMessages
-}> = ({ selectedRoom }) => {
+const Room: React.FC = () => {
   const { user } = useAuth()
 
-  const { messages, isLoading, sendMessage } = useChatMessages(selectedRoom?.id)
+  const params = useParams()
+  const roomId = params.roomId as string
+
+  const { room } = useChatRooms(roomId)
+  const { messages, isLoading, sendMessage } = useChatMessages(roomId)
 
   const [newMessage, setNewMessage] = useState('')
+  const [isSending, setIsSending] = useState(false)
 
   const handleSendMessage = async () => {
-    if (!selectedRoom?.id) return
+    if (!roomId || isSending) return
 
-    await sendMessage({
-      content: newMessage,
-      roomId: selectedRoom?.id
-    })
+    try {
+      setIsSending(true)
+      await sendMessage({
+        content: newMessage,
+        roomId
+      })
 
-    setNewMessage('')
+      setNewMessage('')
+    } catch (error) {
+      console.error('Error sending message:', error)
+    } finally {
+      setIsSending(false)
+    }
   }
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -56,11 +69,11 @@ export const MessagesList: React.FC<{
   }, [messages])
 
   useEffect(() => {
-    if (selectedRoom) {
+    if (roomId) {
       shouldScrollRef.current = true
       scrollToBottom(true)
     }
-  }, [selectedRoom])
+  }, [roomId])
 
   useEffect(() => {
     const messagesContainer = messagesEndRef.current?.parentElement
@@ -78,14 +91,12 @@ export const MessagesList: React.FC<{
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden rounded-lg bg-card">
-      {selectedRoom ? (
+      {room ? (
         <>
           <div className="border-b border-accent p-4">
-            <h2 className="text-lg font-semibold">{selectedRoom.name}</h2>
-            {selectedRoom.description && (
-              <p className="text-sm text-gray-600">
-                {selectedRoom.description}
-              </p>
+            <h2 className="text-lg font-semibold">{room.name}</h2>
+            {room.description && (
+              <p className="text-sm text-gray-600">{room.description}</p>
             )}
           </div>
 
@@ -187,13 +198,14 @@ export const MessagesList: React.FC<{
                 type="text"
                 value={newMessage}
                 disabled={
-                  !selectedRoom ||
-                  !selectedRoom.members.find((member) => member.id === user?.id)
+                  !room ||
+                  !room.members.find((member) => member.id === user?.id) ||
+                  isSending
                 }
                 onChange={(e) => setNewMessage(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
                 placeholder={
-                  !selectedRoom.members.find((member) => member.id === user?.id)
+                  !room.members.find((member) => member.id === user?.id)
                     ? 'Join the room to chat'
                     : 'Type your message...'
                 }
@@ -201,7 +213,7 @@ export const MessagesList: React.FC<{
               />
               <button
                 onClick={handleSendMessage}
-                disabled={!newMessage.trim()}
+                disabled={!newMessage.trim() || isSending}
                 className="rounded-lg bg-primary px-4 py-2 text-white hover:bg-primary/90 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50">
                 Send
               </button>
@@ -216,3 +228,5 @@ export const MessagesList: React.FC<{
     </div>
   )
 }
+
+export default Room

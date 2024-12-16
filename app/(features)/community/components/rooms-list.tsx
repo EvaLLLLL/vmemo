@@ -1,24 +1,26 @@
+'use client'
+
 import { useAuth } from '@/hooks/use-auth'
 import { useChatRooms } from '@/hooks/use-chat-rooms'
 import { cn } from '@/lib/utils'
-import { RoomWithMembersAndMessages } from '../../type'
-export const RoomsList: React.FC<{
-  selectedRoom: RoomWithMembersAndMessages
-  setSelectedRoom: (room: RoomWithMembersAndMessages) => void
-}> = ({ selectedRoom, setSelectedRoom }) => {
+import { useRouter, useParams } from 'next/navigation'
+
+export const RoomsList: React.FC = () => {
   const { user } = useAuth()
   const { rooms, joinRoom } = useChatRooms()
+  const router = useRouter()
+  const params = useParams()
+  const roomId = params.roomId
 
   return (
     <div className="flex-1 space-y-2 overflow-y-auto rounded-lg bg-card p-2">
       {rooms?.map((room) => (
         <div
           key={room.id}
-          onClick={() => setSelectedRoom(room)}
+          onClick={() => router.push(`/community/${room.id}`)}
           className={cn(
             'w-full rounded-lg p-2 cursor-pointer text-left transition-colors hover:bg-primary/30 dark:text-gray-100',
-            selectedRoom?.id === room.id &&
-              'bg-primary/70 hover:bg-primary/60 text-white'
+            room.id === roomId && 'bg-primary/70 hover:bg-primary/60 text-white'
           )}>
           <div className="flex items-center justify-between">
             <div>

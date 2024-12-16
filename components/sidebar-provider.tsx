@@ -14,8 +14,9 @@ import {
 
 import { AppSidebar } from '@/components/app-sidebar'
 import { Separator } from '@radix-ui/react-separator'
-import { usePathname } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 import { useMemo } from 'react'
+import { useChatRooms } from '@/hooks/use-chat-rooms'
 
 export const SidebarProvider = ({
   children
@@ -23,14 +24,20 @@ export const SidebarProvider = ({
   children: React.ReactNode
 }) => {
   const pathname = usePathname()
+  const params = useParams()
+  const roomId = params.roomId as string
+  const { room } = useChatRooms(roomId)
+
   const breadLabel = useMemo(() => {
     switch (pathname) {
       case '/':
         return 'Dashboard'
+      case `/community/${roomId}`:
+        return room?.name ? `Community / ${room?.name}` : 'Community'
       default:
         return pathname.slice(1).charAt(0).toUpperCase() + pathname.slice(2)
     }
-  }, [pathname])
+  }, [pathname, room?.name, roomId])
 
   return (
     <SidebarProviderComponent>
