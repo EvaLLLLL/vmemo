@@ -9,7 +9,7 @@ import { PrismaAdapter } from '@auth/prisma-adapter'
 import { Adapter } from 'next-auth/adapters'
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  debug: true,
+  debug: process.env.NODE_ENV === 'development',
   session: { strategy: 'jwt' },
   callbacks: {
     async session({ session, user }) {

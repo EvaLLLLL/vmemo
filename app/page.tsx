@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import {
   Clock,
@@ -46,8 +47,7 @@ const StatCard = ({
   </div>
 )
 
-const getTimeOfDay = () => {
-  const hour = new Date().getHours()
+const getTimeOfDay = (hour: number) => {
   if (hour < 12) return 'morning'
   if (hour < 18) return 'afternoon'
   return 'evening'
@@ -90,8 +90,14 @@ const QuickStart = () => {
 const WelcomeSection = () => {
   const { data: session } = useSession()
   const { todayProgress, streak, wordsCount, studyHours } = useStatistic()
-  const timeOfDay = getTimeOfDay()
+  const [timeOfDay, setTimeOfDay] = useState('morning')
+
   const user = session?.user
+
+  useEffect(() => {
+    const hour = new Date().getHours()
+    setTimeOfDay(getTimeOfDay(hour))
+  }, [])
 
   return (
     <div className="w-full space-y-4">
