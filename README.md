@@ -111,7 +111,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project was created to help English learners efficiently manage their vocabulary learning journey.
 
-Preparing for TOEFL and GRE, I was overwhelmed by vocabulary. I needed a way to save and review words quickly. While reading English articles, I wanted a faster method to look up and track words without switching apps. So, I designed this application to list and save words instantly.
+While reading English articles, I wanted a faster method to look up and track words without switching apps. So, I designed this application to list and save words instantly.
 
 ## License
 
