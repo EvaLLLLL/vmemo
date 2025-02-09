@@ -23,11 +23,11 @@ export default function Flashcards() {
     })) || []
 
   const onSwipeLeft = async (card: FlashCard) => {
-    await reviewMemory({ memoryId: card.id, remembered: false })
+    reviewMemory({ memoryId: card.id, remembered: false })
   }
 
   const onSwipeRight = async (card: FlashCard) => {
-    await reviewMemory({ memoryId: card.id, remembered: true })
+    reviewMemory({ memoryId: card.id, remembered: true })
   }
 
   const onFlip = async (c: FlashCard) => {
@@ -40,9 +40,7 @@ export default function Flashcards() {
 
     let result = formatDictResult(cachedData)
 
-    if (cachedData) {
-      result = formatDictResult(cachedData)
-    } else {
+    if (!result.simpleMeans?.length) {
       const dictResult = await DictServices.translate.fn(c.front as string)
 
       queryClient.setQueryData(
