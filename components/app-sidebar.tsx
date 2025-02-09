@@ -28,8 +28,10 @@ import {
 import { usePathname } from 'next/navigation'
 import { useAuth } from '@/hooks/use-auth'
 import { useTheme } from 'next-themes'
+import { useChatRooms } from '@/hooks/use-chat-rooms'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { rooms } = useChatRooms()
   const { isAuthenticated } = useAuth()
 
   const pathname = usePathname()
@@ -70,7 +72,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     },
     {
       title: 'Community',
-      url: '/community',
+      url: rooms?.[0].id ? `/community/${rooms[0].id}` : '/community',
       icon: Users,
       isActive: pathname === '/community',
       disabled: !isAuthenticated
