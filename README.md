@@ -107,12 +107,6 @@ Password: test@vmemo.com
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## Acknowledgments
-
-This project was created to help English learners efficiently manage their vocabulary learning journey.
-
-While reading English articles, I wanted a faster method to look up and track words without switching apps. So, I designed this application to list and save words instantly.
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
