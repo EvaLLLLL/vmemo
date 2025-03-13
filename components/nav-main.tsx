@@ -33,16 +33,23 @@ export function NavMain({
               isActive={item.isActive}
               className={
                 item.disabled
-                  ? 'cursor-not-allowed bg-sidebar-accent text-gray-400 hover:text-gray-400'
+                  ? 'cursor-not-allowed bg-sidebar-accent text-gray-400 hover:text-gray-400 active:text-gray-400'
                   : ''
               }
               variant={item.isActive ? 'outline' : 'default'}
               tooltip={item.title}
-              disabled={!item.disabled}>
-              <Link href={item.url}>
-                <item.icon />
-                <span>{item.title}</span>
-              </Link>
+              disabled={item.disabled}>
+              {item.disabled ? (
+                <div className="flex items-center gap-2">
+                  <item.icon />
+                  <span>{item.title}</span>
+                </div>
+              ) : (
+                <Link href={item.url}>
+                  <item.icon />
+                  <span>{item.title}</span>
+                </Link>
+              )}
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}
