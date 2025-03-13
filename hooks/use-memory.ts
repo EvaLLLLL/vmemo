@@ -1,7 +1,12 @@
 import { useCallback, useState } from 'react'
 import { useAuth } from '@/hooks/use-auth'
-import { MemoryServices } from '@/lib/services'
-import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
+import { DictServices, MemoryServices } from '@/lib/services'
+import {
+  keepPreviousData,
+  useMutation,
+  useQueries,
+  useQuery
+} from '@tanstack/react-query'
 
 export const useMemory = () => {
   const { refetchDueReviews } = useDueReviews()
@@ -66,6 +71,16 @@ export const useDueReviews = (
     queryFn: () => MemoryServices.getDueReviews.fn(pagination),
     placeholderData: keepPreviousData,
     enabled: isAuthenticated
+  })
+
+  useQueries({
+    queries: !dueReviewsResponse?.data?.data
+      ? []
+      : dueReviewsResponse?.data?.data?.map((d) => ({
+          queryKey: [DictServices.translate.key, d.vocabulary.word],
+          queryFn: () => DictServices.translate.fn(d.vocabulary.word),
+          enabled: !!dueReviewsResponse?.data?.data
+        }))
   })
 
   const currentPage = Math.floor(pagination.offset / pagination.size) + 1

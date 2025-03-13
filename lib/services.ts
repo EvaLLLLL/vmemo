@@ -10,7 +10,7 @@ import {
 import { axiosInstance } from '@/lib/axios'
 import { IBaiduDict } from '@/types/dict'
 
-interface IApiResponse<T> {
+export interface IApiResponse<T> {
   data?: T
   message?: string
   status?: number

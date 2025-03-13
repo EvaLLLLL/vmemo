@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import FlashCards, { FlashCard } from '@/components/flash-cards'
 import { useDueReviews, useMemory } from '@/hooks/use-memory'
-import { DictServices } from '@/lib/services'
+import { DictServices, IApiResponse } from '@/lib/services'
 import { IBaiduDict } from '@/types/dict'
 import { useQueryClient } from '@tanstack/react-query'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -33,12 +33,12 @@ export default function Flashcards() {
   const onFlip = async (c: FlashCard) => {
     if (!c.front) return null
 
-    const cachedData = queryClient.getQueryData<IBaiduDict>([
+    const cachedData = queryClient.getQueryData<IApiResponse<IBaiduDict>>([
       DictServices.translate.key,
       c.front
     ])
 
-    let result = formatDictResult(cachedData)
+    let result = formatDictResult(cachedData?.data)
 
     if (!result.simpleMeans?.length) {
       const dictResult = await DictServices.translate.fn(c.front as string)
