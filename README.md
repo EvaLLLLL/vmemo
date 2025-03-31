@@ -43,14 +43,6 @@ A modern web application designed to enhance your English reading and vocabulary
 - Share your reading thoughts and experiences
 - Like, comment, and interact with posts
 
-## TODO
-
-- [ ] Customizable flashcards review interval
-- [ ] Posts comments
-- [ ] User profile
-- [ ] User settings
-- [ ] Support for both plain text and formatted content for reading, flashcards and posts
-
 ## Tech Stack
 
 - **Framework**: Next.js 15.0
