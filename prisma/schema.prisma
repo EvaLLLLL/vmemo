@@ -8,6 +8,25 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+model ReviewSession {
+  id          Int                 @id @default(autoincrement())
+  userId      String
+  startedAt   DateTime            @default(now())
+  completedAt DateTime?
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items       ReviewSessionItem[]
+}
+
+model ReviewSessionItem {
+  id           Int           @id @default(autoincrement())
+  sessionId    Int
+  vocabularyId Int
+  isCorrect    Boolean
+  reviewedAt   DateTime      @default(now())
+  session      ReviewSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  vocabulary   Vocabulary    @relation(fields: [vocabularyId], references: [id], onDelete: Cascade)
+}
+
 model User {
   id            String          @id @default(cuid())
   name          String?
@@ -19,15 +38,14 @@ model User {
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  vocabularies Vocabulary? @relation(fields: [vocabularyId], references: [id])
-  vocabularyId Int?
-  memories     Memory[]
-  messages     Message[]
-  rooms        Room[]      @relation("RoomMembers")
-  Post         Post[]
-  Like         Like[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  memories       Memory[]
+  messages       Message[]
+  rooms          Room[]          @relation("RoomMembers")
+  Post           Post[]
+  Like           Like[]
+  reviewSessions ReviewSession[]
 }
 
 model Account {
@@ -87,12 +105,12 @@ model Authenticator {
 }
 
 model Vocabulary {
-  id          Int      @id @default(autoincrement())
-  word        String   @unique @map("origin") @db.VarChar(255)
+  id          Int                 @id @default(autoincrement())
+  word        String              @unique @map("origin") @db.VarChar(255)
   translation String
-  createdAt   DateTime @default(now()) @db.Timestamp(6)
-  users       User[]
+  createdAt   DateTime            @default(now()) @db.Timestamp(6)
   memories    Memory[]
+  reviewItems ReviewSessionItem[]
 }
 
 enum MemoryStatus {
