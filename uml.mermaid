@@ -1,0 +1,141 @@
+---
+config:
+  theme: mc
+---
+erDiagram
+	direction TB
+	User {
+		String id PK ""  
+		String name  ""  
+		String email  ""  
+		DateTime emailVerified  ""  
+		String image  ""  
+		DateTime createdAt  ""  
+		DateTime updatedAt  ""  
+	}
+
+	Account {
+		String userId FK ""  
+		String type  ""  
+		String provider PK ""  
+		String providerAccountId PK ""  
+		String refresh_token  ""  
+		String access_token  ""  
+		Int expires_at  ""  
+		String token_type  ""  
+		String scope  ""  
+		String id_token  ""  
+		String session_state  ""  
+		Int refresh_token_expires_in  ""  
+		DateTime createdAt  ""  
+		DateTime updatedAt  ""  
+	}
+
+	Session {
+		String sessionToken PK ""  
+		String userId FK ""  
+		DateTime expires  ""  
+		DateTime createdAt  ""  
+		DateTime updatedAt  ""  
+	}
+
+	VerificationToken {
+		String identifier PK ""  
+		String token PK ""  
+		DateTime expires  ""  
+	}
+
+	Authenticator {
+		String credentialID PK ""  
+		String userId PK,FK ""  
+		String providerAccountId  ""  
+		String credentialPublicKey  ""  
+		Int counter  ""  
+		String credentialDeviceType  ""  
+		Boolean credentialBackedUp  ""  
+		String transports  ""  
+	}
+
+	Vocabulary {
+		Int id PK ""  
+		String word  ""  
+		String translation  ""  
+		DateTime createdAt  ""  
+	}
+
+	Memory {
+		Int id PK ""  
+		String userId FK ""  
+		Int vocabularyId FK ""  
+		String level  ""  
+		Int reviewCount  ""  
+		DateTime lastReviewedAt  ""  
+		DateTime nextReviewDate  ""  
+		String status  ""  
+		DateTime createdAt  ""  
+		DateTime updatedAt  ""  
+	}
+
+	ReviewSession {
+		Int id PK ""  
+		String userId FK ""  
+		DateTime startedAt  ""  
+		DateTime completedAt  ""  
+	}
+
+	ReviewSessionItem {
+		Int id PK ""  
+		Int sessionId FK ""  
+		Int vocabularyId FK ""  
+		Boolean isCorrect  ""  
+		DateTime reviewedAt  ""  
+	}
+
+	Room {
+		String id PK ""  
+		String name  ""  
+		String description  ""  
+		DateTime createdAt  ""  
+		DateTime updatedAt  ""  
+	}
+
+	Message {
+		String id PK ""  
+		String content  ""  
+		String userId FK ""  
+		String userName  ""  
+		String roomId FK ""  
+		DateTime createdAt  ""  
+		DateTime updatedAt  ""  
+	}
+
+	Post {
+		String id PK ""  
+		String content  ""  
+		String userId FK ""  
+		String userName  ""  
+		DateTime createdAt  ""  
+		DateTime updatedAt  ""  
+	}
+
+	Like {
+		String id PK ""  
+		String postId FK ""  
+		String userId FK ""  
+		DateTime createdAt  ""  
+		DateTime updatedAt  ""  
+	}
+
+	User||--o{Account:"has"
+	User||--o{Session:"has"
+	User||--o{Authenticator:"has"
+	User||--o{Memory:"learns"
+	User||--o{ReviewSession:"conducts"
+	User||--o{Message:"sends"
+	User||--o{Post:"creates"
+	User||--o{Like:"receives"
+	Vocabulary||--o{Memory:"in"
+	Vocabulary||--o{ReviewSessionItem:"tested"
+	ReviewSession||--o{ReviewSessionItem:"contains"
+	Post||--o{Like:"receives"
+	Room||--o{Message:"contains"
