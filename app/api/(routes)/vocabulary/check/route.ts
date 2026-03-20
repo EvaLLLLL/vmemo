@@ -6,7 +6,6 @@ import { checkAuth } from '@/lib/next-auth'
 export async function GET(req: NextRequest) {
   try {
     const user = await checkAuth()
-
     const url = new URL(req.url)
     const q = url.searchParams.get('q')
     const words = q?.split(',')
@@ -18,7 +17,7 @@ export async function GET(req: NextRequest) {
     const vocabularies = await prisma.vocabulary.findMany({
       where: {
         word: { in: words },
-        users: { some: { id: user?.id as string } }
+        memories: { some: { userId: user?.id as string } }
       }
     })
 

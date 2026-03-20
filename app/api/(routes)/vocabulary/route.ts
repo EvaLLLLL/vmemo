@@ -4,35 +4,34 @@ import { VocabularyError } from '@/app/api/errors/vocabulary-error'
 import { ApiResponse } from '@/app/api/responses/api-response'
 import { checkAuth } from '@/lib/next-auth'
 
+// Create vocabularies
 export async function POST(req: NextRequest) {
   try {
     const user = await checkAuth()
-
     const words = (await req.json()) as { word: string; translation: string }[]
+
     const vocabularies = await Promise.all(
       words.map(async ({ word, translation }) => {
-        let vocabulary = await prisma.vocabulary.findUnique({
-          where: { word }
+        // Upsert vocabulary — insert if not exists, skip if already exists
+        const vocabulary = await prisma.vocabulary.upsert({
+          where: { word },
+          update: {},
+          create: { word, translation }
         })
 
-        if (!vocabulary) {
-          vocabulary = await prisma.vocabulary.create({
-            data: {
-              word,
-              translation,
-              users: !!user?.id
-                ? { connect: { id: user?.id as string } }
-                : undefined
-            }
-          })
-        } else if (user?.id) {
-          // Connect existing vocabulary to user if not already connected
-          await prisma.user.update({
-            where: { id: user?.id as string },
-            data: {
-              vocabularies: {
-                connect: { id: vocabulary.id }
+        // Create memory record for this user if not already exists
+        if (user?.id) {
+          await prisma.memory.upsert({
+            where: {
+              userId_vocabularyId: {
+                userId: user.id,
+                vocabularyId: vocabulary.id
               }
+            },
+            update: {},
+            create: {
+              userId: user.id,
+              vocabularyId: vocabulary.id
             }
           })
         }
@@ -46,7 +45,6 @@ export async function POST(req: NextRequest) {
     if (error instanceof VocabularyError) {
       return ApiResponse.apiError(error.message, error.code, error.status)
     }
-
     console.error('Create vocabularies error:', error)
     return ApiResponse.apiError('Internal server error')
   }
@@ -56,29 +54,24 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     const user = await checkAuth()
-
     const url = new URL(req.url)
     const offset = parseInt(url.searchParams.get('offset') || '0', 10)
     const size = parseInt(url.searchParams.get('size') || '10', 10)
     const page = Math.floor(offset / size) + 1
 
+    const where = {
+      memories: { some: { userId: user?.id as string } }
+    }
+
     const vocabularies = await prisma.vocabulary.findMany({
-      where: {
-        users: { some: { id: user?.id as string } }
-      },
-      include: {
-        memories: true
-      },
+      where,
+      include: { memories: true },
       take: size,
       skip: offset,
       orderBy: { createdAt: 'desc' }
     })
 
-    const total = await prisma.vocabulary.count({
-      where: {
-        users: { some: { id: user?.id as string } }
-      }
-    })
+    const total = await prisma.vocabulary.count({ where })
 
     return ApiResponse.success({
       data: vocabularies,
@@ -99,18 +92,19 @@ export async function GET(req: NextRequest) {
 export async function PUT(req: NextRequest) {
   try {
     const user = await checkAuth()
+    const { id, translation } = await req.json()
 
-    const data = await req.json()
-    const { id, translation } = data
-
-    const vocabulary = await prisma.vocabulary.findFirst({
+    // Verify the user actually has this vocabulary in their memory
+    const memory = await prisma.memory.findUnique({
       where: {
-        id,
-        users: { some: { id: user?.id as string } }
+        userId_vocabularyId: {
+          userId: user?.id as string,
+          vocabularyId: id
+        }
       }
     })
 
-    if (!vocabulary) {
+    if (!memory) {
       return ApiResponse.notFound()
     }
 
@@ -130,7 +124,6 @@ export async function PUT(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
   try {
     const user = await checkAuth()
-
     const url = new URL(req.url)
     const ids = url.searchParams.get('id')?.split(',').map(Number)
 
@@ -138,12 +131,12 @@ export async function DELETE(req: NextRequest) {
       return ApiResponse.badRequest('Vocabulary IDs are required')
     }
 
-    await prisma.user.update({
-      where: { id: user?.id as string },
-      data: {
-        vocabularies: {
-          disconnect: { id: { in: ids } }
-        }
+    // Delete the user's memory records for these vocabularies
+    // (does not delete the vocabulary itself, other users may still have it)
+    await prisma.memory.deleteMany({
+      where: {
+        userId: user?.id as string,
+        vocabularyId: { in: ids }
       }
     })
 
