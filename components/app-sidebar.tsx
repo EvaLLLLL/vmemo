@@ -10,7 +10,8 @@ import {
   SunIcon,
   MoonIcon,
   Users,
-  MessageSquare
+  MessageSquare,
+  History
 } from 'lucide-react'
 
 import { NavMain } from '@/components/nav-main'
@@ -68,6 +69,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       url: '/vocabulary',
       icon: Database,
       isActive: pathname === '/vocabulary',
+      disabled: !isAuthenticated
+    },
+    {
+      title: 'Review History',
+      url: '/review-history',
+      icon: History,
+      isActive: pathname === '/review-history',
       disabled: !isAuthenticated
     },
     {

@@ -5,8 +5,10 @@ import { HttpStatusCode } from 'axios'
 import { MemoryError } from '@/app/api/errors/memory-error'
 
 interface ReviewResult {
-  memoryId: number
-  remembered: boolean
+  sessionId: number
+  userId: string
+  vocabularyId: number
+  isCorrect: boolean
 }
 
 export class MemoryController {
@@ -77,37 +79,45 @@ export class MemoryController {
     return Promise.all(data.map((item) => this.review(item)))
   }
 
-  static async review({ memoryId, remembered }: ReviewResult) {
+  static async review({
+    sessionId,
+    userId,
+    vocabularyId,
+    isCorrect
+  }: ReviewResult) {
     try {
-      if (!memoryId) {
-        throw new MemoryError('Memory ID is required', 'MISSING_MEMORY_ID', 400)
-      }
-
       const memory = await prisma.memory.findUnique({
-        where: { id: memoryId }
+        where: { userId_vocabularyId: { userId, vocabularyId } }
       })
 
       if (!memory) {
         throw new MemoryError('Memory not found', 'MEMORY_NOT_FOUND', 404)
       }
 
-      const newLevel = this.getNextLevel(memory.level, remembered)
+      const newLevel = this.getNextLevel(memory.level, isCorrect)
       const newStatus =
         newLevel === MemoryLevel.MASTERED
           ? MemoryStatus.COMPLETED
           : MemoryStatus.IN_PROGRESS
+      const nextReviewDate = this.calculateNextReviewDate(newLevel)
 
-      return await prisma.memory.update({
-        where: { id: memoryId },
-        data: {
-          level: newLevel,
-          status: newStatus,
-          reviewCount: { increment: 1 },
-          lastReviewedAt: dayjs().toDate(),
-          nextReviewDate: this.calculateNextReviewDate(newLevel),
-          updatedAt: dayjs().toDate()
-        }
-      })
+      const [, updatedMemory] = await prisma.$transaction([
+        prisma.reviewSessionItem.create({
+          data: { sessionId, vocabularyId, isCorrect }
+        }),
+        prisma.memory.update({
+          where: { userId_vocabularyId: { userId, vocabularyId } },
+          data: {
+            level: newLevel,
+            status: newStatus,
+            reviewCount: { increment: 1 },
+            lastReviewedAt: new Date(),
+            nextReviewDate
+          }
+        })
+      ])
+
+      return updatedMemory
     } catch (error) {
       if (error instanceof MemoryError) throw error
       if (error instanceof Error) {
@@ -141,10 +151,20 @@ export class MemoryController {
     try {
       const reviews = await prisma.memory.findMany({
         where: { userId, status: { not: MemoryStatus.COMPLETED } },
-        orderBy: {
-          nextReviewDate: 'asc'
-        },
-        include: { vocabulary: true }
+        orderBy: { nextReviewDate: 'asc' },
+        select: {
+          id: true,
+          userId: true,
+          vocabularyId: true,
+          level: true,
+          reviewCount: true,
+          lastReviewedAt: true,
+          nextReviewDate: true,
+          status: true,
+          createdAt: true,
+          updatedAt: true,
+          vocabulary: { select: { id: true, word: true, translation: true } }
+        }
       })
 
       const groupedReviews = reviews.reduce(
@@ -180,29 +200,34 @@ export class MemoryController {
   ) {
     try {
       const now = dayjs().toDate()
-      const dueReviews = await prisma.memory.findMany({
-        where: {
-          userId,
-          status: { not: MemoryStatus.COMPLETED },
-          nextReviewDate: { lte: now }
-        },
-        take: size,
-        skip: offset,
-        orderBy: {
-          nextReviewDate: 'asc'
-        },
-        include: {
-          vocabulary: true
-        }
-      })
+      const where = {
+        userId,
+        status: { not: MemoryStatus.COMPLETED },
+        nextReviewDate: { lte: now }
+      }
 
-      const total = await prisma.memory.count({
-        where: {
-          userId,
-          status: { not: MemoryStatus.COMPLETED },
-          nextReviewDate: { lte: now }
-        }
-      })
+      const [dueReviews, total] = await Promise.all([
+        prisma.memory.findMany({
+          where,
+          take: size,
+          skip: offset,
+          orderBy: { nextReviewDate: 'asc' },
+          select: {
+            id: true,
+            userId: true,
+            vocabularyId: true,
+            level: true,
+            reviewCount: true,
+            lastReviewedAt: true,
+            nextReviewDate: true,
+            status: true,
+            createdAt: true,
+            updatedAt: true,
+            vocabulary: { select: { id: true, word: true, translation: true } }
+          }
+        }),
+        prisma.memory.count({ where })
+      ])
 
       const page = Math.floor(offset / size) + 1
 

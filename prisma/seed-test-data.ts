@@ -49,10 +49,12 @@ const quotes = [
 ]
 
 async function seedTestData() {
-  // Clean up existing data
+  // Clean up existing data (order matters for FK constraints)
   await prisma.message.deleteMany({})
   await prisma.room.deleteMany({})
   await prisma.post.deleteMany({})
+  await prisma.reviewSessionItem.deleteMany({})
+  await prisma.reviewSession.deleteMany({})
   await prisma.memory.deleteMany({})
   await prisma.vocabulary.deleteMany({})
   await prisma.user.deleteMany({})
@@ -159,10 +161,7 @@ async function seedTestData() {
         update: {},
         create: {
           word: word.word,
-          translation: word.translation,
-          users: {
-            connect: { id: users[0].id }
-          }
+          translation: word.translation
         }
       })
 
@@ -224,12 +223,38 @@ async function seedTestData() {
     })
   )
 
+  // Create review sessions with items for the first user
+  const sessionCount = 5
+  for (let s = 0; s < sessionCount; s++) {
+    const sessionDate = dayjs()
+      .subtract(s * 2, 'day')
+      .toDate()
+    const sessionVocabs = vocabularies.slice(s * 4, s * 4 + 6)
+
+    const session = await prisma.reviewSession.create({
+      data: {
+        userId: users[0].id,
+        startedAt: sessionDate,
+        completedAt: dayjs(sessionDate).add(10, 'minute').toDate()
+      }
+    })
+
+    await prisma.reviewSessionItem.createMany({
+      data: sessionVocabs.map((vocab) => ({
+        sessionId: session.id,
+        vocabularyId: vocab.id,
+        isCorrect: Math.random() > 0.3
+      }))
+    })
+  }
+
   console.log(`Seeded test data successfully:`)
   console.log(`- Created ${users.length} test users`)
   console.log(`- Created ${chatRooms.length} chat rooms`)
   console.log(`- Created ${conversations.length} messages in GRE chat room`)
   console.log(`- Created ${users.length * 3} posts`)
   console.log(`- Created ${vocabularies.length} vocabularies with memories`)
+  console.log(`- Created ${sessionCount} review sessions with items`)
 }
 
 seedTestData()

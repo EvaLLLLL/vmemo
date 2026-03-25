@@ -8,6 +8,18 @@ import {
   useQuery
 } from '@tanstack/react-query'
 
+export const useReviewSessions = () => {
+  const { isAuthenticated } = useAuth()
+
+  const { data, isLoading } = useQuery({
+    queryKey: [MemoryServices.getReviewSessions.key],
+    queryFn: MemoryServices.getReviewSessions.fn,
+    enabled: isAuthenticated
+  })
+
+  return { sessions: data?.data, isLoading }
+}
+
 export const useMemory = () => {
   const { refetchDueReviews } = useDueReviews()
 

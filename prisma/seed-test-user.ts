@@ -43,19 +43,14 @@ async function seedTestData() {
     }
   })
 
-  await prisma.vocabulary.deleteMany({
-    where: {
-      users: {
-        some: {
-          id: testUser.id
-        }
-      }
-    }
+  await prisma.reviewSessionItem.deleteMany({
+    where: { session: { userId: testUser.id } }
+  })
+  await prisma.reviewSession.deleteMany({
+    where: { userId: testUser.id }
   })
   await prisma.memory.deleteMany({
-    where: {
-      userId: testUser.id
-    }
+    where: { userId: testUser.id }
   })
 
   // Create vocabularies and memories for first user with intense activity
@@ -66,10 +61,7 @@ async function seedTestData() {
         update: {},
         create: {
           word: word.word,
-          translation: word.translation,
-          users: {
-            connect: { id: testUser.id }
-          }
+          translation: word.translation
         }
       })
 
@@ -131,8 +123,34 @@ async function seedTestData() {
     })
   )
 
+  // Create review sessions with items
+  const sessionCount = 5
+  for (let s = 0; s < sessionCount; s++) {
+    const sessionDate = dayjs()
+      .subtract(s * 2, 'day')
+      .toDate()
+    const sessionVocabs = vocabularies.slice(s * 4, s * 4 + 6)
+
+    const session = await prisma.reviewSession.create({
+      data: {
+        userId: testUser.id,
+        startedAt: sessionDate,
+        completedAt: dayjs(sessionDate).add(10, 'minute').toDate()
+      }
+    })
+
+    await prisma.reviewSessionItem.createMany({
+      data: sessionVocabs.map((vocab) => ({
+        sessionId: session.id,
+        vocabularyId: vocab.id,
+        isCorrect: Math.random() > 0.3
+      }))
+    })
+  }
+
   console.log(`Seeded test data successfully:`)
   console.log(`- Created ${vocabularies.length} vocabularies with memories`)
+  console.log(`- Created ${sessionCount} review sessions with items`)
 }
 
 seedTestData()

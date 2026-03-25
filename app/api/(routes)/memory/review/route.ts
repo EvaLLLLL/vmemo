@@ -7,17 +7,21 @@ export async function POST(req: NextRequest) {
   try {
     const data = await req.json()
 
-    if (!data?.memoryId) {
-      return ApiResponse.badRequest('Memory ID is required')
+    if (!data?.sessionId || !data?.userId || !data?.vocabularyId) {
+      return ApiResponse.badRequest(
+        'sessionId, userId, and vocabularyId are required'
+      )
     }
 
-    if (typeof data.remembered !== 'boolean') {
-      return ApiResponse.badRequest('Remembered status must be a boolean')
+    if (typeof data.isCorrect !== 'boolean') {
+      return ApiResponse.badRequest('isCorrect must be a boolean')
     }
 
     const result = await MemoryController.review({
-      memoryId: data.memoryId,
-      remembered: data.remembered
+      sessionId: data.sessionId,
+      userId: data.userId,
+      vocabularyId: data.vocabularyId,
+      isCorrect: data.isCorrect
     })
 
     return ApiResponse.success(result)

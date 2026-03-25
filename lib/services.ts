@@ -3,6 +3,8 @@ import {
   Memory,
   Message,
   Post,
+  ReviewSession,
+  ReviewSessionItem,
   Room,
   User,
   Vocabulary
@@ -213,6 +215,19 @@ export const MemoryServices = {
         .get<
           IApiResponse<Memory & { vocabulary: Vocabulary }>
         >(`/api/memory/word?q=${q}`)
+        .then((res) => res.data)
+  },
+  getReviewSessions: {
+    key: 'MemoryServices.getReviewSessions',
+    fn: () =>
+      axiosInstance
+        .get<
+          IApiResponse<
+            (ReviewSession & {
+              items: (ReviewSessionItem & { vocabulary: Vocabulary })[]
+            })[]
+          >
+        >('/api/memory/sessions')
         .then((res) => res.data)
   }
 }
