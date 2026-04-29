@@ -18,7 +18,7 @@ export function PostForm() {
 
     try {
       setIsSubmitting(true)
-      await createPost({ content: message })
+      createPost({ content: message })
       toast({
         title: 'Success',
         description: 'Post created successfully!'

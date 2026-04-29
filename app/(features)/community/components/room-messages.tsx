@@ -31,7 +31,7 @@ export const RoomMessages: React.FC = () => {
 
     try {
       setIsSending(true)
-      await sendMessage({
+      sendMessage({
         content: newMessage,
         roomId
       })

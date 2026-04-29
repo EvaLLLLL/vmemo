@@ -163,7 +163,9 @@ export class MemoryController {
           status: true,
           createdAt: true,
           updatedAt: true,
-          vocabulary: { select: { id: true, word: true, translation: true } }
+          vocabulary: {
+            select: { id: true, word: true, translation: true, createdAt: true }
+          }
         }
       })
 
