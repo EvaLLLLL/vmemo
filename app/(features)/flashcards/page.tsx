@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import FlashCards, { FlashCard } from '@/components/flash-cards'
 import { useDueReviews, useMemory } from '@/hooks/use-memory'
 import { DictServices, IApiResponse } from '@/lib/services'
@@ -10,17 +10,21 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { formatDictResult } from '@/utils/dict'
 import { BubbleIcon, CloseIcon } from '@/icons'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export default function Flashcards() {
   const { reviewMemory } = useMemory()
-  const { dueReviews, pagination } = useDueReviews()
+  const { dueReviews, pagination, isDueReviewsPending } = useDueReviews()
   const queryClient = useQueryClient()
 
-  const cards =
-    dueReviews?.map((review) => ({
-      id: review.id,
-      front: review.vocabulary.word
-    })) || []
+  const cards = useMemo(
+    () =>
+      dueReviews?.map((review) => ({
+        id: review.id,
+        front: review.vocabulary.word
+      })) ?? [],
+    [dueReviews]
+  )
 
   const onSwipeLeft = async (card: FlashCard) => {
     reviewMemory({ memoryId: card.id, remembered: false })
@@ -31,31 +35,57 @@ export default function Flashcards() {
   }
 
   const onFlip = async (c: FlashCard) => {
-    if (!c.front) return null
+    const word = typeof c.front === 'string' ? c.front.trim() : ''
+    if (!word) {
+      return (
+        <div className="p-4 text-center text-sm text-muted-foreground">
+          No word on card.
+        </div>
+      )
+    }
 
     const cachedData = queryClient.getQueryData<IApiResponse<IBaiduDict>>([
       DictServices.translate.key,
-      c.front
+      word
     ])
 
     let result = formatDictResult(cachedData?.data)
 
     if (!result.simpleMeans?.length) {
-      const dictResult = await DictServices.translate.fn(c.front as string)
+      let dictResponse: IApiResponse<IBaiduDict> | undefined
 
-      queryClient.setQueryData(
-        [DictServices.translate.key, c.front],
-        dictResult
-      )
+      try {
+        dictResponse = await DictServices.translate.fn(word)
+      } catch (e) {
+        console.error('Dict translate failed:', e)
+      }
 
-      result = formatDictResult(dictResult?.data)
+      if (dictResponse?.data !== undefined) {
+        queryClient.setQueryData(
+          [DictServices.translate.key, word],
+          dictResponse
+        )
+      }
+
+      result = formatDictResult(dictResponse?.data)
     }
 
     const { simpleMeans, derivatives, examples } = result
 
+    const hasDictBody =
+      !!simpleMeans ||
+      !!(examples && examples.length) ||
+      !!(derivatives && Object.keys(derivatives).length > 0)
+
     return (
       <div className="flex flex-col gap-6 p-4">
-        <div className="text-xl">{c.front}</div>
+        <div className="text-xl">{word}</div>
+
+        {!hasDictBody && (
+          <p className="text-sm text-muted-foreground">
+            No dictionary details for this word yet.
+          </p>
+        )}
 
         {simpleMeans && (
           <div className="text-base font-medium text-foreground">
@@ -106,16 +136,25 @@ export default function Flashcards() {
       <div className="mt-4 flex-1 sm:mt-0">
         <div className="mb-4 flex flex-col items-center gap-2 sm:mb-8 sm:gap-4">
           <h1 className="text-xl font-bold sm:text-3xl">Today&apos;s Review</h1>
-          <p className="text-sm text-muted-foreground sm:text-base">
-            You have{' '}
-            <span className="font-semibold text-foreground">
-              {pagination?.total || 0}
-            </span>{' '}
-            cards to review today
-          </p>
+          {isDueReviewsPending ? (
+            <>
+              <Skeleton className="h-4 w-[min(280px,80vw)] max-w-xl" />
+              <Skeleton className="h-6 w-[min(200px,60vw)]" />
+            </>
+          ) : (
+            <p className="text-sm text-muted-foreground sm:text-base">
+              You have{' '}
+              <span className="font-semibold text-foreground">
+                {pagination?.total ?? 0}
+              </span>{' '}
+              cards to review today
+            </p>
+          )}
         </div>
 
-        {cards.length > 0 ? (
+        {isDueReviewsPending ? (
+          <FlashDeckSkeleton />
+        ) : cards.length > 0 ? (
           <FlashCards
             cards={cards}
             onFlip={onFlip}
@@ -135,6 +174,24 @@ export default function Flashcards() {
       </div>
 
       <ReviewPlan />
+    </div>
+  )
+}
+
+function FlashDeckSkeleton() {
+  return (
+    <div className="mx-auto flex max-w-[min(340px,100%)] flex-col items-center gap-8">
+      <div className="relative mx-auto aspect-[3/4] w-[300px]">
+        <Skeleton className="size-full rounded-xl shadow-md ring-2 ring-muted/60" />
+        <p className="absolute inset-x-0 bottom-12 text-center text-xs text-muted-foreground">
+          Loading your deck…
+        </p>
+      </div>
+      <div className="flex gap-6">
+        <Skeleton className="size-12 rounded-full opacity-70" />
+        <Skeleton className="size-12 rounded-full opacity-70" />
+        <Skeleton className="size-12 rounded-full opacity-70" />
+      </div>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import {
   useDragControls,
   motion,
@@ -6,8 +6,52 @@ import {
   PanInfo
 } from 'framer-motion'
 import { cn } from '@/lib/utils'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Loader2 } from 'lucide-react'
 import { FlipIcon, LeftIcon, RightIcon } from '@/icons'
+
+/**
+ * dueReviews refetch passes new `cards[]` without `back`. Keep the user's stack aligned
+ * and re-attach `back` by id so the flipped side does not disappear.
+ */
+function alignCardsPreserveBack(
+  next: FlashCard[],
+  prev: FlashCard[]
+): FlashCard[] {
+  if (prev.length === 0) return [...next]
+
+  const backById = new Map<number, ReactNode>()
+  for (const c of prev) {
+    if (c.back !== undefined && c.back !== null) {
+      backById.set(c.id, c.back)
+    }
+  }
+
+  const anchor = next.findIndex((c) => c.id === prev[0].id)
+  if (anchor < 0) {
+    return next.map((c) => ({
+      ...c,
+      back: prev.find((p) => p.id === c.id)?.back ?? backById.get(c.id)
+    }))
+  }
+
+  const aligned = next.slice(anchor, anchor + prev.length)
+
+  const stackMatches =
+    aligned.length === prev.length &&
+    aligned.every((c, i) => c.id === prev[i]?.id)
+
+  if (stackMatches) {
+    return aligned.map((c, i) => ({
+      ...c,
+      back: prev[i].back ?? backById.get(c.id)
+    }))
+  }
+
+  return next.map((c) => ({
+    ...c,
+    back: prev.find((p) => p.id === c.id)?.back ?? backById.get(c.id)
+  }))
+}
 
 export interface FlashCard {
   id: number
@@ -35,25 +79,59 @@ export default function FlashCards({
   const dragControls = useDragControls()
   const [isLoading, setIsLoading] = useState(false)
   const [dragX, setDragX] = useState(0)
+  const flippedRef = useRef(false)
+
+  flippedRef.current = flipped
+
+  const cardsRef = useRef(currentCards)
+  cardsRef.current = currentCards
 
   const handleFlip = useCallback(async () => {
+    const stack = cardsRef.current
+    if (!stack.length) return
+
+    const top = stack[0]
+
+    if (flippedRef.current) {
+      setFlipped(false)
+      return
+    }
+
     setIsLoading(true)
     try {
-      const card = currentCards[0]
-      if (onFlip) {
-        const backContent = await onFlip(card)
-        const newCards = [...currentCards]
-        newCards[0] = { ...card, back: backContent }
-        setCurrentCards(newCards)
+      if (!onFlip) {
+        setFlipped(true)
+        return
       }
-    } catch (error) {
-      console.error('Error flipping card:', error)
+
+      let backContent: ReactNode = null
+
+      try {
+        backContent = await onFlip(top)
+      } catch (e) {
+        console.error('Error loading card back:', e)
+      }
+
+      if (backContent == null) {
+        backContent = (
+          <div className="flex flex-col gap-3 p-4 text-center text-sm text-muted-foreground">
+            <p>Unable to load details for this card.</p>
+            <p className="text-xs">Tap again after a moment.</p>
+          </div>
+        )
+      }
+
+      setCurrentCards((prev) => {
+        if (!prev.length || prev[0].id !== top.id) return prev
+        const merged = [...prev]
+        merged[0] = { ...merged[0], back: backContent }
+        return merged
+      })
+      setFlipped(true)
     } finally {
       setIsLoading(false)
     }
-
-    setFlipped(!flipped)
-  }, [onFlip, currentCards, flipped])
+  }, [onFlip])
 
   const moveCard = useCallback(async () => {
     if (currentCards.length === 1) {
@@ -133,7 +211,7 @@ export default function FlashCards({
   })
 
   useEffect(() => {
-    setCurrentCards(cards)
+    setCurrentCards((prev) => alignCardsPreserveBack(cards, prev))
   }, [cards])
 
   return (
@@ -142,6 +220,7 @@ export default function FlashCards({
         <AnimatePresence mode="popLayout">
           {currentCards.map((card, index) => {
             const offset = getRandomOffset(index)
+            const isBackFace = flipped && index === 0
 
             return (
               <motion.div
@@ -163,7 +242,6 @@ export default function FlashCards({
                   y: offset.y,
                   x: offset.x,
                   zIndex: currentCards.length - index,
-                  rotateY: index === 0 ? (flipped ? 180 : 0) : 0,
                   rotateZ: offset.rotate
                 }}
                 exit={{
@@ -191,15 +269,22 @@ export default function FlashCards({
                   }
                 )}>
                 <div
-                  style={{
-                    transform:
-                      flipped && index === 0
-                        ? 'rotateY(180deg)'
-                        : 'rotateY(0deg)'
-                  }}
-                  className="absolute flex size-full items-center justify-center text-xl">
+                  className={cn(
+                    'absolute inset-0 flex size-full flex-col p-4 text-xl [transform-style:flat]',
+                    isBackFace
+                      ? 'items-stretch overflow-y-auto text-left'
+                      : 'items-center justify-center overflow-hidden text-center'
+                  )}>
                   {isLoading && index === 0 ? (
-                    <Skeleton className="absolute left-0 top-0 size-full bg-accent/10" />
+                    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 rounded-xl backdrop-blur-[2px]">
+                      <Loader2
+                        className="size-8 animate-spin text-primary"
+                        aria-hidden
+                      />
+                      <p className="text-xs font-medium text-muted-foreground">
+                        Loading definitions…
+                      </p>
+                    </div>
                   ) : flipped && index === 0 ? (
                     card.back
                   ) : (

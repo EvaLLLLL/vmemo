@@ -80,7 +80,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     },
     {
       title: 'Community',
-      url: rooms?.[0].id ? `/community/${rooms[0].id}` : '/community',
+      url: rooms?.[0]?.id ? `/community/${rooms[0]?.id}` : '/community',
       icon: Users,
       isActive: pathname.startsWith('/community'),
       disabled: !isAuthenticated

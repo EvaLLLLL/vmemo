@@ -31,6 +31,7 @@ export function PostForm() {
       })
     } finally {
       setIsSubmitting(false)
+      setMessage('')
     }
   }
 

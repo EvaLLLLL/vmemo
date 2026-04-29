@@ -15,21 +15,25 @@ import { Pencil, BookOpen } from 'lucide-react'
 export default function Reading() {
   const { addTranslatedWord, isAutoSpeak } = useSelectedWordsStore()
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const onSelectWord = async (word?: string) => {
+    setIsLoading(true)
     if (!word) return
 
     await addTranslatedWord(word)
 
     if (isAutoSpeak) recite(word)
+    setIsLoading(false)
   }
 
   return (
-    <div className="flex flex-1 flex-col overflow-hidden sm:flex-row">
-      <div className="h-full sm:w-[600px]">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden sm:flex-row">
+      <div className="flex h-full min-h-0 shrink-0 sm:w-[600px]">
         <ReadingText onSelectWord={onSelectWord} />
       </div>
-      <div className="h-full flex-1">
-        <SelectedVocabularies />
+      <div className="flex min-h-0 flex-1 flex-col">
+        <SelectedVocabularies isLoading={isLoading} />
       </div>
     </div>
   )

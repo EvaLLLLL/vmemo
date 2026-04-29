@@ -39,3 +39,10 @@ prisma/ecdict.csv
 
 # pnpm
 .pnpm-store
+
+# terraform (keep .terraform.lock.hcl committed)
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/tfplan*
+terraform/crash.*

@@ -1,4 +1,16 @@
 node_modules
+.next
 .git
 .gitignore
+
 .env
+.env.*
+
+*.md
+
+.DS_Store
+.cursor
+.idea
+coverage
+pnpm-debug.log
+npm-debug.log

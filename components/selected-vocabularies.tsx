@@ -27,8 +27,10 @@ import { useQuery } from '@tanstack/react-query'
 import { formatDictResult } from '@/utils/dict'
 import { useAuth } from '@/hooks/use-auth'
 import { useToast } from '@/hooks/use-toast'
+import { Skeleton } from './ui/skeleton'
+import { motion } from 'framer-motion'
 
-export const SelectedVocabularies = () => {
+export const SelectedVocabularies = ({ isLoading }: { isLoading: boolean }) => {
   const { toast } = useToast()
   const { isAuthenticated } = useAuth()
   const {
@@ -63,8 +65,8 @@ export const SelectedVocabularies = () => {
   }
 
   return (
-    <div className="flex-1 overflow-hidden px-8">
-      <div className="flex h-full flex-col gap-y-4">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-8">
+      <div className="flex min-h-0 flex-1 flex-col gap-y-4">
         <div className="flex w-full items-center justify-between">
           <Button
             variant="ghost"
@@ -120,7 +122,8 @@ export const SelectedVocabularies = () => {
             </Button>
           )}
         </div>
-        <div className="flex h-full flex-1 flex-col gap-2 overflow-y-auto pb-12">
+        <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-y-contain pb-12">
+          {isLoading && <Skeleton className="h-12 w-full" />}
           {translatedWords?.map((word, index) => (
             <WordItem
               key={`${word.word}-${index}`}
@@ -151,14 +154,33 @@ const WordItem: React.FC<{
     select: (v) => v.data
   })
 
-  const { data: dictResult } = useQuery({
-    queryKey: [DictServices.translate.key, word],
+  const {
+    data: dictResult,
+    isPending: isDictPending,
+    isFetching: isDictFetching
+  } = useQuery({
+    queryKey: [DictServices.translate.key, word.word],
     queryFn: () => DictServices.translate.fn(word.word),
     select: (v) => v.data,
-    enabled: isExpanded
+    // Warm cache while collapsed for selected rows (smoother first expand).
+    enabled: isExpanded || isSelected
   })
 
   const { simpleMeans, derivatives, examples } = formatDictResult(dictResult)
+
+  const dictBodyLoading =
+    isExpanded && !dictResult && (isDictPending || isDictFetching)
+
+  /** Mild spring — keep bounce minimal to avoid jelly; mass smooths inertia. */
+  const expandMotion = {
+    type: 'spring' as const,
+    bounce: 0.04,
+    damping: 36,
+    stiffness: 210,
+    mass: 0.62,
+    restDelta: 0.5,
+    restSpeed: 0.01
+  }
 
   const handleOnclick = () => {
     setIsExpanded(true)
@@ -182,16 +204,17 @@ const WordItem: React.FC<{
 
   useEffect(() => {
     if (isSelected) {
-      ref?.current?.scrollIntoView({
-        block: 'center',
-        inline: 'nearest',
-        behavior: 'smooth'
-      })
-
       setIsExpanded(true)
-    } else {
-      setIsExpanded(false)
+      const t = window.setTimeout(() => {
+        ref.current?.scrollIntoView({
+          block: 'nearest',
+          inline: 'nearest',
+          behavior: 'smooth'
+        })
+      }, 160)
+      return () => window.clearTimeout(t)
     }
+    setIsExpanded(false)
   }, [isSelected])
 
   const StatusBadge = ({ status }: { status?: MemoryStatus }) => {
@@ -243,7 +266,7 @@ const WordItem: React.FC<{
     <div
       ref={ref}
       className={cn(
-        'group border relative cursor-pointer transition-all',
+        'group border relative cursor-pointer transition-[box-shadow,border-color,background-color] duration-300 ease-out',
         'relative w-full cursor-pointer rounded-lg border px-4 py-3 text-sm shadow hover:bg-primary/20 hover:shadow-xl',
         isSelected && 'border-primary',
         isExpanded && 'shadow-lg'
@@ -258,47 +281,61 @@ const WordItem: React.FC<{
         <LevelBadge level={memory?.level} />
       </div>
 
-      {isExpanded && (
-        <div className="grid transition-all duration-200">
-          <div className="space-y-4 overflow-hidden p-2">
-            {simpleMeans && (
-              <div className="text-sm text-gray-600">{simpleMeans}</div>
-            )}
+      <motion.div
+        initial={false}
+        animate={{ height: isExpanded ? 'auto' : 0 }}
+        transition={expandMotion}
+        style={{ overflow: 'hidden' }}
+        aria-hidden={!isExpanded}
+        className="min-h-0">
+        <div className="space-y-4 p-2">
+          {dictBodyLoading ? (
+            <div className="space-y-2 py-0.5" aria-busy>
+              <Skeleton className="h-3.5 w-[92%]" />
+              <Skeleton className="h-3.5 w-[78%]" />
+              <Skeleton className="h-3.5 w-[85%]" />
+            </div>
+          ) : (
+            <>
+              {simpleMeans && (
+                <div className="text-sm text-gray-600">{simpleMeans}</div>
+              )}
 
-            {examples && examples.length > 0 && (
-              <div className="space-y-2">
-                <span className="text-xs font-medium text-gray-500">
-                  Examples:
-                </span>
-                {examples.map((e) => (
-                  <div key={e.pos} className="ml-2 space-y-1">
-                    <div className="text-sm">
-                      <span className="font-medium">{e.pos}.</span>{' '}
-                      {e.tr_group[0].example[0]}
-                    </div>
-                    {e.tr_group[0].similar_word[0] && (
-                      <div className="text-xs text-gray-500">
-                        Similar words: {e.tr_group[0].similar_word[0]}
+              {examples && examples.length > 0 && (
+                <div className="space-y-2">
+                  <span className="text-xs font-medium text-gray-500">
+                    Examples:
+                  </span>
+                  {examples.map((e) => (
+                    <div key={e.pos} className="ml-2 space-y-1">
+                      <div className="text-sm">
+                        <span className="font-medium">{e.pos}.</span>{' '}
+                        {e.tr_group[0].example[0]}
                       </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
+                      {e.tr_group[0].similar_word[0] && (
+                        <div className="text-xs text-gray-500">
+                          Similar words: {e.tr_group[0].similar_word[0]}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
 
-            {derivatives && Object.keys(derivatives).length > 0 && (
-              <div>
-                <span className="text-xs font-medium text-gray-500">
-                  Derivatives:{' '}
-                </span>
-                <span className="text-sm">
-                  {Object.values(derivatives).join('; ')}
-                </span>
-              </div>
-            )}
-          </div>
+              {derivatives && Object.keys(derivatives).length > 0 && (
+                <div>
+                  <span className="text-xs font-medium text-gray-500">
+                    Derivatives:{' '}
+                  </span>
+                  <span className="text-sm">
+                    {Object.values(derivatives).join('; ')}
+                  </span>
+                </div>
+              )}
+            </>
+          )}
         </div>
-      )}
+      </motion.div>
       <div className="invisible absolute right-4 top-1 group-hover:visible">
         <Button variant="ghost" size="icon" onClick={handleOnClickSound}>
           <HeadphonesIcon />

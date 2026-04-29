@@ -11,6 +11,12 @@ interface ReviewResult {
   isCorrect: boolean
 }
 
+/** Body shape sent from the client (`IMemoryReview`) — `remembered` ↔ `isCorrect`. */
+export interface ClientMemoryReviewPayload {
+  memoryId: number
+  remembered: boolean
+}
+
 export class MemoryController {
   private static readonly REVIEW_INTERVALS: Record<MemoryLevel, number> = {
     LEVEL_1: 0,
@@ -73,6 +79,85 @@ export class MemoryController {
         HttpStatusCode.InternalServerError
       )
     }
+  }
+
+  /** Re-use an unfinished session when present so flashcards/vocab batches share one study session. */
+  private static async getOrCreateActiveReviewSession(userId: string) {
+    const existing = await prisma.reviewSession.findFirst({
+      where: { userId, completedAt: null },
+      orderBy: { startedAt: 'desc' }
+    })
+    if (existing) return existing.id
+
+    const created = await prisma.reviewSession.create({ data: { userId } })
+    return created.id
+  }
+
+  static async reviewFromClient(
+    userId: string,
+    payload: ClientMemoryReviewPayload
+  ) {
+    const { memoryId, remembered } = payload
+
+    const memory = await prisma.memory.findFirst({
+      where: { id: memoryId, userId }
+    })
+
+    if (!memory) {
+      throw new MemoryError(
+        'Memory not found',
+        'MEMORY_NOT_FOUND',
+        HttpStatusCode.NotFound
+      )
+    }
+
+    const sessionId = await this.getOrCreateActiveReviewSession(userId)
+
+    return this.review({
+      sessionId,
+      userId,
+      vocabularyId: memory.vocabularyId,
+      isCorrect: remembered
+    })
+  }
+
+  static async batchReviewFromClient(
+    userId: string,
+    payloads: ClientMemoryReviewPayload[]
+  ) {
+    if (!payloads.length) {
+      throw new MemoryError(
+        'Memory list is required',
+        'EMPTY_PAYLOAD',
+        HttpStatusCode.BadRequest
+      )
+    }
+
+    const sessionId = await this.getOrCreateActiveReviewSession(userId)
+    const ids = payloads.map((p) => p.memoryId)
+    const memories = await prisma.memory.findMany({
+      where: { userId, id: { in: ids } }
+    })
+    const byId = new Map(memories.map((m) => [m.id, m]))
+
+    return Promise.all(
+      payloads.map((p) => {
+        const memory = byId.get(p.memoryId)
+        if (!memory) {
+          throw new MemoryError(
+            `Memory not found: ${p.memoryId}`,
+            'MEMORY_NOT_FOUND',
+            HttpStatusCode.NotFound
+          )
+        }
+        return this.review({
+          sessionId,
+          userId,
+          vocabularyId: memory.vocabularyId,
+          isCorrect: p.remembered
+        })
+      })
+    )
   }
 
   static async batchReview(data: ReviewResult[]) {

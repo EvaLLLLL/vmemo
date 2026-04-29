@@ -78,7 +78,12 @@ export const useDueReviews = (
   const { isAuthenticated } = useAuth()
   const [pagination, setPagination] = useState(pg)
 
-  const { data: dueReviewsResponse, refetch: refetchDueReviews } = useQuery({
+  const {
+    data: dueReviewsResponse,
+    refetch: refetchDueReviews,
+    isPending: isDueReviewsPending,
+    isFetching: isDueReviewsFetching
+  } = useQuery({
     queryKey: [MemoryServices.getDueReviews.key, pagination],
     queryFn: () => MemoryServices.getDueReviews.fn(pagination),
     placeholderData: keepPreviousData,
@@ -118,6 +123,8 @@ export const useDueReviews = (
   return {
     dueReviews: dueReviewsResponse?.data?.data,
     refetchDueReviews,
+    isDueReviewsPending,
+    isDueReviewsFetching,
     pagination: dueReviewsResponse?.data?.pagination,
     setPagination,
     currentPage,
