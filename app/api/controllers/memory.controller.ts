@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import prisma from '@/lib/prisma'
-import { MemoryStatus, MemoryLevel, Memory, Vocabulary } from '@prisma/client'
+import { MemoryStatus, MemoryLevel } from '@prisma/client'
 import { HttpStatusCode } from 'axios'
 import { MemoryError } from '@/app/api/errors/memory-error'
 
@@ -218,10 +218,9 @@ export class MemoryController {
 
   static async getAllMemories(userId: string) {
     try {
-      return await prisma.memory.findMany({
-        where: { userId },
-        include: { vocabulary: true }
-      })
+      // No vocabulary join: both consumers (statistics, the 30-day chart) only
+      // read Memory's own columns, and joining now drags every definition along.
+      return await prisma.memory.findMany({ where: { userId } })
     } catch (error) {
       if (error instanceof MemoryError) throw error
       throw new MemoryError(
@@ -254,11 +253,10 @@ export class MemoryController {
         }
       })
 
+      // Keyed off the projection, not full Memory & Vocabulary: the select
+      // deliberately omits Vocabulary.definition, which is large and unused here.
       const groupedReviews = reviews.reduce(
-        (
-          acc: { [date: string]: (Memory & { vocabulary: Vocabulary })[] },
-          review
-        ) => {
+        (acc: { [date: string]: typeof reviews }, review) => {
           const date = dayjs(review.nextReviewDate).format('YYYY-MM-DD')
           if (!acc[date]) {
             acc[date] = []

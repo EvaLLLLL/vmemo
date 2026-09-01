@@ -10,7 +10,7 @@ import {
   Vocabulary
 } from '@prisma/client'
 import { axiosInstance } from '@/lib/axios'
-import { IBaiduDict } from '@/types/dict'
+import { IWord } from '@/types/dict'
 
 export interface IApiResponse<T> {
   data?: T
@@ -237,7 +237,7 @@ export const DictServices = {
     key: 'DictServices.translate',
     fn: (q: string) =>
       axiosInstance
-        .get<IApiResponse<IBaiduDict>>(`/api/dict?q=${q}`)
+        .get<IApiResponse<IWord>>(`/api/dict?q=${encodeURIComponent(q)}`)
         .then((res) => res.data)
   }
 }

@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import FlashCards, { FlashCard } from '@/components/flash-cards'
 import { useDueReviews, useMemory } from '@/hooks/use-memory'
 import { DictServices, IApiResponse } from '@/lib/services'
-import { IBaiduDict } from '@/types/dict'
+import { IWord } from '@/types/dict'
 import { useQueryClient } from '@tanstack/react-query'
 import { AnimatePresence, motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
@@ -44,7 +44,7 @@ export default function Flashcards() {
       )
     }
 
-    const cachedData = queryClient.getQueryData<IApiResponse<IBaiduDict>>([
+    const cachedData = queryClient.getQueryData<IApiResponse<IWord>>([
       DictServices.translate.key,
       word
     ])
@@ -52,7 +52,7 @@ export default function Flashcards() {
     let result = formatDictResult(cachedData?.data)
 
     if (!result.simpleMeans?.length) {
-      let dictResponse: IApiResponse<IBaiduDict> | undefined
+      let dictResponse: IApiResponse<IWord> | undefined
 
       try {
         dictResponse = await DictServices.translate.fn(word)
@@ -75,7 +75,7 @@ export default function Flashcards() {
     const hasDictBody =
       !!simpleMeans ||
       !!(examples && examples.length) ||
-      !!(derivatives && Object.keys(derivatives).length > 0)
+      !!(derivatives && derivatives.length > 0)
 
     return (
       <div className="flex flex-col gap-6 p-4">
@@ -104,11 +104,14 @@ export default function Flashcards() {
                   <div className="text-sm leading-relaxed">
                     <span className="font-medium text-foreground">{e.pos}</span>
                     <span className="mx-2">·</span>
-                    {e.tr_group[0].example[0]}
+                    {e.en}
                   </div>
-                  {e.tr_group[0].similar_word[0] && (
+                  {e.zh && (
+                    <div className="text-sm text-muted-foreground">{e.zh}</div>
+                  )}
+                  {e.similar && (
                     <div className="text-xs text-muted-foreground">
-                      Similar: {e.tr_group[0].similar_word[0]}
+                      Similar: {e.similar}
                     </div>
                   )}
                 </div>
@@ -117,13 +120,13 @@ export default function Flashcards() {
           </div>
         )}
 
-        {derivatives && Object.keys(derivatives).length > 0 && (
+        {derivatives && derivatives.length > 0 && (
           <div className="space-y-2">
             <h3 className="text-sm font-semibold text-muted-foreground">
               Derivatives
             </h3>
             <div className="text-sm text-foreground">
-              {Object.values(derivatives).join(' · ')}
+              {derivatives.join(' · ')}
             </div>
           </div>
         )}

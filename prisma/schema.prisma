@@ -110,6 +110,8 @@ model Vocabulary {
   id          Int                 @id @default(autoincrement())
   word        String              @unique @map("origin") @db.VarChar(255)
   translation String
+  /// Full dictionary entry (types/dict.ts IWord) — doubles as the lookup cache.
+  definition  Json?
   createdAt   DateTime            @default(now()) @db.Timestamp(6)
   memories    Memory[]
   reviewItems ReviewSessionItem[]

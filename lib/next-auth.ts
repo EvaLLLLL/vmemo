@@ -12,10 +12,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   debug: process.env.NODE_ENV === 'development',
   session: { strategy: 'jwt' },
   callbacks: {
-    async session({ session, user }) {
-      session.userId = user?.id
-      return session
-    },
     async jwt({ token, user }) {
       if (user) {
         token.id = user?.id // Add user ID to token
@@ -25,10 +21,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   providers: [
     Credentials({
-      credentials: {
-        name: {},
-        email: {}
-      },
       authorize: async (credentials) => {
         if (
           credentials?.email !== 'test@vmemo.com' ||

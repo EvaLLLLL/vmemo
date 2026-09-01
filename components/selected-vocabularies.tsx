@@ -309,12 +309,14 @@ const WordItem: React.FC<{
                   {examples.map((e) => (
                     <div key={e.pos} className="ml-2 space-y-1">
                       <div className="text-sm">
-                        <span className="font-medium">{e.pos}.</span>{' '}
-                        {e.tr_group[0].example[0]}
+                        <span className="font-medium">{e.pos}</span> {e.en}
                       </div>
-                      {e.tr_group[0].similar_word[0] && (
+                      {e.zh && (
+                        <div className="text-xs text-gray-500">{e.zh}</div>
+                      )}
+                      {e.similar && (
                         <div className="text-xs text-gray-500">
-                          Similar words: {e.tr_group[0].similar_word[0]}
+                          Similar words: {e.similar}
                         </div>
                       )}
                     </div>
@@ -322,14 +324,12 @@ const WordItem: React.FC<{
                 </div>
               )}
 
-              {derivatives && Object.keys(derivatives).length > 0 && (
+              {derivatives && derivatives.length > 0 && (
                 <div>
                   <span className="text-xs font-medium text-gray-500">
                     Derivatives:{' '}
                   </span>
-                  <span className="text-sm">
-                    {Object.values(derivatives).join('; ')}
-                  </span>
+                  <span className="text-sm">{derivatives.join('; ')}</span>
                 </div>
               )}
             </>

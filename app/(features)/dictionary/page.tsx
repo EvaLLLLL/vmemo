@@ -9,11 +9,17 @@ import { cn } from '@/lib/utils'
 
 export default function Dictionary() {
   const { isAutoSpeak, addTranslatedWord } = useSelectedWordsStore()
+  const [isLoading, setIsLoading] = useState(false)
 
   const onSelectWord = async (word?: string) => {
     if (!word) return
 
-    await addTranslatedWord(word)
+    setIsLoading(true)
+    try {
+      await addTranslatedWord(word)
+    } finally {
+      setIsLoading(false)
+    }
 
     if (isAutoSpeak) recite(word)
   }
@@ -24,7 +30,7 @@ export default function Dictionary() {
         <SearchDict onSelectWord={onSelectWord} />
       </div>
       <div className="flex-1 overflow-hidden">
-        <SelectedVocabularies />
+        <SelectedVocabularies isLoading={isLoading} />
       </div>
     </div>
   )

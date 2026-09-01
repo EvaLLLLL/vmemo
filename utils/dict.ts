@@ -1,23 +1,39 @@
-import { IBaiduDict } from '@/types/dict'
+import { IWord } from '@/types/dict'
 
-export const formatDictResult = (dictResult?: IBaiduDict) => {
-  if (!dictResult)
+export interface DictExample {
+  pos: string
+  en: string
+  zh: string
+  similar?: string
+}
+
+export const formatDictResult = (word?: IWord | null) => {
+  if (!word?.exists) {
     return {
       simpleMeans: undefined,
       derivatives: undefined,
-      examples: undefined
+      examples: undefined,
+      phonetic: undefined
     }
+  }
 
-  const simpleMeans = dictResult?.dict?.word_result?.simple_means?.symbols
-    ?.flatMap((s) =>
-      s.parts.flatMap((p) => p.part + p.means.slice(0, 2).join(','))
-    )
-    .join('; ')
+  const simpleMeans = word.entries
+    .map((e) => `${e.partOfSpeech} ${e.meanings.slice(0, 2).join('，')}`)
+    .join('；')
 
-  const derivatives = dictResult?.dict?.word_result?.simple_means?.exchange
+  const examples: DictExample[] = word.entries
+    .filter((e) => e.example.en)
+    .map((e) => ({
+      pos: e.partOfSpeech,
+      en: e.example.en,
+      zh: e.example.zh,
+      similar: e.synonyms.slice(0, 3).join(', ') || undefined
+    }))
 
-  // { pos: srting; tr_group: { tr: srting[]; example: string[]; similar_word: srting[] }[] }
-  const examples = dictResult?.dict?.word_result?.edict?.item
-
-  return { simpleMeans, derivatives, examples }
+  return {
+    simpleMeans,
+    derivatives: word.inflections,
+    examples,
+    phonetic: word.phonetic
+  }
 }

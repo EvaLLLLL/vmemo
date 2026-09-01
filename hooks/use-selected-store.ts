@@ -26,30 +26,44 @@ export const useSelectedWordsStore = create<SelectedWordsStore>()((
 
     setIsAutoSpeak: (v) => set(() => ({ isAutoSpeak: v })),
     addTranslatedWord: async (word) => {
-      const plain = word
-        .replace(/[^a-zA-Z]/g, '')
+      const query = word
+        .replace(/[^a-zA-Z一-鿿\s'-]/g, '')
         .trim()
         .toLowerCase()
 
+      if (!query) {
+        return undefined
+      }
+
       const state = get()
-      const stored = state.translatedWords?.find((v) => v.word === plain)
+      const stored = state.translatedWords?.find((v) => v.word === query)
 
       if (stored) {
         set({ selectedWord: stored })
         return stored
       }
 
-      const translateResponse = await DictServices.translate.fn(plain)
+      const dict = (await DictServices.translate.fn(query))?.data
 
-      if (!translateResponse?.data?.dst) {
+      if (!dict?.exists) {
         return undefined
+      }
+
+      // 中文 input resolves to an English headword — key the vocabulary on that,
+      // so looking the same word up in either language lands on one entry.
+      const headword = dict.word.trim().toLowerCase()
+      const known = get().translatedWords?.find((v) => v.word === headword)
+
+      if (known) {
+        set({ selectedWord: known })
+        return known
       }
 
       const vocabulariesResponse =
         await VocabularyServices.createVocabularies.fn([
           {
-            word: plain,
-            translation: translateResponse?.data?.dst
+            word: headword,
+            translation: dict.translation
           }
         ])
 
